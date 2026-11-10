@@ -1,0 +1,363 @@
+{
+ "_axes": {
+  "x": "position in picture 0-1",
+  "y": "time: -1 past, 0 now, 1 future, 2 beyond time",
+  "zA": "chain steps from the visible",
+  "zC": "zA + 0.9 * f, f = 1 - (s_R - s_null)/(s_lit - s_null), CLIP ViT-B/32 openai, mean over carrier crops"
+ },
+ "aic_id": 58702,
+ "title": "The Dream of Paris",
+ "artist": "Monogrammist PG",
+ "date": "1536",
+ "carriers": [
+  {
+   "id": "C1",
+   "zh": "沉睡的骑士",
+   "en": "sleeping knight",
+   "bbox": [
+    300,
+    640,
+    530,
+    1300
+   ],
+   "x": 0.492,
+   "y": 0,
+   "zA": 0,
+   "zC": 0
+  },
+  {
+   "id": "C2",
+   "zh": "纸条 PARIS/TRAUM",
+   "en": "slip PARIS/TRAUM",
+   "bbox": [
+    398,
+    395,
+    465,
+    450
+   ],
+   "x": 0.512,
+   "y": 0,
+   "zA": 0,
+   "zC": 0
+  },
+  {
+   "id": "C3",
+   "zh": "中景小船",
+   "en": "boat, middle distance",
+   "bbox": [
+    290,
+    618,
+    378,
+    655
+   ],
+   "x": 0.396,
+   "y": 0,
+   "zA": 0,
+   "zC": 0
+  },
+  {
+   "id": "C4",
+   "zh": "金苹果",
+   "en": "golden apple",
+   "bbox": [
+    645,
+    965,
+    690,
+    1010
+   ],
+   "x": 0.792,
+   "y": 0,
+   "zA": 0,
+   "zC": 0
+  },
+  {
+   "id": "C5",
+   "zh": "当代盔甲",
+   "en": "contemporary armour",
+   "bbox": [
+    335,
+    700,
+    520,
+    1300
+   ],
+   "x": 0.507,
+   "y": 0,
+   "zA": 0,
+   "zC": 0
+  },
+  {
+   "id": "C6",
+   "zh": "维纳斯手中的心",
+   "en": "heart held by Venus",
+   "bbox": [
+    655,
+    828,
+    702,
+    872
+   ],
+   "x": 0.805,
+   "y": 0,
+   "zA": 0,
+   "zC": 0
+  }
+ ],
+ "referents": [
+  {
+   "id": "R1",
+   "zh": "巴黎斯的梦",
+   "en": "Paris's dream",
+   "kind": "experience",
+   "absence": "inner",
+   "time": 0,
+   "time_ev": [
+    "text",
+    "he is in the midst of a dream vision"
+   ],
+   "reached_by": [
+    "C1",
+    "C2"
+   ],
+   "x": 0.502,
+   "x_rule": "mean x of carriers C1,C2",
+   "zA": 1,
+   "zC": 1.583,
+   "clip": {
+    "model": "ViT-B-32/openai",
+    "f": 0.647,
+    "crops": [
+     {
+      "crop": "C1",
+      "s_lit": 0.2548,
+      "s_R": 0.187,
+      "s_null": 0.1884,
+      "f": 1
+     },
+     {
+      "crop": "C2",
+      "s_lit": 0.2358,
+      "s_R": 0.232,
+      "s_null": 0.2227,
+      "f": 0.295
+     }
+    ]
+   }
+  },
+  {
+   "id": "R2",
+   "zh": "三女神",
+   "en": "three goddesses",
+   "kind": "being",
+   "absence": "supernatural",
+   "parent": "R1",
+   "embodied": true,
+   "figures": [
+    [
+     0,
+     690,
+     200,
+     1300
+    ],
+    [
+     170,
+     650,
+     340,
+     1270
+    ],
+    [
+     655,
+     655,
+     843,
+     1300
+    ]
+   ],
+   "time": 0,
+   "time_ev": [
+    "text",
+    "appear to him in the midst of a dream vision (inside R1, same moment)"
+   ],
+   "reached_by": [],
+   "x": 0.437,
+   "x_rule": "mean x of its own figures (image)",
+   "zA": 2,
+   "zC": 2.649,
+   "clip": {
+    "model": "ViT-B-32/openai",
+    "f": 0.721,
+    "crops": [
+     {
+      "crop": "fig1",
+      "s_lit": 0.3023,
+      "s_R": 0.2244,
+      "s_null": 0.1935,
+      "f": 0.716
+     },
+     {
+      "crop": "fig2",
+      "s_lit": 0.3041,
+      "s_R": 0.2251,
+      "s_null": 0.195,
+      "f": 0.724
+     },
+     {
+      "crop": "fig3",
+      "s_lit": 0.3068,
+      "s_R": 0.2239,
+      "s_null": 0.192,
+      "f": 0.722
+     }
+    ]
+   }
+  },
+  {
+   "id": "R3",
+   "zh": "私奔→特洛伊战争",
+   "en": "elopement → Trojan War",
+   "kind": "event",
+   "absence": "not_yet",
+   "parent": "R1",
+   "time": 1,
+   "time_ev": [
+    "text",
+    "used to foreshadow future events"
+   ],
+   "reached_by": [
+    "C3"
+   ],
+   "x": 0.396,
+   "x_rule": "mean x of carriers C3",
+   "zA": 2,
+   "zC": 2.074,
+   "clip": {
+    "model": "ViT-B-32/openai",
+    "f": 0.082,
+    "crops": [
+     {
+      "crop": "C3",
+      "s_lit": 0.2613,
+      "s_R": 0.2565,
+      "s_null": 0.2027,
+      "f": 0.082
+     }
+    ]
+   }
+  },
+  {
+   "id": "R4",
+   "zh": "道德抉择",
+   "en": "moral crossroads",
+   "kind": "concept",
+   "absence": "invisible",
+   "viewer": true,
+   "time": 2,
+   "time_ev": [
+    "text",
+    "the enduring relevance of his moral crossroads"
+   ],
+   "reached_by": [
+    "C4",
+    "C5"
+   ],
+   "x": 0.649,
+   "x_rule": "mean x of carriers C4,C5",
+   "zA": 1,
+   "zC": 1.54,
+   "clip": {
+    "model": "ViT-B-32/openai",
+    "f": 0.601,
+    "crops": [
+     {
+      "crop": "C4",
+      "s_lit": 0.2741,
+      "s_R": 0.2227,
+      "s_null": 0.207,
+      "f": 0.766
+     },
+     {
+      "crop": "C5",
+      "s_lit": 0.2715,
+      "s_R": 0.2364,
+      "s_null": 0.1908,
+      "f": 0.435
+     }
+    ]
+   }
+  },
+  {
+   "id": "R5",
+   "zh": "爱",
+   "en": "love",
+   "kind": "concept",
+   "absence": "invisible",
+   "inferred": true,
+   "time": 2,
+   "time_ev": [
+    "inference",
+    "concept, no temporal statement in text"
+   ],
+   "reached_by": [
+    "C6"
+   ],
+   "x": 0.805,
+   "x_rule": "mean x of carriers C6",
+   "zA": 1,
+   "zC": 1.365,
+   "clip": {
+    "model": "ViT-B-32/openai",
+    "f": 0.405,
+    "crops": [
+     {
+      "crop": "C6",
+      "s_lit": 0.2918,
+      "s_R": 0.2549,
+      "s_null": 0.2009,
+      "f": 0.405
+     }
+    ]
+   }
+  }
+ ],
+ "ops": [
+  {
+   "type": "externalize",
+   "from": "C1",
+   "to": "R1",
+   "evidence": "text",
+   "quote": "His sleeping pose ... indicate that he is in the midst of a dream vision"
+  },
+  {
+   "type": "inscribe",
+   "from": "C2",
+   "to": "R1",
+   "evidence": "text",
+   "quote": "PARIS / TRA(U)M (“dream of Paris,” on the slip of paper attached to the tree)"
+  },
+  {
+   "type": "depth_time",
+   "from": "C3",
+   "to": "R3",
+   "evidence": "text",
+   "quote": "used to foreshadow future events ... by boat in the middle distance"
+  },
+  {
+   "type": "substitute",
+   "from": "C4",
+   "to": "R4",
+   "evidence": "text",
+   "quote": "the golden apple given as a prize in the contest"
+  },
+  {
+   "type": "anachronism",
+   "from": "C5",
+   "to": "R4",
+   "evidence": "text",
+   "quote": "garb of a contemporary knight rather than classical dress ... enduring relevance of his moral crossroads"
+  },
+  {
+   "type": "substitute",
+   "from": "C6",
+   "to": "R5",
+   "evidence": "inference",
+   "quote": "description only says 'holding a heart'"
+  }
+ ]
+}

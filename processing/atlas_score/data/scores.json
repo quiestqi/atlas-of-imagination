@@ -1,0 +1,108 @@
+{
+  "_note": "Rule-trial results v0 (manually applied rules, not executed screening). evidence: text = verbatim AIC description; image = machine visual observation; inference = no direct evidence.",
+  "artworks": [
+    {
+      "aic_id": 58702, "title": "The Dream of Paris", "artist": "Monogrammist PG", "date": "1536", "public_domain": true,
+      "referents": [
+        {"id": "R1", "zh": "巴黎斯的梦", "en": "Paris's dream", "absence": "inner", "kind": "experience"},
+        {"id": "R2", "zh": "三女神", "en": "three goddesses", "absence": "supernatural", "kind": "being", "parent": "R1", "embodied": true},
+        {"id": "R3", "zh": "私奔→特洛伊战争", "en": "elopement → Trojan War", "absence": "not_yet", "kind": "event", "parent": "R1"},
+        {"id": "R4", "zh": "道德抉择", "en": "moral crossroads", "absence": "invisible", "kind": "concept", "viewer": true},
+        {"id": "R5", "zh": "爱", "en": "love", "absence": "invisible", "kind": "concept", "inferred": true}
+      ],
+      "carriers": [
+        {"id": "C1", "zh": "沉睡的骑士", "en": "sleeping knight"},
+        {"id": "C2", "zh": "纸条 PARIS/TRAUM", "en": "slip PARIS/TRAUM"},
+        {"id": "C3", "zh": "中景小船", "en": "boat, middle distance"},
+        {"id": "C4", "zh": "金苹果", "en": "golden apple"},
+        {"id": "C5", "zh": "当代盔甲", "en": "contemporary armour"},
+        {"id": "C6", "zh": "维纳斯手中的心", "en": "heart held by Venus"}
+      ],
+      "ops": [
+        {"type": "externalize", "from": "C1", "to": "R1", "evidence": "text", "quote": "His sleeping pose ... indicate that he is in the midst of a dream vision"},
+        {"type": "inscribe", "from": "C2", "to": "R1", "evidence": "text", "quote": "PARIS / TRA(U)M (“dream of Paris,” on the slip of paper attached to the tree)"},
+        {"type": "depth_time", "from": "C3", "to": "R3", "evidence": "text", "quote": "used to foreshadow future events ... by boat in the middle distance"},
+        {"type": "substitute", "from": "C4", "to": "R4", "evidence": "text", "quote": "the golden apple given as a prize in the contest"},
+        {"type": "anachronism", "from": "C5", "to": "R4", "evidence": "text", "quote": "garb of a contemporary knight rather than classical dress ... enduring relevance of his moral crossroads"},
+        {"type": "substitute", "from": "C6", "to": "R5", "evidence": "inference", "quote": "description only says 'holding a heart'"}
+      ]
+    },
+    {
+      "aic_id": 36492, "title": "Allegory of Charity", "artist": "Francesco de Mura", "date": "c. 1743–44", "public_domain": true,
+      "referents": [
+        {"id": "R1", "zh": "慈爱（美德）", "en": "Charity (virtue)", "absence": "invisible", "kind": "concept"},
+        {"id": "R2", "zh": "母爱", "en": "maternal love", "absence": "invisible", "kind": "concept"},
+        {"id": "R3", "zh": "牺牲", "en": "sacrifice", "absence": "invisible", "kind": "concept"},
+        {"id": "R4", "zh": "基督", "en": "Christ", "absence": "supernatural", "kind": "being", "inferred": true}
+      ],
+      "carriers": [
+        {"id": "C3", "zh": "三个孩子", "en": "three children", "count": 3},
+        {"id": "C1", "zh": "母亲哺育", "en": "mother nursing"},
+        {"id": "C2", "zh": "鹈鹕喂血", "en": "pelican feeding blood"}
+      ],
+      "ops": [
+        {"type": "substitute", "from": "C1", "to": "R2", "evidence": "text", "quote": "images of maternal love and sacrifice: a mother nurtures several young children"},
+        {"type": "substitute", "from": "R2", "to": "R1", "evidence": "text", "quote": "presents an allegory of the virtue of charity through images of maternal love"},
+        {"type": "substitute", "from": "C2", "to": "R3", "evidence": "text", "quote": "a pelican feeds her young by drawing blood from her own breast"},
+        {"type": "substitute", "from": "R3", "to": "R1", "evidence": "text", "quote": "allegory of the virtue of charity through images of ... sacrifice"},
+        {"type": "juxtapose", "from": "C1", "to": "C2", "evidence": "text", "quote": "a mother ... and a pelican ... (two carriers, one referent)"},
+        {"type": "repeat", "from": "C3", "to": "R2", "evidence": "image", "quote": "three children: sleeping, standing, nursing"},
+        {"type": "personify", "from": "C1", "to": "R1", "evidence": "inference", "quote": "text calls her 'a mother', not Charity personified"},
+        {"type": "substitute", "from": "C2", "to": "R4", "evidence": "inference", "quote": "pelican = Christ is iconographic convention, not in text"}
+      ]
+    },
+    {
+      "aic_id": 97884, "title": "A Glimpse into Hell, or Fear", "artist": "Elihu Vedder", "date": "1888–98", "public_domain": true,
+      "referents": [
+        {"id": "R2", "zh": "恐惧", "en": "fear", "absence": "inner", "kind": "experience"},
+        {"id": "R1", "zh": "地狱", "en": "Hell", "absence": "unreachable", "kind": "world"}
+      ],
+      "carriers": [
+        {"id": "C2", "zh": "一角火焰", "en": "sliver of flames"},
+        {"id": "C1", "zh": "五位女性", "en": "five women", "count": 5}
+      ],
+      "ops": [
+        {"type": "externalize", "from": "C1", "to": "R2", "evidence": "text", "quote": "fear, accentuated by the swirling forms of their draperies and hair"},
+        {"type": "witness", "from": "C1", "to": "R1", "evidence": "text", "quote": "focused on the figures’ psychological tension, rather than the spectacle of the environs itself"},
+        {"type": "synecdoche", "from": "C2", "to": "R1", "evidence": "text", "quote": "depicting only a sliver of fiery flames at bottom left"}
+      ]
+    },
+    {
+      "aic_id": 106549, "title": "Celestial Map of the Southern Sky", "artist": "Albrecht Dürer", "date": "1515", "public_domain": true,
+      "referents": [
+        {"id": "R1", "zh": "从宇宙外看的天穹", "en": "the heavens seen from outside", "absence": "unreachable", "kind": "world"},
+        {"id": "R2", "zh": "星座生物", "en": "constellation creatures", "absence": "nonexistent", "kind": "being", "parent": "R1", "embodied": true}
+      ],
+      "carriers": [
+        {"id": "C1", "zh": "平面星图", "en": "flat star map", "shape": "disk"}
+      ],
+      "ops": [
+        {"type": "impossible_viewpoint", "from": "C1", "to": "R1", "evidence": "text", "quote": "depicts the heavens as if the viewer were observing them from space"},
+        {"type": "radiate", "from": "C1", "to": "R1", "evidence": "image", "quote": "disk divided by 12 radial lines, graduated rim"},
+        {"type": "embody", "from": "C1", "to": "R2", "evidence": "image", "quote": "stars drawn as whale, hydra, ship, centaur"},
+        {"type": "inscribe", "from": "C1", "to": "R2", "evidence": "image", "quote": "Latin constellation labels"}
+      ]
+    },
+    {
+      "aic_id": 181742, "title": "Dance Staff (Oshe Sango)", "artist": "Yoruba", "date": "early 20th century", "public_domain": false,
+      "referents": [
+        {"id": "R2", "zh": "雷暴中掷下的石斧", "en": "stone axes hurled in storms", "absence": "supernatural", "kind": "event"},
+        {"id": "R3", "zh": "与双胞胎的关系", "en": "bond with twins", "absence": "invisible", "kind": "concept"},
+        {"id": "R1", "zh": "Sango", "en": "Sango", "absence": "supernatural", "kind": "being"}
+      ],
+      "carriers": [
+        {"id": "C2", "zh": "女性与双胞胎", "en": "woman with twins"},
+        {"id": "C1", "zh": "双斧刃", "en": "double ax blades"},
+        {"id": "C3", "zh": "祭品结痂", "en": "sacrificial encrustation"}
+      ],
+      "ops": [
+        {"type": "substitute", "from": "C1", "to": "R2", "evidence": "text", "quote": "double ax blades ... representing the Neolithic stone ax heads that the god is said to hurl to Earth"},
+        {"type": "substitute", "from": "R2", "to": "R1", "evidence": "text", "quote": "the double ax blades of Sango—the god of warfare and thunder"},
+        {"type": "substitute", "from": "C2", "to": "R3", "evidence": "text", "quote": "a woman with twins evokes Sango’s special relationship to twins"},
+        {"type": "substitute", "from": "R3", "to": "R1", "evidence": "text", "quote": "Sango’s special relationship to twins"},
+        {"type": "layer", "from": "C1", "to": "C2", "evidence": "text", "quote": "Below the ax blades, a woman with twins"},
+        {"type": "activate", "from": "C3", "to": "R1", "evidence": "text", "quote": "encrustation of sacrificial offerings ... to honor and invigorate the deity"}
+      ]
+    }
+  ]
+}

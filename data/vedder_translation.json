@@ -1,0 +1,219 @@
+{
+ "artwork": {
+  "aic_id": 97884,
+  "title": "A Glimpse into Hell, or Fear",
+  "artist": "Elihu Vedder (American, 1836–1923)",
+  "date": "1888–98",
+  "medium": "Oil on canvas",
+  "public_domain": true,
+  "url": "https://www.artic.edu/artworks/97884",
+  "image_id": "3d6addef-e6cb-a9ca-31b0-522bf6613522",
+  "description": "Elihu Vedder probed questions of the mind in his paintings and illustrations, creating complex, visionary compositions often centered on literary or spiritual subject matter. The lunette A Glimpse into Hell, or Fear is drawn from 14th-century poet Dante Alighieri’s Inferno, the first part of his epic poem, Divine Comedy. Here, five females confront the gate of Hell. Beholding such a sight, they express apprehension and fear, accentuated by the swirling forms of their draperies and hair. Vedder focused on the figures’ psychological tension, rather than the spectacle of the environs itself, depicting only a sliver of fiery flames at bottom left."
+ },
+ "image": "images/97884.jpg",
+ "E": {
+  "E1": "five females confront the gate of Hell",
+  "E2": "Beholding such a sight, they express apprehension and fear, accentuated by the swirling forms of their draperies and hair",
+  "E3": "Vedder focused on the figures’ psychological tension, rather than the spectacle of the environs itself",
+  "E4": "depicting only a sliver of fiery flames at bottom left"
+ },
+ "C": [
+  {
+   "id": "C1",
+   "zh": "五位女性",
+   "en": "five women",
+   "boxes": [
+    [
+     20,
+     130,
+     260,
+     520
+    ],
+    [
+     230,
+     60,
+     520,
+     560
+    ],
+    [
+     400,
+     20,
+     620,
+     200
+    ],
+    [
+     470,
+     190,
+     730,
+     560
+    ],
+    [
+     690,
+     280,
+     830,
+     510
+    ]
+   ],
+   "ev": [
+    "E1",
+    "E2"
+   ],
+   "n": 5,
+   "x": 0.566
+  },
+  {
+   "id": "C2",
+   "zh": "翻卷的衣褶与头发",
+   "en": "swirling draperies and hair",
+   "boxes": [
+    [
+     20,
+     420,
+     780,
+     620
+    ]
+   ],
+   "ev": [
+    "E2"
+   ],
+   "n": 1,
+   "x": 0.474
+  },
+  {
+   "id": "C3",
+   "zh": "左下角一角火焰",
+   "en": "sliver of flames, bottom left",
+   "boxes": [
+    [
+     20,
+     500,
+     200,
+     620
+    ]
+   ],
+   "ev": [
+    "E4"
+   ],
+   "n": 1,
+   "x": 0.13
+  }
+ ],
+ "R": [
+  {
+   "id": "R1",
+   "zh": "地狱",
+   "en": "Hell",
+   "kind": "concept",
+   "absence": "unreachable",
+   "time": 2,
+   "time_ev": [
+    null,
+    "default: concept → beyond time"
+   ],
+   "reached_by": [
+    "C1",
+    "C3"
+   ],
+   "x": 0.348,
+   "z": 1,
+   "in_text_ops": 2
+  },
+  {
+   "id": "R2",
+   "zh": "恐惧",
+   "en": "apprehension and fear",
+   "kind": "experience",
+   "absence": "inner",
+   "time": 0,
+   "time_ev": [
+    "E2",
+    "“they express” — in the depicted moment"
+   ],
+   "reached_by": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "x": 0.39,
+   "z": 2,
+   "in_text_ops": 3
+  }
+ ],
+ "O": [
+  {
+   "id": "O1",
+   "type": "witness",
+   "from": "C1",
+   "to": "R1",
+   "evidence": "text",
+   "E": [
+    "E1",
+    "E2",
+    "E3"
+   ],
+   "reading": "the women 'confront' and 'behold' Hell; the painting shows their reaction, not the place (E3)"
+  },
+  {
+   "id": "O2",
+   "type": "synecdoche",
+   "from": "C3",
+   "to": "R1",
+   "evidence": "text",
+   "E": [
+    "E4"
+   ]
+  },
+  {
+   "id": "O3",
+   "type": "externalize",
+   "from": "C1",
+   "to": "R2",
+   "evidence": "text",
+   "E": [
+    "E2"
+   ]
+  },
+  {
+   "id": "O4",
+   "type": "externalize",
+   "from": "C2",
+   "to": "R2",
+   "evidence": "text",
+   "E": [
+    "E2"
+   ],
+   "reading": "'accentuated by the swirling forms of their draperies and hair'"
+  },
+  {
+   "id": "O5",
+   "type": "trigger",
+   "from": "R1",
+   "to": "R2",
+   "evidence": "text",
+   "E": [
+    "E2"
+   ],
+   "reading": "'Beholding such a sight, they express … fear' — the sight of Hell causes the fear"
+  }
+ ],
+ "category": {
+  "externalize": "显现",
+  "embody": "显现",
+  "substitute": "指代",
+  "inscribe": "指代",
+  "depth_time": "时间",
+  "foreshadow": "时间",
+  "trigger": "时间",
+  "anachronism": "时间",
+  "contain": "组合",
+  "contrast": "组合",
+  "juxtapose": "组合",
+  "witness": "显现",
+  "synecdoche": "指代"
+ },
+ "signature": {
+  "显现": 3,
+  "指代": 1,
+  "时间": 1
+ }
+}

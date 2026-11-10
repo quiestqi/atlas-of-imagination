@@ -1,0 +1,620 @@
+{
+ "artwork": {
+  "aic_id": 58702,
+  "title": "The Dream of Paris",
+  "artist": "Monogrammist PG (Germany, active c. 1525–50)",
+  "date": "1536",
+  "medium": "Oil on panel",
+  "public_domain": true,
+  "url": "https://www.artic.edu/artworks/58702",
+  "image_id": "550d7d97-e4ae-e023-21ad-066559632a12",
+  "description": "Faced with choosing the fairest goddess among Minerva, Juno, and Venus, the Trojan prince Paris picked Venus, shown here holding a heart and the golden apple given as a prize in the contest, with her son Cupid frolicking at her feet. Paris wears the garb of a contemporary knight rather than classical dress, a choice that emphasizes the enduring relevance of his moral crossroads as well as, through contrast, the nudity of the goddesses. His sleeping pose and the painting’s inscription, PARIS / TRA(U)M (“dream of Paris,” on the slip of paper attached to the tree), indicate that he is in the midst of a dream vision, a poetic device carried over from medieval allegory and used to foreshadow future events in a narrative. Here, these include the departure of Paris and Helen by boat in the middle distance, the catalyst for the Trojan War."
+ },
+ "E": {
+  "E1": "Faced with choosing the fairest goddess among Minerva, Juno, and Venus",
+  "E2": "Venus, shown here holding a heart and the golden apple given as a prize in the contest",
+  "E3": "with her son Cupid frolicking at her feet",
+  "E4": "Paris wears the garb of a contemporary knight rather than classical dress, a choice that emphasizes the enduring relevance of his moral crossroads",
+  "E5": "as well as, through contrast, the nudity of the goddesses",
+  "E6": "His sleeping pose",
+  "E7": "the painting’s inscription, PARIS / TRA(U)M (“dream of Paris,” on the slip of paper attached to the tree)",
+  "E8": "indicate that he is in the midst of a dream vision",
+  "E9": "a poetic device carried over from medieval allegory and used to foreshadow future events in a narrative",
+  "E10": "the departure of Paris and Helen by boat in the middle distance",
+  "E11": "the catalyst for the Trojan War"
+ },
+ "C": [
+  {
+   "id": "C1",
+   "zh": "沉睡的姿势",
+   "en": "sleeping pose",
+   "boxes": [
+    [
+     300,
+     640,
+     530,
+     1300
+    ]
+   ],
+   "ev": [
+    "E6"
+   ],
+   "n": 1,
+   "x": 0.492
+  },
+  {
+   "id": "C2",
+   "zh": "铭文纸条 PARIS / TRA(U)M",
+   "en": "inscribed slip",
+   "boxes": [
+    [
+     398,
+     395,
+     465,
+     450
+    ]
+   ],
+   "ev": [
+    "E7"
+   ],
+   "words": 2,
+   "n": 1,
+   "x": 0.512
+  },
+  {
+   "id": "C3",
+   "zh": "中景的船",
+   "en": "boat in the middle distance",
+   "boxes": [
+    [
+     290,
+     618,
+     378,
+     655
+    ]
+   ],
+   "ev": [
+    "E10"
+   ],
+   "depth_plane": 1,
+   "n": 1,
+   "x": 0.396
+  },
+  {
+   "id": "C4",
+   "zh": "金苹果",
+   "en": "golden apple",
+   "boxes": [
+    [
+     645,
+     965,
+     690,
+     1010
+    ]
+   ],
+   "ev": [
+    "E2"
+   ],
+   "n": 1,
+   "x": 0.792
+  },
+  {
+   "id": "C5",
+   "zh": "当代骑士装束",
+   "en": "contemporary knight's garb",
+   "boxes": [
+    [
+     335,
+     700,
+     520,
+     1300
+    ]
+   ],
+   "ev": [
+    "E4"
+   ],
+   "n": 1,
+   "x": 0.507
+  },
+  {
+   "id": "C7",
+   "zh": "三个裸体女像",
+   "en": "three nude figures",
+   "boxes": [
+    [
+     0,
+     690,
+     200,
+     1300
+    ],
+    [
+     170,
+     650,
+     340,
+     1270
+    ],
+    [
+     655,
+     655,
+     843,
+     1300
+    ]
+   ],
+   "ev": [
+    "E1",
+    "E5"
+   ],
+   "n": 3,
+   "x": 0.437
+  },
+  {
+   "id": "C8",
+   "zh": "脚边的丘比特",
+   "en": "Cupid at her feet",
+   "boxes": [
+    [
+     555,
+     985,
+     700,
+     1280
+    ]
+   ],
+   "ev": [
+    "E3"
+   ],
+   "n": 1,
+   "x": 0.744
+  },
+  {
+   "id": "C6",
+   "zh": "维纳斯手中的心",
+   "en": "heart held by Venus",
+   "boxes": [
+    [
+     655,
+     828,
+     702,
+     872
+    ]
+   ],
+   "ev": [
+    "E2"
+   ],
+   "excluded": "only takes part in an inferred operation",
+   "n": 1,
+   "x": 0.805
+  }
+ ],
+ "R": [
+  {
+   "id": "R1",
+   "zh": "巴黎斯的梦境",
+   "en": "Paris's dream vision",
+   "kind": "experience",
+   "absence": "inner",
+   "time": 0,
+   "time_ev": [
+    "E8",
+    "“in the midst of” — happening in the depicted moment"
+   ],
+   "reached_by": [
+    "C1",
+    "C2"
+   ],
+   "x": 0.502,
+   "z": 1,
+   "in_text_ops": 2
+  },
+  {
+   "id": "R2",
+   "zh": "三女神",
+   "en": "Minerva, Juno, Venus",
+   "kind": "being",
+   "absence": "supernatural",
+   "time": 0,
+   "time_ev": [
+    "E1",
+    "the contest is the depicted scene"
+   ],
+   "reached_by": [
+    "C1",
+    "C2",
+    "C7"
+   ],
+   "x": 0.48,
+   "z": 2,
+   "in_text_ops": 2
+  },
+  {
+   "id": "R6",
+   "zh": "丘比特",
+   "en": "Cupid",
+   "kind": "being",
+   "absence": "supernatural",
+   "time": 0,
+   "time_ev": [
+    "E3",
+    "“frolicking” — present"
+   ],
+   "reached_by": [
+    "C1",
+    "C2",
+    "C8"
+   ],
+   "x": 0.583,
+   "z": 2,
+   "in_text_ops": 2
+  },
+  {
+   "id": "R3",
+   "zh": "巴黎斯与海伦乘船离去",
+   "en": "departure of Paris and Helen",
+   "kind": "event",
+   "absence": "not_yet",
+   "time": 1,
+   "time_ev": [
+    "E9",
+    "“foreshadow future events”"
+   ],
+   "reached_by": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "x": 0.467,
+   "z": 2,
+   "in_text_ops": 2
+  },
+  {
+   "id": "R5",
+   "zh": "特洛伊战争",
+   "en": "the Trojan War",
+   "kind": "event",
+   "absence": "not_yet",
+   "time": 1,
+   "time_ev": [
+    "E11",
+    "caused by a future event, so also future"
+   ],
+   "reached_by": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "x": 0.467,
+   "z": 3,
+   "in_text_ops": 1
+  },
+  {
+   "id": "R4",
+   "zh": "道德抉择",
+   "en": "moral crossroads",
+   "kind": "concept",
+   "absence": "invisible",
+   "time": 2,
+   "time_ev": [
+    "E4",
+    "“enduring relevance”"
+   ],
+   "reached_by": [
+    "C4",
+    "C5"
+   ],
+   "x": 0.649,
+   "z": 1,
+   "in_text_ops": 2
+  },
+  {
+   "id": "R7",
+   "zh": "爱",
+   "en": "love",
+   "kind": "concept",
+   "absence": "invisible",
+   "time": 2,
+   "time_ev": [
+    null,
+    "default: concept"
+   ],
+   "excluded": "reached only by an inference",
+   "reached_by": [],
+   "x": null,
+   "z": null,
+   "in_text_ops": 0
+  }
+ ],
+ "O": [
+  {
+   "id": "O1",
+   "type": "externalize",
+   "from": "C1",
+   "to": "R1",
+   "evidence": "text",
+   "E": [
+    "E6",
+    "E8"
+   ]
+  },
+  {
+   "id": "O2",
+   "type": "inscribe",
+   "from": "C2",
+   "to": "R1",
+   "evidence": "text",
+   "E": [
+    "E7",
+    "E8"
+   ]
+  },
+  {
+   "id": "O3",
+   "type": "embody",
+   "from": "C7",
+   "to": "R2",
+   "evidence": "text",
+   "E": [
+    "E1",
+    "E5"
+   ]
+  },
+  {
+   "id": "O4",
+   "type": "embody",
+   "from": "C8",
+   "to": "R6",
+   "evidence": "text",
+   "E": [
+    "E3"
+   ]
+  },
+  {
+   "id": "O5",
+   "type": "contain",
+   "from": "R1",
+   "to": "R2",
+   "evidence": "text",
+   "E": [
+    "E7",
+    "E8"
+   ],
+   "reading": "the inscription titles the painted scene as Paris's dream; the description does not separately say the goddesses are inside the vision"
+  },
+  {
+   "id": "O6",
+   "type": "contain",
+   "from": "R1",
+   "to": "R6",
+   "evidence": "text",
+   "E": [
+    "E7",
+    "E8"
+   ],
+   "reading": "same as O5"
+  },
+  {
+   "id": "O7",
+   "type": "foreshadow",
+   "from": "R1",
+   "to": "R3",
+   "evidence": "text",
+   "E": [
+    "E9",
+    "E10"
+   ]
+  },
+  {
+   "id": "O8",
+   "type": "depth_time",
+   "from": "C3",
+   "to": "R3",
+   "evidence": "text",
+   "E": [
+    "E10"
+   ]
+  },
+  {
+   "id": "O9",
+   "type": "trigger",
+   "from": "R3",
+   "to": "R5",
+   "evidence": "text",
+   "E": [
+    "E11"
+   ]
+  },
+  {
+   "id": "O10",
+   "type": "substitute",
+   "from": "C4",
+   "to": "R4",
+   "evidence": "text",
+   "E": [
+    "E2",
+    "E1"
+   ]
+  },
+  {
+   "id": "O11",
+   "type": "anachronism",
+   "from": "C5",
+   "to": "R4",
+   "evidence": "text",
+   "E": [
+    "E4"
+   ]
+  },
+  {
+   "id": "O12",
+   "type": "contrast",
+   "from": "C5",
+   "to": "C7",
+   "evidence": "text",
+   "E": [
+    "E5"
+   ]
+  },
+  {
+   "id": "X1",
+   "type": "substitute",
+   "from": "C6",
+   "to": "R7",
+   "evidence": "inference",
+   "E": [
+    "E2"
+   ],
+   "excluded": "the text only says Venus holds a heart; heart = love is iconographic convention"
+  }
+ ],
+ "category": {
+  "externalize": "显现",
+  "embody": "显现",
+  "substitute": "指代",
+  "inscribe": "指代",
+  "depth_time": "时间",
+  "foreshadow": "时间",
+  "trigger": "时间",
+  "anachronism": "时间",
+  "contain": "组合",
+  "contrast": "组合"
+ },
+ "graph": {
+  "nodes": [
+   {
+    "id": "C1",
+    "layer": 0
+   },
+   {
+    "id": "C2",
+    "layer": 0
+   },
+   {
+    "id": "C3",
+    "layer": 0
+   },
+   {
+    "id": "C4",
+    "layer": 0
+   },
+   {
+    "id": "C5",
+    "layer": 0
+   },
+   {
+    "id": "C7",
+    "layer": 0
+   },
+   {
+    "id": "C8",
+    "layer": 0
+   },
+   {
+    "id": "R1",
+    "layer": 1
+   },
+   {
+    "id": "R2",
+    "layer": 2
+   },
+   {
+    "id": "R6",
+    "layer": 2
+   },
+   {
+    "id": "R3",
+    "layer": 2
+   },
+   {
+    "id": "R5",
+    "layer": 3
+   },
+   {
+    "id": "R4",
+    "layer": 1
+   }
+  ],
+  "edges": [
+   {
+    "id": "O1",
+    "from": "C1",
+    "to": "R1",
+    "type": "externalize"
+   },
+   {
+    "id": "O2",
+    "from": "C2",
+    "to": "R1",
+    "type": "inscribe"
+   },
+   {
+    "id": "O3",
+    "from": "C7",
+    "to": "R2",
+    "type": "embody"
+   },
+   {
+    "id": "O4",
+    "from": "C8",
+    "to": "R6",
+    "type": "embody"
+   },
+   {
+    "id": "O5",
+    "from": "R1",
+    "to": "R2",
+    "type": "contain"
+   },
+   {
+    "id": "O6",
+    "from": "R1",
+    "to": "R6",
+    "type": "contain"
+   },
+   {
+    "id": "O7",
+    "from": "R1",
+    "to": "R3",
+    "type": "foreshadow"
+   },
+   {
+    "id": "O8",
+    "from": "C3",
+    "to": "R3",
+    "type": "depth_time"
+   },
+   {
+    "id": "O9",
+    "from": "R3",
+    "to": "R5",
+    "type": "trigger"
+   },
+   {
+    "id": "O10",
+    "from": "C4",
+    "to": "R4",
+    "type": "substitute"
+   },
+   {
+    "id": "O11",
+    "from": "C5",
+    "to": "R4",
+    "type": "anachronism"
+   },
+   {
+    "id": "O12",
+    "from": "C5",
+    "to": "C7",
+    "type": "contrast"
+   }
+  ]
+ },
+ "signature": {
+  "显现": 3,
+  "指代": 2,
+  "组合": 3,
+  "时间": 4
+ },
+ "axes": {
+  "x": "position in picture 0-1",
+  "y": "time -1/0/+1/+2",
+  "z": "steps from the visible"
+ }
+}

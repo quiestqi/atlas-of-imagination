@@ -1,0 +1,272 @@
+{
+ "artwork": {
+  "aic_id": 36492,
+  "title": "Allegory of Charity",
+  "artist": "Francesco de Mura (Italian, 1696-1782)",
+  "date": "c. 1743–44",
+  "medium": "Oil on canvas",
+  "public_domain": true,
+  "url": "https://www.artic.edu/artworks/36492",
+  "image_id": "c5333dc5-c2a8-489a-70fc-2371ec6c68be",
+  "description": "This painting presents an allegory of the virtue of charity through images of maternal love and sacrifice: a mother nurtures several young children and a pelican feeds her young by drawing blood from her own breast. This work was one of a set of allegories of five virtues intended as decorations set above doors in a palace belonging to the king of Savoy, a region in northwest Italy. Francesco de Mura spent most of his career in Naples but also worked for the king of Savoy in the 1740s, producing paintings in a style that combined grand, calm figures with active drapery. Although it is now rectangular, the canvas shows signs of an earlier curved shape appropriate to a Rococo room decoration."
+ },
+ "image": "images/36492.jpg",
+ "E": {
+  "E1": "This painting presents an allegory of the virtue of charity through images of maternal love and sacrifice",
+  "E2": "a mother nurtures several young children",
+  "E3": "a pelican feeds her young by drawing blood from her own breast"
+ },
+ "C": [
+  {
+   "id": "C1",
+   "zh": "哺育的母亲",
+   "en": "mother nurturing",
+   "boxes": [
+    [
+     250,
+     155,
+     690,
+     800
+    ]
+   ],
+   "ev": [
+    "E2"
+   ],
+   "n": 1,
+   "x": 0.558
+  },
+  {
+   "id": "C3",
+   "zh": "几个孩子",
+   "en": "several young children",
+   "boxes": [
+    [
+     0,
+     470,
+     175,
+     600
+    ],
+    [
+     90,
+     300,
+     385,
+     790
+    ],
+    [
+     445,
+     365,
+     790,
+     515
+    ]
+   ],
+   "ev": [
+    "E2"
+   ],
+   "n": 3,
+   "x": 0.373
+  },
+  {
+   "id": "C2",
+   "zh": "啄胸喂血的鹈鹕",
+   "en": "pelican feeding her young with her blood",
+   "boxes": [
+    [
+     630,
+     600,
+     843,
+     850
+    ]
+   ],
+   "ev": [
+    "E3"
+   ],
+   "n": 1,
+   "x": 0.874
+  }
+ ],
+ "R": [
+  {
+   "id": "R2",
+   "zh": "母爱",
+   "en": "maternal love",
+   "kind": "concept",
+   "absence": "invisible",
+   "time": 2,
+   "time_ev": [
+    null,
+    "default: concept → beyond time"
+   ],
+   "reached_by": [
+    "C1",
+    "C3"
+   ],
+   "x": 0.466,
+   "z": 1,
+   "in_text_ops": 2
+  },
+  {
+   "id": "R3",
+   "zh": "牺牲",
+   "en": "sacrifice",
+   "kind": "concept",
+   "absence": "invisible",
+   "time": 2,
+   "time_ev": [
+    null,
+    "default: concept → beyond time"
+   ],
+   "reached_by": [
+    "C2"
+   ],
+   "x": 0.874,
+   "z": 1,
+   "in_text_ops": 1
+  },
+  {
+   "id": "R1",
+   "zh": "慈爱（美德）",
+   "en": "the virtue of charity",
+   "kind": "concept",
+   "absence": "invisible",
+   "time": 2,
+   "time_ev": [
+    null,
+    "default: concept → beyond time"
+   ],
+   "reached_by": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "x": 0.602,
+   "z": 2,
+   "in_text_ops": 2
+  },
+  {
+   "id": "R4",
+   "zh": "基督",
+   "en": "Christ",
+   "kind": "being",
+   "absence": "supernatural",
+   "time": 2,
+   "time_ev": [
+    null,
+    "default"
+   ],
+   "excluded": "reached only by an inference",
+   "reached_by": [],
+   "x": null,
+   "z": null,
+   "in_text_ops": 0
+  }
+ ],
+ "O": [
+  {
+   "id": "O1",
+   "type": "externalize",
+   "from": "C1",
+   "to": "R2",
+   "evidence": "text",
+   "E": [
+    "E2",
+    "E1"
+   ]
+  },
+  {
+   "id": "O2",
+   "type": "embody",
+   "from": "C3",
+   "to": "R2",
+   "evidence": "text",
+   "E": [
+    "E2",
+    "E1"
+   ],
+   "reading": "the children are part of the image of maternal love ('nurtures several young children'); n = 3 bodies in the picture"
+  },
+  {
+   "id": "O3",
+   "type": "substitute",
+   "from": "C2",
+   "to": "R3",
+   "evidence": "text",
+   "E": [
+    "E3",
+    "E1"
+   ]
+  },
+  {
+   "id": "O4",
+   "type": "substitute",
+   "from": "R2",
+   "to": "R1",
+   "evidence": "text",
+   "E": [
+    "E1"
+   ]
+  },
+  {
+   "id": "O5",
+   "type": "substitute",
+   "from": "R3",
+   "to": "R1",
+   "evidence": "text",
+   "E": [
+    "E1"
+   ]
+  },
+  {
+   "id": "O6",
+   "type": "juxtapose",
+   "from": "C1",
+   "to": "C2",
+   "evidence": "text",
+   "E": [
+    "E1",
+    "E2",
+    "E3"
+   ],
+   "reading": "two images set side by side for one virtue ('images of maternal love and sacrifice: a mother … and a pelican …')"
+  },
+  {
+   "id": "X1",
+   "type": "substitute",
+   "from": "C2",
+   "to": "R4",
+   "evidence": "inference",
+   "E": [
+    "E3"
+   ],
+   "excluded": "pelican = Christ is iconographic convention; the text does not say it"
+  },
+  {
+   "id": "X2",
+   "type": "externalize",
+   "from": "C1",
+   "to": "R1",
+   "evidence": "inference",
+   "E": [
+    "E2"
+   ],
+   "excluded": "the text calls her 'a mother', not Charity personified"
+  }
+ ],
+ "category": {
+  "externalize": "显现",
+  "embody": "显现",
+  "substitute": "指代",
+  "inscribe": "指代",
+  "depth_time": "时间",
+  "foreshadow": "时间",
+  "trigger": "时间",
+  "anachronism": "时间",
+  "contain": "组合",
+  "contrast": "组合",
+  "juxtapose": "组合"
+ },
+ "signature": {
+  "显现": 2,
+  "指代": 3,
+  "组合": 1
+ }
+}

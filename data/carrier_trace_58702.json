@@ -1,0 +1,178 @@
+{
+ "C1": [
+  {
+   "box": [
+    300,
+    640,
+    530,
+    1300
+   ],
+   "canny": {
+    "sigma": 1.2,
+    "hi_percentile": 88,
+    "lo_ratio": 0.45
+   },
+   "contour": {
+    "sigma": 1.5,
+    "otsu_threshold": 83.5
+   },
+   "upscale": 1
+  }
+ ],
+ "C2": [
+  {
+   "box": [
+    398,
+    395,
+    465,
+    450
+   ],
+   "canny": {
+    "sigma": 1.2,
+    "hi_percentile": 88,
+    "lo_ratio": 0.45
+   },
+   "contour": {
+    "sigma": 1.5,
+    "otsu_threshold": 82.0
+   },
+   "upscale": 5
+  }
+ ],
+ "C3": [
+  {
+   "box": [
+    290,
+    618,
+    378,
+    655
+   ],
+   "canny": {
+    "sigma": 1.2,
+    "hi_percentile": 88,
+    "lo_ratio": 0.45
+   },
+   "contour": {
+    "sigma": 1.5,
+    "otsu_threshold": 104.9
+   },
+   "upscale": 8
+  }
+ ],
+ "C4": [
+  {
+   "box": [
+    645,
+    965,
+    690,
+    1010
+   ],
+   "canny": {
+    "sigma": 1.2,
+    "hi_percentile": 88,
+    "lo_ratio": 0.45
+   },
+   "contour": {
+    "sigma": 1.5,
+    "otsu_threshold": 110.2
+   },
+   "upscale": 7
+  }
+ ],
+ "C5": [
+  {
+   "box": [
+    335,
+    700,
+    520,
+    1300
+   ],
+   "canny": {
+    "sigma": 1.2,
+    "hi_percentile": 88,
+    "lo_ratio": 0.45
+   },
+   "contour": {
+    "sigma": 1.5,
+    "otsu_threshold": 81.7
+   },
+   "upscale": 1
+  }
+ ],
+ "C7": [
+  {
+   "box": [
+    0,
+    690,
+    200,
+    1300
+   ],
+   "canny": {
+    "sigma": 1.2,
+    "hi_percentile": 88,
+    "lo_ratio": 0.45
+   },
+   "contour": {
+    "sigma": 1.5,
+    "otsu_threshold": 103.8
+   },
+   "upscale": 1
+  },
+  {
+   "box": [
+    170,
+    650,
+    340,
+    1270
+   ],
+   "canny": {
+    "sigma": 1.2,
+    "hi_percentile": 88,
+    "lo_ratio": 0.45
+   },
+   "contour": {
+    "sigma": 1.5,
+    "otsu_threshold": 111.0
+   },
+   "upscale": 1
+  },
+  {
+   "box": [
+    655,
+    655,
+    843,
+    1300
+   ],
+   "canny": {
+    "sigma": 1.2,
+    "hi_percentile": 88,
+    "lo_ratio": 0.45
+   },
+   "contour": {
+    "sigma": 1.5,
+    "otsu_threshold": 115.1
+   },
+   "upscale": 1
+  }
+ ],
+ "C8": [
+  {
+   "box": [
+    555,
+    985,
+    700,
+    1280
+   ],
+   "canny": {
+    "sigma": 1.2,
+    "hi_percentile": 88,
+    "lo_ratio": 0.45
+   },
+   "contour": {
+    "sigma": 1.5,
+    "otsu_threshold": 115.5
+   },
+   "upscale": 1
+  }
+ ]
+}

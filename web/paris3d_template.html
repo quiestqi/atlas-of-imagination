@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paris Score 3D</title>
+<style>
+  html, body { margin:0; height:100%; background:#fff; color:#111; overflow:hidden; font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; }
+  #head { position:fixed; left:24px; top:18px; z-index:5; pointer-events:none; }
+  #head h1 { font-size:16px; font-weight:500; margin:0 0 3px; }
+  #head p { font-size:11px; color:#888; margin:0; }
+  #tools { position:fixed; right:20px; top:18px; z-index:5; display:flex; gap:6px; }
+  #tools button { font:inherit; font-size:12px; background:#fff; border:1px solid #111; padding:3px 10px; cursor:pointer; }
+  #tools button.on { background:#111; color:#fff; }
+  #ops { position:fixed; right:20px; top:56px; width:210px; max-height:calc(100% - 140px); overflow:auto; z-index:5; font-size:12px; background:rgba(255,255,255,.9); }
+  #ops button { display:block; width:100%; text-align:left; font:inherit; background:none; border:none; border-bottom:1px solid #eee; padding:4px 6px; cursor:pointer; }
+  #ops button.on { background:#111; color:#fff; }
+  #ops small { color:#999; }
+  #ops button.on small { color:#ccc; }
+  #ev { position:fixed; left:24px; bottom:16px; right:250px; z-index:5; font-size:12px; color:#333; background:rgba(255,255,255,.9); }
+  .lR { font-size:12.5px; color:#111; white-space:nowrap; transform:translate(14px,-50%); text-shadow:0 0 3px #fff,0 0 3px #fff; }
+  .lR small { display:block; font-size:9.5px; color:#999; }
+  .lC { font-size:11px; color:#333; white-space:nowrap; text-shadow:0 0 3px #fff,0 0 3px #fff; }
+  .lA { font-size:10.5px; color:#999; white-space:nowrap; }
+  .lT { font-size:12px; color:#111; white-space:nowrap; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="head"><h1 id="title"></h1><nav id="nav" style="pointer-events:auto;font-size:12px;margin:2px 0 6px">__NAV__</nav><p>signs v3 (after Logothetis) · C = machine edge trace · R = constellation (structure = kind, strung signs = absence) · O = four families: manifest · refer · time · compose · filled = text evidence, hollow = image evidence · labels = verbatim AIC text · drag to rotate, wheel to zoom, right-drag to pan</p></div>
+<div id="tools"><button id="bLab" class="on">labels</button><button id="bGrid" class="on">axes</button><button id="bLine" class="on">picture line</button><button id="bFlat" class="on">traces flat</button><button id="bSpin">spin</button><button id="bHome">reset</button></div>
+<div id="ops"></div>
+<div id="ev">Select an operation on the right to isolate it and read its evidence.</div>
+<script id="data" type="application/json">__DATA__</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { Line2 } from 'three/addons/lines/Line2.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+
+const D = JSON.parse(document.getElementById('data').textContent);
+document.getElementById('title').textContent = `${D.artwork.title} · Imagination Score 3D`;
+const OPZ = new Proxy({}, { get: (_, k) => String(k).replace(/_/g, ' ') });
+const FAMZ = { '显现': 'manifest', '指代': 'refer', '时间': 'time', '组合': 'compose' };
+const TZ = { '-1':'past', '0':'now', '1':'future', '2':'beyond time' };
+const C = {}, R = {}; D.C.filter(c => !c.excluded).forEach(c => C[c.id] = c); D.R.filter(r => !r.excluded).forEach(r => R[r.id] = r);
+const LIVE = D.O.filter(o => o.evidence === 'text' || o.evidence === 'image');   // image evidence is drawn hollow
+const nameOf = id => (C[id] || R[id]).label;
+
+// ── scene ──
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xffffff);
+const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 0.1, 400);
+const renderer = new THREE.WebGLRenderer({ antialias: true }); renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+const css = new CSS2DRenderer(); css.setSize(innerWidth, innerHeight); Object.assign(css.domElement.style, { position:'absolute', top:0, pointerEvents:'none' }); document.body.appendChild(css.domElement);
+const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true;
+const home = () => { const k = Math.max(1, 1.4 / camera.aspect); camera.position.set(7.5 * k, 5.5 * k, 13 * k); controls.target.set(0.6, 1.2, -3.2); controls.update(); };
+home();
+
+// ── axes → world ──
+const SX = 10, SY = 2.4, SZ = 2.6;
+const W = (x, y, z) => new THREE.Vector3((x - 0.5) * SX, y * SY, -z * SZ);
+const X = new THREE.Vector3(1, 0, 0), Y = new THREE.Vector3(0, 1, 0), Z = new THREE.Vector3(0, 0, 1);
+
+// ── ink ──
+const thickMats = [], RES = new THREE.Vector2(innerWidth, innerHeight);
+function thick(pts, g, width = 2.6) {
+  const geo = new LineGeometry(); geo.setPositions(pts.flatMap(p => [p.x, p.y, p.z]));
+  const m = new LineMaterial({ color: 0x111111, linewidth: width, transparent: true }); m.resolution.copy(RES); thickMats.push(m);
+  const l = new Line2(geo, m); l.computeLineDistances(); g.add(l); return l;
+}
+function hair(pts, g, color = 0x111111, opacity = 1, dashed = false) {
+  const m = dashed ? new THREE.LineDashedMaterial({ color, dashSize: 0.05, gapSize: 0.09, transparent: true, opacity }) : new THREE.LineBasicMaterial({ color, transparent: true, opacity });
+  const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), m); if (dashed) l.computeLineDistances(); g.add(l); return l;
+}
+const dotGeo = new THREE.SphereGeometry(1, 14, 10);
+function dot(p, r, g) { const s = new THREE.Mesh(dotGeo, new THREE.MeshBasicMaterial({ color: 0x111111, transparent: true })); s.position.copy(p); s.scale.setScalar(r); g.add(s); return s; }
+const arcPts = (c, r, u, v, a0, a1, n = 48) => { const p = []; for (let i = 0; i <= n; i++) { const a = a0 + (a1 - a0) * i / n; p.push(c.clone().addScaledVector(u, Math.cos(a) * r).addScaledVector(v, Math.sin(a) * r)); } return p; };
+function label(html, pos, cls, g) { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; const o = new CSS2DObject(d); o.position.copy(pos); g.add(o); return o; }
+
+// ── grid (hairlines) ──
+const grid = new THREE.Group(); scene.add(grid);
+const ZM = 3.4;
+for (let y = -1; y <= 2; y++) {
+  const c = [W(0, y, 0), W(1, y, 0), W(1, y, ZM), W(0, y, ZM)];
+  hair([c[1], c[2], c[3], c[0]], grid, 0xcccccc);
+  if (y !== 0) hair([c[0], c[1]], grid, 0xcccccc);
+  label(`${TZ[y]} ${y > 0 ? '+' : ''}${y}`, W(-0.025, y, 0), 'lA', grid);
+}
+for (const [x, z] of [[0, 0], [1, 0], [0, ZM], [1, ZM]]) hair([W(x, -1, z), W(x, 2, z)], grid, 0xdddddd);
+for (let z = 1; z <= 3; z++) { hair([W(0, 0, z), W(1, 0, z)], grid, 0xeeeeee); label(`${z} step${z > 1 ? 's' : ''}`, W(1.025, -1, z), 'lA', grid); }
+for (let i = 0; i <= 4; i++) label((i / 4).toFixed(2), W(i / 4, -1.1, 0), 'lA', grid);
+label('0 visible', W(1.025, -1, 0), 'lA', grid);
+label('x   position in the picture, left → right', W(0.5, -1.3, 0), 'lT', grid);
+label('y   time', W(-0.025, 2.3, 0), 'lT', grid);
+label('z   steps from the visible', W(1.04, -1, ZM + 0.15), 'lT', grid);
+const pictureLine = new THREE.Group(); scene.add(pictureLine); thick([W(0, 0, 0), W(1, 0, 0)], pictureLine, 1.6);
+// axes are drawn dashed: swap every plain line in the grid for a dashed one
+const proj = new THREE.Group(); scene.add(proj);                       // coordinate projections of each R (toggled with the axes)
+function dashify(group, dash = 0.07, gap = 0.07) {
+  group.traverse(o => { if (o.isLine && !o.isLine2 && o.material.isLineBasicMaterial) {
+    o.material = new THREE.LineDashedMaterial({ color: o.material.color, dashSize: dash, gapSize: gap, transparent: true }); o.computeLineDistances(); } });
+}
+dashify(grid);
+
+// ── C: machine edge traces hanging below the picture line; nudged apart, leader to true x ──
+const labels = new THREE.Group(); scene.add(labels);
+const cGroups = {}, ANCH = {}, TRACE_VIEWS = [];
+(function () {
+  const T = D.traces.map(t => { const h = Math.min(2.4, Math.max(0.75, (t.box[3] - t.box[1]) * 0.0036)); return { ...t, hw: h, ww: h * t.w / t.h, X: (t.x - 0.5) * SX }; }).sort((a, b) => a.X - b.X);
+  const xs = T.map(t => t.X);
+  for (let it = 0; it < 300; it++) { let moved = false;
+    for (let i = 1; i < T.length; i++) { const need = (T[i - 1].ww + T[i].ww) / 2 + 0.22; if (xs[i] - xs[i - 1] < need) { const p = (need - (xs[i] - xs[i - 1])) / 2; xs[i] += p; xs[i - 1] -= p; moved = true; } }
+    if (!moved) break; }
+  const pmat = new THREE.PointsMaterial({ color: 0x111111, size: 0.022, sizeAttenuation: true, transparent: true });
+  T.forEach((t, i) => {
+    const g = cGroups[t.cid] || (cGroups[t.cid] = new THREE.Group()); scene.add(g);
+    // two placements of the same trace: hanging below the picture line (xy) or lying flat in front of it on the "now" plane (xz)
+    const k = t.hw / t.h, top = 0.32, x0 = xs[i] - t.ww / 2, n = t.pts.length / 2;
+    const posXY = new Float32Array(n * 3), posXZ = new Float32Array(n * 3);
+    for (let j = 0; j < n; j++) {
+      const px = x0 + t.pts[2 * j] * k, d = top + t.pts[2 * j + 1] * k;
+      posXY[j * 3] = px; posXY[j * 3 + 1] = -d; posXY[j * 3 + 2] = 0;
+      posXZ[j * 3] = px; posXZ[j * 3 + 1] = -0.004; posXZ[j * 3 + 2] = d;
+    }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(posXZ.slice(), 3));
+    g.add(new THREE.Points(geo, pmat.clone()));
+    const anchor = W(t.x, 0, 0); (ANCH[t.cid] = ANCH[t.cid] || []).push(anchor);
+    const lead = hair([anchor, new THREE.Vector3(xs[i], 0, 0.26)], g, 0x999999);
+    dot(anchor, 0.05, g);
+    const lab = t.i === 0 ? label(C[t.cid].label, new THREE.Vector3(xs[i], 0, top + t.hw + 0.16), 'lC', labels) : null;
+    TRACE_VIEWS.push({ geo, posXY, posXZ, lead, anchor, xs: xs[i], lab, far: top + t.hw + 0.16 });
+  });
+})();
+
+// ── signs v3 (Logothetis) — shared with the grammar sheet ──
+__SIGNS__
+const SG = makeSigns({ THREE, Line2, LineMaterial, LineGeometry, RES });
+const UNIT = 0.055;
+
+// ── R: classified sign (kind sign + absence mark) ──
+const rPos = r => W(r.x, r.time, r.z), rRad = r => 0.3 + 0.06 * r.in_text_ops;
+const rInfo = r => { const ops = LIVE.filter(o => o.to === r.id); return { n: ops.length, e: new Set(ops.flatMap(o => o.E)).size }; };
+const rGroups = {};
+for (const r of Object.values(R)) {
+  const g = new THREE.Group(); scene.add(g); rGroups[r.id] = g;
+  const c = rPos(r), rad = rRad(r);
+  SG.rGlyph(r, c, rad, g, rInfo(r));
+  hair([c.clone().addScaledVector(Y, -rad), W(r.x, 0, r.z)], proj, 0xbbbbbb); hair([W(r.x, 0, r.z), W(r.x, 0, 0)], proj, 0xcccccc);
+  label(`${r.label}<small>${r.id} · (${r.x.toFixed(2)}, ${r.time > 0 ? '+' : ''}${r.time}, ${r.z})</small>`, c.clone().addScaledVector(X, rad + 0.05), 'lR', labels);
+}
+
+// ── O: hairline + one sign phrase per operation ──
+const towards = (a, b, d) => a.clone().add(b.clone().sub(a).normalize().multiplyScalar(d));
+const rim = (rid, from) => towards(rPos(R[rid]), from, rRad(R[rid]));
+const opGroups = {};
+for (const o of LIVE) {
+  const g = new THREE.Group(); scene.add(g); opGroups[o.id] = g;
+  const t = o.type, fr = o.from, to = o.to;
+  if (C[fr] && C[to]) { SG.phrase(t, ANCH[fr][0], ANCH[to][1] || ANCH[to][0], g, o.evidence, UNIT, { rParent: 0.22, points: 1100 }); continue; }
+  if (R[fr] && R[to]) {
+    const c1 = rPos(R[fr]), c2 = rPos(R[to]);
+    if (t === 'contain') SG.phrase(t, c1, c2, g, o.evidence, UNIT, { rParent: rRad(R[fr]) });
+    else SG.phrase(t, towards(c1, c2, rRad(R[fr])), towards(c2, c1, rRad(R[to])), g, o.evidence, UNIT, { fromR: true });
+    continue;
+  }
+  if (SG.FAMILY[t] === 'manifest' && ANCH[fr].length > 1) {   // one half-circle per body (n = figures)
+    const mid = ANCH[fr].reduce((s, p) => s.add(p), new THREE.Vector3()).divideScalar(ANCH[fr].length); SG.embody(ANCH[fr], rim(to, mid), g, o.evidence, UNIT); continue; }
+  const a = ANCH[fr][0]; SG.phrase(t, a, rim(to, a), g, o.evidence, UNIT, { words: C[fr].words });
+}
+
+// ── panel ──
+const panel = document.getElementById('ops'), ev = document.getElementById('ev');
+let sel = null;
+const fade = (g, v) => g.traverse(x => { if (x.material) { x.material.transparent = true; x.material.opacity = v; } });
+function select(id) {
+  sel = sel === id ? null : id; const o = LIVE.find(x => x.id === sel);
+  [...panel.children].forEach(b => b.classList.toggle('on', b.dataset.id === sel));
+  for (const [k, g] of Object.entries(opGroups)) fade(g, !o || k === sel ? 1 : 0.07);
+  for (const [k, g] of Object.entries(rGroups)) fade(g, !o || k === o.from || k === o.to ? 1 : 0.12);
+  for (const [k, g] of Object.entries(cGroups)) fade(g, !o || k === o.from || k === o.to ? 1 : 0.12);
+  ev.innerHTML = o ? `<b>${o.id} ${FAMZ[D.category[o.type]]} (${OPZ[o.type]})</b> · ${nameOf(o.from)} → ${nameOf(o.to)} · ${o.evidence} evidence &nbsp; ` + (o.E.length ? o.E.map(k => `${k}: “${D.E[k]}”`).join(' &nbsp; ') : '[image observation, no API text]') : 'Select an operation on the right to isolate it and read its evidence.';
+}
+panel.innerHTML = LIVE.map(o => `<button data-id="${o.id}">${o.id}  ${FAMZ[D.category[o.type]]}<small> (${OPZ[o.type]})${o.evidence === 'image' ? ' · image' : ''}</small><br><small>${nameOf(o.from)} → ${nameOf(o.to)}</small></button>`).join('');
+[...panel.children].forEach(b => b.onclick = () => select(b.dataset.id));
+
+const show = (grp, v) => { grp.visible = v; grp.traverse(x => { if (x.isCSS2DObject) { x.visible = v; x.element.style.display = v ? '' : 'none'; } }); };
+const bLab = document.getElementById('bLab'), bGrid = document.getElementById('bGrid'), bSpin = document.getElementById('bSpin');
+bLab.onclick = () => { show(labels, !labels.visible); bLab.classList.toggle('on', labels.visible); };
+dashify(proj, 0.05, 0.08);
+const bLine = document.getElementById('bLine'), bFlat = document.getElementById('bFlat');
+bLine.onclick = () => { pictureLine.visible = !pictureLine.visible; bLine.classList.toggle('on', pictureLine.visible); };
+let flat = true;
+bFlat.onclick = () => {
+  flat = !flat; bFlat.classList.toggle('on', flat);
+  for (const v of TRACE_VIEWS) {
+    v.geo.attributes.position.array.set(flat ? v.posXZ : v.posXY); v.geo.attributes.position.needsUpdate = true; v.geo.computeBoundingSphere();
+    v.lead.geometry.setFromPoints([v.anchor, flat ? new THREE.Vector3(v.xs, 0, 0.26) : new THREE.Vector3(v.xs, -0.26, 0)]);
+    if (v.lab) v.lab.position.set(v.xs, flat ? 0 : -v.far, flat ? v.far : 0);
+  }
+};
+bGrid.onclick = () => { const v = !grid.visible; show(grid, v); show(proj, v); bGrid.classList.toggle('on', v); };
+bSpin.onclick = () => { controls.autoRotate = !controls.autoRotate; controls.autoRotateSpeed = 0.6; bSpin.classList.toggle('on', controls.autoRotate); };
+document.getElementById('bHome').onclick = home;
+
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); css.setSize(innerWidth, innerHeight); RES.set(innerWidth, innerHeight); thickMats.forEach(m => m.resolution.copy(RES)); SG.mats.forEach(m => m.resolution.copy(RES)); });
+(function loop() { requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); css.render(scene, camera); })();
+</script>
+</body>
+</html>

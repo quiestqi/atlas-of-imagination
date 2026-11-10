@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paris Translation</title>
+<style>
+  :root { --ink:#000; --mute:#6b6b6b; --line:#dcdcdc; --bg:#fff; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; font-size:14px; line-height:1.7; }
+  main { max-width:1080px; margin:0 auto; padding:40px 24px 90px; }
+  h1 { font-size:22px; font-weight:500; margin:0 0 2px; }
+  h2 { font-size:14px; font-weight:600; letter-spacing:.04em; border-top:1.5px solid #000; padding-top:10px; margin:56px 0 6px; }
+  h2 span { color:var(--mute); font-weight:400; margin-left:10px; }
+  h3 { font-size:13px; font-weight:600; margin:24px 0 8px; }
+  p.lead { color:#333; margin:4px 0 18px; max-width:760px; }
+  .sub { color:var(--mute); font-size:12px; }
+  .chain { font-size:12px; color:var(--mute); margin-top:14px; letter-spacing:.03em; }
+  .chain b { color:#000; font-weight:600; }
+  .art { display:grid; grid-template-columns:240px 1fr; gap:28px; align-items:start; }
+  .art img { width:100%; display:block; filter:grayscale(1) contrast(1.05); }
+  .desc { font-size:13.5px; line-height:1.95; }
+  mark { background:none; color:inherit; border-bottom:1.4px solid #000; cursor:pointer; }
+  mark sup { font-size:9px; color:#666; margin-left:1px; }
+  mark.hot { background:#000; color:#fff; }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; }
+  th, td { border-bottom:1px solid var(--line); padding:6px 8px 6px 0; text-align:left; vertical-align:top; }
+  th { font-weight:600; border-bottom:1px solid #000; white-space:nowrap; }
+  td.id { font-family:Consolas,monospace; font-size:12px; white-space:nowrap; }
+  tr.ex td { color:#aaa; }
+  .tbl { overflow-x:auto; }
+  .note { font-size:12px; color:var(--mute); }
+  svg text { font-family:"Microsoft YaHei","PingFang SC",sans-serif; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:10px; }
+  .g { border:1px solid var(--line); padding:10px 12px; }
+  .g svg { display:block; width:100%; height:74px; }
+  .g b { font-weight:600; font-size:13px; }
+  .g p { margin:4px 0 0; font-size:12px; color:#444; line-height:1.6; }
+  .g code { font-family:Consolas,monospace; font-size:11px; color:#000; background:#f2f2f2; padding:0 3px; }
+  #graph svg { width:100%; height:auto; display:block; }
+  #scoreWrap { position:relative; height:82vh; min-height:560px; border:1px solid #000; margin-top:12px; overflow:hidden; }
+  #score { position:absolute; inset:0; }
+  #panel { position:absolute; right:10px; top:10px; width:230px; max-height:calc(100% - 20px); overflow:auto; background:rgba(255,255,255,.92); font-size:12px; z-index:3; }
+  #panel button { display:block; width:100%; text-align:left; font:inherit; background:none; border:none; border-bottom:1px solid #eee; padding:4px 6px; cursor:pointer; }
+  #panel button.on { background:#000; color:#fff; }
+  #evbox { position:absolute; left:10px; bottom:10px; right:250px; font-size:12px; background:rgba(255,255,255,.92); z-index:3; padding:6px 8px; min-height:20px; }
+  #tools { position:absolute; left:10px; top:10px; z-index:3; display:flex; gap:6px; }
+  #tools button { font:inherit; font-size:11.5px; background:#fff; border:1px solid #000; padding:2px 8px; cursor:pointer; }
+  #tools button.on { background:#000; color:#fff; }
+  .lbR { font-size:12px; color:#000; white-space:nowrap; background:rgba(255,255,255,.85); padding:0 3px; transform:translate(16px,-50%); }
+  .lbR small { display:block; font-size:9.5px; color:#888; }
+  .lbC { font-size:11px; color:#222; white-space:nowrap; background:rgba(255,255,255,.85); padding:0 3px; }
+  .lbO { font-size:10px; color:#555; white-space:nowrap; }
+  .lbA { font-size:11px; color:#888; white-space:nowrap; }
+  .lbT { font-size:12px; color:#000; white-space:nowrap; }
+  @media (max-width:720px) { .art { grid-template-columns:1fr; } #panel { width:160px; } #evbox { right:180px; } }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<main>
+  <h1 id="title"></h1>
+  <div class="sub" id="meta"></div>
+  <div class="chain"><b>Artwork</b> → R/C/O/E Analysis → Structural Graph → Symbolic Grammar → 3D Imagination Score</div>
+
+  <h2>1 · 作品与证据<span>Artwork · E</span></h2>
+  <p class="lead">E 只能是 AIC 描述的原文片段（下划线，编号 E1–E11）。脚本逐条核对过：每一段都能在原文里原样找到。点击一段证据，可以看到它支撑哪些操作。</p>
+  <div class="art"><img id="img" alt="The Dream of Paris"><div><div class="desc" id="desc"></div><div class="note" id="eUse" style="margin-top:10px"></div></div></div>
+
+  <h2>2 · R / C / O / E 分析<span>Analysis</span></h2>
+  <p class="lead">硬规则：只有带文本证据的操作才进入结构和谱；推断只列出，不计入（灰色行）。</p>
+  <h3>C · 可见载体</h3><div class="tbl"><table id="tC"></table></div>
+  <h3>R · 缺席的对象</h3><div class="tbl"><table id="tR"></table></div>
+  <h3>O · 结构操作</h3><div class="tbl"><table id="tO"></table></div>
+
+  <h2>3 · 结构图<span>Structural Graph</span></h2>
+  <p class="lead">只看拓扑。纵向 = z（离可见世界的步数：载体在最底层 0），横向 = x（在原画里的左右位置）。直线 = 从可见出发的操作，弧线 = 两个缺席之间的操作。</p>
+  <div id="graph"></div>
+  <p class="note" id="graphNote"></p>
+
+  <h2>4 · 符号语法<span>Symbolic Grammar</span></h2>
+  <p class="lead">借鉴 Lucinda Childs 的方法：只用很少的几种几何元素，靠<b>重复、平移、旋转、反向、缩放</b>组合出所有符号。每一种变化都由一个数据字段驱动，没有纯装饰的变化。</p>
+  <h3>A · 基本图形（4）</h3><div class="grid" id="prims"></div>
+  <h3>B · 变换（5）</h3><div class="grid" id="trans"></div>
+  <h3>C · 组合规则：数据 → 形式</h3><div class="tbl"><table id="rules"></table></div>
+  <h3>D · 本作用到的操作短语（10）</h3><div class="grid" id="phrases"></div>
+
+  <h2>5 · 3D 想象谱<span>3D Imagination Score</span></h2>
+  <p class="lead">x = 画面位置 · y = 时间（过去 −1 / 此刻 0 / 未来 +1 / 超时间 +2） · z = 离可见世界的步数。拖动旋转，滚轮缩放；点右侧的操作，可以单独查看它和它的证据。</p>
+  <div id="scoreWrap">
+    <div id="score"></div>
+    <div id="tools"><button id="tLab" class="on">标签</button><button id="tOps">操作名</button><button id="tReset">复位</button></div>
+    <div id="panel"></div>
+    <div id="evbox" class="note">点选一个操作，查看证据。</div>
+  </div>
+  <p class="note" id="sig" style="margin-top:10px"></p>
+</main>
+
+<script id="data" type="application/json">{"artwork": {"aic_id": 58702, "title": "The Dream of Paris", "artist": "Monogrammist PG (Germany, active c. 1525–50)", "date": "1536", "medium": "Oil on panel", "public_domain": true, "url": "https://www.artic.edu/artworks/58702", "image_id": "550d7d97-e4ae-e023-21ad-066559632a12", "description": "Faced with choosing the fairest goddess among Minerva, Juno, and Venus, the Trojan prince Paris picked Venus, shown here holding a heart and the golden apple given as a prize in the contest, with her son Cupid frolicking at her feet. Paris wears the garb of a contemporary knight rather than classical dress, a choice that emphasizes the enduring relevance of his moral crossroads as well as, through contrast, the nudity of the goddesses. His sleeping pose and the painting’s inscription, PARIS / TRA(U)M (“dream of Paris,” on the slip of paper attached to the tree), indicate that he is in the midst of a dream vision, a poetic device carried over from medieval allegory and used to foreshadow future events in a narrative. Here, these include the departure of Paris and Helen by boat in the middle distance, the catalyst for the Trojan War."}, "E": {"E1": "Faced with choosing the fairest goddess among Minerva, Juno, and Venus", "E2": "Venus, shown here holding a heart and the golden apple given as a prize in the contest", "E3": "with her son Cupid frolicking at her feet", "E4": "Paris wears the garb of a contemporary knight rather than classical dress, a choice that emphasizes the enduring relevance of his moral crossroads", "E5": "as well as, through contrast, the nudity of the goddesses", "E6": "His sleeping pose", "E7": "the painting’s inscription, PARIS / TRA(U)M (“dream of Paris,” on the slip of paper attached to the tree)", "E8": "indicate that he is in the midst of a dream vision", "E9": "a poetic device carried over from medieval allegory and used to foreshadow future events in a narrative", "E10": "the departure of Paris and Helen by boat in the middle distance", "E11": "the catalyst for the Trojan War"}, "C": [{"id": "C1", "zh": "沉睡的姿势", "en": "sleeping pose", "boxes": [[300, 640, 530, 1300]], "ev": ["E6"], "n": 1, "x": 0.492}, {"id": "C2", "zh": "铭文纸条 PARIS / TRA(U)M", "en": "inscribed slip", "boxes": [[398, 395, 465, 450]], "ev": ["E7"], "words": 2, "n": 1, "x": 0.512}, {"id": "C3", "zh": "中景的船", "en": "boat in the middle distance", "boxes": [[290, 618, 378, 655]], "ev": ["E10"], "depth_plane": 1, "n": 1, "x": 0.396}, {"id": "C4", "zh": "金苹果", "en": "golden apple", "boxes": [[645, 965, 690, 1010]], "ev": ["E2"], "n": 1, "x": 0.792}, {"id": "C5", "zh": "当代骑士装束", "en": "contemporary knight's garb", "boxes": [[335, 700, 520, 1300]], "ev": ["E4"], "n": 1, "x": 0.507}, {"id": "C7", "zh": "三个裸体女像", "en": "three nude figures", "boxes": [[0, 690, 200, 1300], [170, 650, 340, 1270], [655, 655, 843, 1300]], "ev": ["E1", "E5"], "n": 3, "x": 0.437}, {"id": "C8", "zh": "脚边的丘比特", "en": "Cupid at her feet", "boxes": [[555, 985, 700, 1280]], "ev": ["E3"], "n": 1, "x": 0.744}, {"id": "C6", "zh": "维纳斯手中的心", "en": "heart held by Venus", "boxes": [[655, 828, 702, 872]], "ev": ["E2"], "excluded": "only takes part in an inferred operation", "n": 1, "x": 0.805}], "R": [{"id": "R1", "zh": "巴黎斯的梦境", "en": "Paris's dream vision", "kind": "experience", "absence": "inner", "time": 0, "time_ev": ["E8", "“in the midst of” — happening in the depicted moment"], "reached_by": ["C1", "C2"], "x": 0.502, "z": 1, "in_text_ops": 2}, {"id": "R2", "zh": "三女神", "en": "Minerva, Juno, Venus", "kind": "being", "absence": "supernatural", "time": 0, "time_ev": ["E1", "the contest is the depicted scene"], "reached_by": ["C1", "C2", "C7"], "x": 0.48, "z": 2, "in_text_ops": 2}, {"id": "R6", "zh": "丘比特", "en": "Cupid", "kind": "being", "absence": "supernatural", "time": 0, "time_ev": ["E3", "“frolicking” — present"], "reached_by": ["C1", "C2", "C8"], "x": 0.583, "z": 2, "in_text_ops": 2}, {"id": "R3", "zh": "巴黎斯与海伦乘船离去", "en": "departure of Paris and Helen", "kind": "event", "absence": "not_yet", "time": 1, "time_ev": ["E9", "“foreshadow future events”"], "reached_by": ["C1", "C2", "C3"], "x": 0.467, "z": 2, "in_text_ops": 2}, {"id": "R5", "zh": "特洛伊战争", "en": "the Trojan War", "kind": "event", "absence": "not_yet", "time": 1, "time_ev": ["E11", "caused by a future event, so also future"], "reached_by": ["C1", "C2", "C3"], "x": 0.467, "z": 3, "in_text_ops": 1}, {"id": "R4", "zh": "道德抉择", "en": "moral crossroads", "kind": "concept", "absence": "invisible", "time": 2, "time_ev": ["E4", "“enduring relevance”"], "reached_by": ["C4", "C5"], "x": 0.649, "z": 1, "in_text_ops": 2}, {"id": "R7", "zh": "爱", "en": "love", "kind": "concept", "absence": "invisible", "time": 2, "time_ev": [null, "default: concept"], "excluded": "reached only by an inference", "reached_by": [], "x": null, "z": null, "in_text_ops": 0}], "O": [{"id": "O1", "type": "externalize", "from": "C1", "to": "R1", "evidence": "text", "E": ["E6", "E8"]}, {"id": "O2", "type": "inscribe", "from": "C2", "to": "R1", "evidence": "text", "E": ["E7", "E8"]}, {"id": "O3", "type": "embody", "from": "C7", "to": "R2", "evidence": "text", "E": ["E1", "E5"]}, {"id": "O4", "type": "embody", "from": "C8", "to": "R6", "evidence": "text", "E": ["E3"]}, {"id": "O5", "type": "contain", "from": "R1", "to": "R2", "evidence": "text", "E": ["E7", "E8"], "reading": "the inscription titles the painted scene as Paris's dream; the description does not separately say the goddesses are inside the vision"}, {"id": "O6", "type": "contain", "from": "R1", "to": "R6", "evidence": "text", "E": ["E7", "E8"], "reading": "same as O5"}, {"id": "O7", "type": "foreshadow", "from": "R1", "to": "R3", "evidence": "text", "E": ["E9", "E10"]}, {"id": "O8", "type": "depth_time", "from": "C3", "to": "R3", "evidence": "text", "E": ["E10"]}, {"id": "O9", "type": "trigger", "from": "R3", "to": "R5", "evidence": "text", "E": ["E11"]}, {"id": "O10", "type": "substitute", "from": "C4", "to": "R4", "evidence": "text", "E": ["E2", "E1"]}, {"id": "O11", "type": "anachronism", "from": "C5", "to": "R4", "evidence": "text", "E": ["E4"]}, {"id": "O12", "type": "contrast", "from": "C5", "to": "C7", "evidence": "text", "E": ["E5"]}, {"id": "X1", "type": "substitute", "from": "C6", "to": "R7", "evidence": "inference", "E": ["E2"], "excluded": "the text only says Venus holds a heart; heart = love is iconographic convention"}], "category": {"externalize": "显现", "embody": "显现", "substitute": "指代", "inscribe": "指代", "depth_time": "时间", "foreshadow": "时间", "trigger": "时间", "anachronism": "时间", "contain": "组合", "contrast": "组合"}, "graph": {"nodes": [{"id": "C1", "layer": 0}, {"id": "C2", "layer": 0}, {"id": "C3", "layer": 0}, {"id": "C4", "layer": 0}, {"id": "C5", "layer": 0}, {"id": "C7", "layer": 0}, {"id": "C8", "layer": 0}, {"id": "R1", "layer": 1}, {"id": "R2", "layer": 2}, {"id": "R6", "layer": 2}, {"id": "R3", "layer": 2}, {"id": "R5", "layer": 3}, {"id": "R4", "layer": 1}], "edges": [{"id": "O1", "from": "C1", "to": "R1", "type": "externalize"}, {"id": "O2", "from": "C2", "to": "R1", "type": "inscribe"}, {"id": "O3", "from": "C7", "to": "R2", "type": "embody"}, {"id": "O4", "from": "C8", "to": "R6", "type": "embody"}, {"id": "O5", "from": "R1", "to": "R2", "type": "contain"}, {"id": "O6", "from": "R1", "to": "R6", "type": "contain"}, {"id": "O7", "from": "R1", "to": "R3", "type": "foreshadow"}, {"id": "O8", "from": "C3", "to": "R3", "type": "depth_time"}, {"id": "O9", "from": "R3", "to": "R5", "type": "trigger"}, {"id": "O10", "from": "C4", "to": "R4", "type": "substitute"}, {"id": "O11", "from": "C5", "to": "R4", "type": "anachronism"}, {"id": "O12", "from": "C5", "to": "C7", "type": "contrast"}]}, "signature": {"显现": 3, "指代": 2, "组合": 3, "时间": 4}, "axes": {"x": "position in picture 0-1", "y": "time -1/0/+1/+2", "z": "steps from the visible"}}</script>
+<script>window.IMGSRC = "../images/58702.jpg";</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+const D = JSON.parse(document.getElementById('data').textContent);
+const A = D.artwork;
+const OPZ = { externalize:'外化', inscribe:'铭写', embody:'赋形', contain:'包含', foreshadow:'预示', depth_time:'纵深=时间',
+              trigger:'引发', substitute:'象征替代', anachronism:'时代错置', contrast:'对照' };
+const KINDZ = { being:'存在者', experience:'经验', event:'事件', concept:'概念' };
+const ABZ = { inner:'内在', invisible:'不可见', not_yet:'未至', supernatural:'超自然' };
+const TZ = { '-1':'过去', '0':'此刻', '1':'未来', '2':'超时间' };
+const byId = {}; D.C.forEach(c => byId[c.id] = { ...c, isR:false }); D.R.forEach(r => byId[r.id] = { ...r, isR:true });
+const live = D.O.filter(o => o.evidence === 'text');
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+// ───────── 1 · artwork + evidence ─────────
+document.getElementById('title').textContent = A.title;
+document.getElementById('meta').textContent = `AIC ${A.aic_id} · ${A.artist} · ${A.date} · ${A.medium} · ${A.public_domain ? 'public domain' : 'NOT public domain'}`;
+document.getElementById('img').src = window.IMGSRC;
+(function () {
+  let html = esc(A.description);
+  const spans = Object.entries(D.E).map(([k, s]) => [k, esc(s)]).sort((a, b) => b[1].length - a[1].length);
+  for (const [k, s] of spans) html = html.replace(s, `<mark data-e="${k}">${s}<sup>${k}</sup></mark>`);
+  const el = document.getElementById('desc'); el.innerHTML = html;
+  el.querySelectorAll('mark').forEach(m => m.onclick = () => {
+    const k = m.dataset.e, ops = D.O.filter(o => o.E.includes(k));
+    el.querySelectorAll('mark').forEach(x => x.classList.toggle('hot', x === m));
+    document.getElementById('eUse').textContent = `${k} 支撑：` + (ops.map(o => `${o.id} ${OPZ[o.type]}（${o.from}→${o.to}${o.evidence !== 'text' ? '，推断，不计' : ''}）`).join('；') || '时间标注');
+  });
+})();
+
+// ───────── 2 · tables ─────────
+const nameOf = id => byId[id] ? byId[id].zh : id;
+document.getElementById('tC').innerHTML = '<tr><th>id</th><th>载体</th><th>形体数 n</th><th>x</th><th>证据</th><th>备注</th></tr>' +
+  D.C.map(c => `<tr class="${c.excluded ? 'ex' : ''}"><td class="id">${c.id}</td><td>${c.zh}<br><span class="note">${c.en}</span></td><td>${c.n}</td><td>${c.x.toFixed(2)}</td><td>${c.ev.join(', ')} · 位置为图像观察</td><td>${c.excluded ? '排除：' + c.excluded : (c.words ? '铭文词数 = ' + c.words : c.depth_plane ? '景深层 = ' + c.depth_plane + '（中景）' : '')}</td></tr>`).join('');
+document.getElementById('tR').innerHTML = '<tr><th>id</th><th>缺席的对象</th><th>种类</th><th>缺席方式</th><th>x</th><th>y 时间</th><th>z 步数</th><th>时间依据</th></tr>' +
+  D.R.map(r => `<tr class="${r.excluded ? 'ex' : ''}"><td class="id">${r.id}</td><td>${r.zh}<br><span class="note">${r.en}</span></td><td>${KINDZ[r.kind]}</td><td>${ABZ[r.absence]}</td><td>${r.x == null ? '—' : r.x.toFixed(2)}</td><td>${r.time > 0 ? '+' : ''}${r.time} ${TZ[r.time]}</td><td>${r.z ?? '—'}</td><td>${r.time_ev[0] ?? ''} ${r.time_ev[1]}${r.excluded ? '<br>排除：' + r.excluded : ''}</td></tr>`).join('');
+document.getElementById('tO').innerHTML = '<tr><th>id</th><th>操作</th><th>类</th><th>从 → 到</th><th>E</th><th>说明</th></tr>' +
+  D.O.map(o => `<tr class="${o.evidence !== 'text' ? 'ex' : ''}"><td class="id">${o.id}</td><td>${OPZ[o.type]}<br><span class="note">${o.type}</span></td><td>${D.category[o.type]}</td><td>${nameOf(o.from)} → ${nameOf(o.to)}</td><td>${o.evidence === 'text' ? o.E.join(', ') : '推断'}</td><td>${o.excluded ? '排除：' + o.excluded : (o.reading ? '读法：' + o.reading : '')}</td></tr>`).join('');
+
+// ───────── 3 · structural graph (SVG) ─────────
+(function () {
+  const Wd = 1000, rows = { 0: 330, 1: 230, 2: 140, 3: 50 }, nodes = D.graph.nodes.map(n => ({ ...n, x: 60 + byId[n.id].x * 880 }));
+  for (const L of [0, 1, 2, 3]) {                                   // keep nodes of one row apart
+    const row = nodes.filter(n => n.layer === L).sort((a, b) => a.x - b.x);
+    for (let it = 0; it < 40; it++) for (let i = 1; i < row.length; i++) { const d = row[i].x - row[i - 1].x; if (d < 175) { row[i].x += (175 - d) / 2; row[i - 1].x -= (175 - d) / 2; } }
+  }
+  const N = {}; nodes.forEach(n => N[n.id] = { ...n, y: rows[n.layer] });
+  let s = `<svg viewBox="0 0 ${Wd} 380" xmlns="http://www.w3.org/2000/svg">`;
+  for (const L of [0, 1, 2, 3]) s += `<line x1="0" x2="${Wd}" y1="${rows[L]}" y2="${rows[L]}" stroke="#eee"/><text x="0" y="${rows[L] - 6}" font-size="11" fill="#999">z = ${L}${L === 0 ? '  可见' : ''}</text>`;
+  for (const e of D.graph.edges) {
+    const a = N[e.from], b = N[e.to]; const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    if (e.type === 'contrast') s += `<path d="M${a.x},${a.y} Q${mx},${a.y + 48} ${b.x},${b.y}" fill="none" stroke="#000" stroke-dasharray="3 3"/><text x="${mx}" y="${a.y + 36}" font-size="10" fill="#555" text-anchor="middle">${OPZ[e.type]}</text>`;
+    else if (!byId[e.from].isR) s += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#000" stroke-width="1"/><text x="${mx + 4}" y="${my}" font-size="10" fill="#555">${OPZ[e.type]}</text>`;
+    else s += `<path d="M${a.x},${a.y} Q${mx + 70},${my} ${b.x},${b.y}" fill="none" stroke="#000"/><text x="${mx + 40}" y="${my}" font-size="10" fill="#555">${OPZ[e.type]}</text>`;
+  }
+  for (const n of Object.values(N)) {
+    const o = byId[n.id];
+    if (o.isR) s += `<circle cx="${n.x}" cy="${n.y}" r="9" fill="#fff" stroke="#000" stroke-width="1.3"/><text x="${n.x + 14}" y="${n.y - 8}" font-size="12">${o.zh}</text><text x="${n.x + 14}" y="${n.y + 6}" font-size="9.5" fill="#888">${o.id} · ${KINDZ[o.kind]}</text>`;
+    else s += `<circle cx="${n.x}" cy="${n.y}" r="4.5" fill="#000"/><text x="${n.x}" y="${n.y + 20}" font-size="11" text-anchor="middle">${o.zh}</text>`;
+  }
+  document.getElementById('graph').innerHTML = s + '</svg>';
+  const conv = D.R.filter(r => !r.excluded && live.filter(o => o.to === r.id).length > 1).map(r => r.zh);
+  document.getElementById('graphNote').textContent = `结构特征：汇聚（两条以上操作指向同一 R）—— ${conv.join('、')}；最长链 = 3 步（中景的船 → 离去 → 特洛伊战争，以及 梦境 → 离去 → 特洛伊战争）；梦境是唯一的"容器"，它包含两个神，并预示未来。`;
+})();
+
+// ───────── 4 · grammar (2D glyph cards) ─────────
+const svg = inner => `<svg viewBox="0 0 240 74" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000" stroke-width="1.3">${inner}</svg>`;
+const Cdot = (x, y) => `<circle cx="${x}" cy="${y}" r="3.2" fill="#000" stroke="none"/>`;
+const Rc = (x, y, r = 11) => `<circle cx="${x}" cy="${y}" r="${r}"/>`;
+const card = (t, s, p) => `<div class="g">${svg(s)}<b>${t}</b><p>${p}</p></div>`;
+document.getElementById('prims').innerHTML = [
+  card('点 ●', Cdot(120, 37), '<b>C 可见载体</b>：有身体、在画面上的东西。只出现在 z = 0、y = 0 的“画面线”上。'),
+  card('直线 —', '<line x1="30" y1="37" x2="210" y2="37"/>', '<b>从可见出发的路径</b>：一次操作把载体带向缺席。'),
+  card('弧 ◠', '<path d="M30,52 Q120,-6 210,52"/>', '<b>缺席之间的路径</b>：一个缺席引出另一个缺席，没有载体可以落脚。'),
+  card('圆 ○', Rc(120, 37, 20), '<b>R 缺席的对象</b>：一圈线围着空处。圆里面是空的，因为它不在场。')
+].join('');
+document.getElementById('trans').innerHTML = [
+  card('重复 ×n', [0, 1, 2].map(i => `<line x1="${40 + i * 60}" y1="20" x2="${70 + i * 60}" y2="54"/>`).join(''), '同一元素出现 n 次。n 只取数据里的计数：形体数、铭文词数。'),
+  card('平移 / 相位', '<line x1="30" y1="30" x2="210" y2="30"/><line x1="30" y1="44" x2="210" y2="44"/>', '复制后偏移一段。用于“一物两面”（符号与所指）和景深层的台阶。'),
+  card('旋转 θ', `<circle cx="70" cy="37" r="20"/><ellipse cx="170" cy="37" rx="20" ry="7"/><ellipse cx="170" cy="37" rx="7" ry="20"/>`, '同一个圆换朝向，区分 R 的种类（见 C 表）。'),
+  card('反向 ←', '<path d="M30,44 L150,44 A16,16 0 0,0 150,12 L110,12"/>', '路径折回。只用于时间方向相反的操作（时代错置）。'),
+  card('缩放 / 累积', [8, 15, 22].map(r => `<path d="M${60 + r},${37 - r} A${r},${r} 0 0,1 ${60 + r},${37 + r}"/>`).join('') + '<circle cx="200" cy="37" r="14"/><circle cx="200" cy="37" r="5"/>', '同一元素放大或缩小：外化的向外扩散，以及包含关系里嵌进去的缩小副本。'),
+].join('');
+document.getElementById('rules').innerHTML = '<tr><th>数据</th><th>形式</th><th>变换</th><th>本作中的值</th></tr>' + [
+  ['C 的位置', '点放在 (x, 0, 0)', '—', 'x = 裁切框中心 / 画宽'],
+  ['C 的形体数 n', '点重复 n 个', '重复', '三个裸体女像 n = 3'],
+  ['R 的位置', '圆心放在 (x, y, z)', '—', 'x 取所有到达它的载体的平均；y、z 见 R 表'],
+  ['R 的种类', '圆的朝向：存在者 = 立圆（面向观者，有形象）· 经验 = 平圆（水平，可容纳）· 事件 = 半圆（尚未完成）· 概念 = 两个正交的圆（无形体）', '旋转', '梦境 = 平圆；女神、丘比特 = 立圆；离去、战争 = 半圆；道德抉择 = 正交双圆'],
+  ['R 的入度（指向它的文本操作数）', '圆的半径', '缩放', D.R.filter(r => !r.excluded).map(r => `${r.zh} ${r.in_text_ops}`).join(' · ')],
+  ['O 的起点是 C', '直线', '—', 'O1–O4、O8、O10、O11'],
+  ['O 的起点是 R', '弧', '—', 'O5–O7、O9'],
+  ['O 的类型', '直线/弧上的短语（见 D）', '组合', '10 种'],
+  ['E = 文本', '实线', '—', '全部 12 个计入的操作'],
+  ['E = 图像', '虚线（短线重复 + 间隔）', '重复', '本作没有'],
+  ['E = 推断', '不画', '—', 'X1 心 = 爱'],
+  ['包含（R 在 R 里）', '子 R 的缩小副本嵌进父圆', '缩放 + 重复', '梦境里嵌着女神、丘比特'],
+].map(r => `<tr>${r.map(x => `<td>${x}</td>`).join('')}</tr>`).join('');
+const PH = [
+  ['外化 externalize', Cdot(30, 37) + '<line x1="30" y1="37" x2="196" y2="37"/>' + [10, 18, 26].map(r => `<path d="M${30 + r},${37 - r} A${r},${r} 0 0,1 ${30 + r},${37 + r}"/>`).join('') + Rc(208, 37), '直线 + 三段弧按 1 : 2 : 3 放大（固定形）：内在的东西向外扩散。', 'O1 沉睡的姿势 → 梦境'],
+  ['铭写 inscribe', Cdot(30, 37) + '<line x1="30" y1="37" x2="196" y2="37"/>' + [60, 76].map(x => `<line x1="${x}" y1="29" x2="${x}" y2="45"/>`).join('') + Rc(208, 37), '直线 + n 条垂直短线，<code>n = 铭文词数</code>。', 'O2 PARIS / TRA(U)M → n = 2'],
+  ['赋形 embody', [20, 40, 60].map(x => Cdot(x, 60) + `<line x1="${x}" y1="60" x2="198" y2="30"/>`).join('') + Rc(208, 26), 'n 条直线从 n 个形体汇聚到一个 R，<code>n = 形体数</code>：不可见者借身体出现。', 'O3 三个女像 → 三女神（n = 3）· O4 丘比特（n = 1）'],
+  ['象征替代 substitute', Cdot(30, 37) + '<line x1="30" y1="33" x2="196" y2="33"/><line x1="30" y1="41" x2="196" y2="41"/>' + Rc(208, 37), '直线重复 ×2 并平移：一边是符号，一边是所指。', 'O10 金苹果 → 道德抉择'],
+  ['时代错置 anachronism', Cdot(30, 50) + '<path d="M30,50 L140,50 A14,14 0 0,0 140,22 L110,22"/><line x1="140" y1="50" x2="196" y2="50"/>' + Rc(208, 50), '直线 + 一段反向折回：服装属于现在，故事属于过去，时间方向相反。', 'O11 当代骑士装束 → 道德抉择'],
+  ['纵深 = 时间 depth_time', Cdot(30, 55) + '<path d="M30,55 L100,55 L100,35 L196,35"/>' + Rc(208, 35), '直线 + 台阶，<code>台阶数 = 景深层</code>：画面越深，时间越往后。', 'O8 中景的船 → 离去（中景 = 1）'],
+  ['预示 foreshadow', Rc(30, 55, 9) + '<path d="M39,52 Q120,-4 200,30"/>' + Rc(208, 30, 9), '弧，朝 +y（未来）方向弯：一个缺席指向尚未发生的事。', 'O7 梦境 → 离去'],
+  ['引发 trigger', Rc(30, 45, 9) + '<path d="M39,42 Q120,6 199,42"/><path d="M39,48 Q120,16 199,48"/>' + Rc(208, 45, 9), '弧重复 ×2 并错开：连锁反应。', 'O9 离去 → 特洛伊战争'],
+  ['包含 contain', '<ellipse cx="50" cy="40" rx="34" ry="12"/><circle cx="42" cy="40" r="4"/><circle cx="58" cy="40" r="4"/><path d="M84,40 Q150,0 200,30"/>' + Rc(208, 30, 8), '弧 + 在父圆里嵌一个子 R 的缩小副本（缩放 + 重复）。', 'O5 / O6 梦境 ⊃ 三女神、丘比特'],
+  ['对照 contrast', Cdot(40, 37) + Cdot(200, 37) + '<path d="M40,37 Q120,0 200,37"/><path d="M40,37 Q120,74 200,37"/>', '两个载体之间一对镜像弧（反向）：彼此衬托。', 'O12 当代骑士装束 ↔ 女像的裸体'],
+];
+document.getElementById('phrases').innerHTML = PH.map(([t, s, p, ex]) => card(t, s, p + `<br><span class="note">${ex}</span>`)).join('');
+const sig = D.signature;
+document.getElementById('sig').textContent = '签名（只数文本证据的操作）：' + Object.entries(sig).map(([k, v]) => `${k} ${v}`).join(' · ') + ` · 共 ${live.length}`;
+
+// ───────── 5 · 3D score ─────────
+const box = document.getElementById('score');
+const SX = 10, SY = 2.4, SZ = 2.6;
+const P = (x, y, z) => new THREE.Vector3((x - 0.5) * SX, y * SY, -z * SZ);
+const X = new THREE.Vector3(1, 0, 0), Y = new THREE.Vector3(0, 1, 0), Z = new THREE.Vector3(0, 0, 1);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xffffff);
+const camera = new THREE.PerspectiveCamera(32, box.clientWidth / box.clientHeight, 0.1, 300);
+const renderer = new THREE.WebGLRenderer({ antialias: true }); renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+box.appendChild(renderer.domElement);
+const css = new CSS2DRenderer(); Object.assign(css.domElement.style, { position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }); box.appendChild(css.domElement);
+const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true;
+function home() { const k = Math.max(1, 1.45 / camera.aspect); camera.position.set(10 * k, 7 * k, 12 * k); controls.target.set(0, 2.1, -3.6); controls.update(); }
+function resize() { const w = box.clientWidth, h = box.clientHeight; camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h); css.setSize(w, h); }
+resize(); home(); addEventListener('resize', () => { resize(); });
+
+const mat = (c = 0x000000, o = 1) => new THREE.LineBasicMaterial({ color: c, transparent: true, opacity: o });
+const line = (pts, m, g) => { const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), m); g.add(l); return l; };
+const arcPts = (c, r, u, v, a0, a1, n = 64) => { const p = []; for (let i = 0; i <= n; i++) { const a = a0 + (a1 - a0) * i / n; p.push(c.clone().addScaledVector(u, Math.cos(a) * r).addScaledVector(v, Math.sin(a) * r)); } return p; };
+const quad = (a, ctl, b, n = 48) => { const p = []; for (let i = 0; i <= n; i++) { const t = i / n, s = 1 - t; p.push(a.clone().multiplyScalar(s * s).addScaledVector(ctl, 2 * s * t).addScaledVector(b, t * t)); } return p; };
+const label = (html, pos, cls, g) => { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; const o = new CSS2DObject(d); o.position.copy(pos); g.add(o); return o; };
+const perp = d => { let u = new THREE.Vector3().crossVectors(d, Y); if (u.length() < 1e-3) u = X.clone(); return u.normalize(); };
+
+// frame: time levels, picture line, grid
+const frame = new THREE.Group(); scene.add(frame);
+const ZMAX = 3.4, faint = mat(0xd0d0d0), fainter = mat(0xeeeeee);
+for (let y = -1; y <= 2; y++) {
+  const c = [P(0, y, 0), P(1, y, 0), P(1, y, ZMAX), P(0, y, ZMAX)];
+  for (let i = 0; i < 4; i++) line([c[i], c[(i + 1) % 4]], y === 0 ? mat(0xb0b0b0) : faint, frame);
+  label(`${TZ[y]} ${y > 0 ? '+' : ''}${y}`, P(-0.03, y, 0), 'lbA', frame);
+}
+for (const [x, z] of [[0, 0], [1, 0], [0, ZMAX], [1, ZMAX]]) line([P(x, -1, z), P(x, 2, z)], faint, frame);
+for (let z = 1; z <= 3; z++) { line([P(0, 0, z), P(1, 0, z)], fainter, frame); label(`${z} 步`, P(1.03, -1, z), 'lbA', frame); }
+for (let x = 0.25; x < 1; x += 0.25) line([P(x, 0, 0), P(x, 0, ZMAX)], fainter, frame);
+line([P(0, 0, 0), P(1, 0, 0)], mat(0x000000), frame);
+label('0 可见', P(1.03, -1, 0), 'lbA', frame);
+for (let i = 0; i <= 4; i++) label((i / 4).toFixed(2), P(i / 4, -1.12, 0), 'lbA', frame);
+label('x　画面位置 左 → 右', P(0.5, -1.32, 0), 'lbT', frame);
+label('y　时间', P(-0.03, 2.3, 0), 'lbT', frame);
+label('z　离可见世界的步数', P(1.05, -1, ZMAX + 0.2), 'lbT', frame);
+
+// positions
+const posC = c => { const base = P(c.x, 0, 0); const pts = []; for (let k = 0; k < c.n; k++) pts.push(base.clone().addScaledVector(X, (k - (c.n - 1) / 2) * 0.17)); return { centre: base, pts }; };
+const posR = r => P(r.x, r.time, r.z);
+const radR = r => 0.16 + 0.07 * r.in_text_ops;
+
+const score = new THREE.Group(); scene.add(score);
+const labels = new THREE.Group(); scene.add(labels);
+const opLabels = new THREE.Group(); opLabels.visible = false; scene.add(opLabels);
+
+// R glyph: circle, oriented by kind (rotate); container holds scaled copies of what it contains
+function rGlyph(r, c, rad, g, m) {
+  if (r.kind === 'being') line(arcPts(c, rad, X, Y, 0, Math.PI * 2), m, g);
+  else if (r.kind === 'experience') line(arcPts(c, rad, X, Z, 0, Math.PI * 2), m, g);
+  else if (r.kind === 'event') line(arcPts(c, rad, X, Y, 0, Math.PI), m, g);
+  else if (r.kind === 'concept') { line(arcPts(c, rad, X, Y, 0, Math.PI * 2), m, g); line(arcPts(c, rad, Z, Y, 0, Math.PI * 2), m, g); }
+}
+const rGroups = {};
+for (const r of D.R.filter(r => !r.excluded)) {
+  const g = new THREE.Group(); const c = posR(r), rad = radR(r), m = mat();
+  rGlyph(r, c, rad, g, m);
+  const kids = live.filter(o => o.type === 'contain' && o.from === r.id).map(o => byId[o.to]);
+  kids.forEach((k, i) => rGlyph(k, c.clone().addScaledVector(X, (i - (kids.length - 1) / 2) * rad * 0.7), rad * 0.28, g, m));
+  // coordinate projection: down to "now", back to the picture line
+  const d1 = new THREE.LineDashedMaterial({ color: 0xbbbbbb, dashSize: 0.05, gapSize: 0.08 });
+  const l1 = line([c, P(r.x, 0, r.z)], d1, g); l1.computeLineDistances();
+  const l2 = line([P(r.x, 0, r.z), P(r.x, 0, 0)], d1, g); l2.computeLineDistances();
+  score.add(g); rGroups[r.id] = g;
+  label(`${r.zh}<small>${r.id} · ${KINDZ[r.kind]} · (${r.x.toFixed(2)}, ${r.time > 0 ? '+' : ''}${r.time}, ${r.z})</small>`, c, 'lbR', labels);
+}
+const cGroups = {};
+for (const c of D.C.filter(c => !c.excluded)) {
+  const g = new THREE.Group(); const { centre, pts } = posC(c);
+  pts.forEach(p => { const s = new THREE.Mesh(new THREE.SphereGeometry(0.055, 16, 12), new THREE.MeshBasicMaterial({ color: 0, transparent: true })); s.position.copy(p); g.add(s); });
+  score.add(g); cGroups[c.id] = g;
+}
+// carrier labels, stacked when close
+(function () { let last = -9, row = 0;
+  for (const c of [...D.C].filter(c => !c.excluded).sort((a, b) => a.x - b.x)) {
+    row = c.x - last < 0.06 ? row + 1 : 0; last = c.x;
+    const p = P(c.x, 0, 0), lp = p.clone().add(new THREE.Vector3(0, -0.3 - row * 0.32, 0.02));
+    line([p, lp], mat(0xcccccc), labels); label(c.zh, lp, 'lbC', labels);
+  } })();
+
+// anchor on the edge of a glyph
+const edge = (id, toward) => { const n = byId[id]; if (!n.isR) return posC(n).centre; const c = posR(n), d = toward.clone().sub(c).normalize(); return c.addScaledVector(d, radR(n)); };
+
+// O phrases
+const opGroups = {};
+for (const o of live) {
+  const g = new THREE.Group(); const m = mat(); g.userData.m = m;
+  const fromR = byId[o.from].isR;
+  const A0 = byId[o.from].isR ? posR(byId[o.from]) : posC(byId[o.from]).centre;
+  const B0 = byId[o.to].isR ? posR(byId[o.to]) : posC(byId[o.to]).centre;
+  const a = edge(o.from, B0), b = edge(o.to, A0);
+  const dir = b.clone().sub(a); const L = dir.length(); dir.normalize(); const u = perp(dir);
+  const at = t => a.clone().addScaledVector(dir, L * t);
+  let mid = at(0.5);
+  switch (o.type) {
+    case 'externalize':
+      line([a, b], m, g);
+      [0.1, 0.2, 0.3].forEach(s => { const c = a.clone().addScaledVector(dir, s * 0.6); line(arcPts(c, s, dir, Y, -Math.PI / 2, Math.PI / 2), m, g); });
+      break;
+    case 'inscribe': {
+      line([a, b], m, g); const n = byId[o.from].words || 1;
+      for (let k = 0; k < n; k++) { const p = at(0.12 + k * 0.07); line([p.clone().addScaledVector(Y, -0.12), p.clone().addScaledVector(Y, 0.12)], m, g); }
+      break; }
+    case 'embody':
+      for (const p of posC(byId[o.from]).pts) line([p, b], m, g);
+      break;
+    case 'substitute':
+      for (const s of [-0.035, 0.035]) line([a.clone().addScaledVector(u, s), b.clone().addScaledVector(u, s)], m, g);
+      break;
+    case 'anachronism': {
+      line([a, b], m, g); const p = at(0.45); const back = p.clone().addScaledVector(dir, -0.45);
+      line(arcPts(p.clone().addScaledVector(Y, 0.16), 0.16, Y.clone().negate(), dir, 0, Math.PI), m, g);   // reverse turn
+      line([p.clone().addScaledVector(Y, 0.32), back.clone().addScaledVector(Y, 0.32)], m, g);
+      break; }
+    case 'depth_time': {
+      const n = byId[o.from].depth_plane || 1; let p = a.clone(); const pts = [p.clone()];
+      for (let k = 0; k < n; k++) { p = at(0.35); pts.push(p.clone()); p = p.clone().addScaledVector(Z, -0.5); pts.push(p.clone()); }
+      pts.push(b); line(pts, m, g); mid = pts[1];
+      break; }
+    case 'foreshadow': { const ctl = a.clone().lerp(b, 0.5).addScaledVector(Y, 1.0); line(quad(a, ctl, b), m, g); mid = quad(a, ctl, b)[24]; break; }
+    case 'trigger': { for (const k of [0.6, 0.9]) { const ctl = a.clone().lerp(b, 0.5).addScaledVector(Y, k).addScaledVector(X, 0.4); line(quad(a, ctl, b), m, g); } mid = at(0.5).addScaledVector(Y, 0.4); break; }
+    case 'contain': { const ctl = a.clone().lerp(b, 0.5).addScaledVector(X, -0.9); line(quad(a, ctl, b), m, g); mid = quad(a, ctl, b)[24]; break; }
+    case 'contrast': { for (const s of [1, -1]) { const ctl = a.clone().lerp(b, 0.5).addScaledVector(Z, 0.6 * s); line(quad(a, ctl, b), m, g); } break; }
+    default: line([a, b], m, g);
+  }
+  score.add(g); opGroups[o.id] = g;
+  label(`${o.id} ${OPZ[o.type]}`, mid, 'lbO', opLabels);
+}
+
+// panel: select an operation → isolate it and show its evidence
+const panel = document.getElementById('panel'), evbox = document.getElementById('evbox');
+let sel = null;
+function setOpacity(g, v) { g.traverse(x => { if (x.material) { x.material.opacity = v; x.material.transparent = true; } }); }
+function select(id) {
+  sel = sel === id ? null : id;
+  [...panel.children].forEach(b => b.classList.toggle('on', b.dataset.id === sel));
+  const o = live.find(x => x.id === sel);
+  for (const [k, g] of Object.entries(opGroups)) setOpacity(g, !o || k === sel ? 1 : 0.08);
+  for (const [k, g] of Object.entries(rGroups)) setOpacity(g, !o || k === o.from || k === o.to ? 1 : 0.15);
+  for (const [k, g] of Object.entries(cGroups)) setOpacity(g, !o || k === o.from || k === o.to ? 1 : 0.15);
+  evbox.innerHTML = o ? `<b>${o.id} ${OPZ[o.type]}</b>（${nameOf(o.from)} → ${nameOf(o.to)}）　` + o.E.map(k => `${k}：“${esc(D.E[k])}”`).join('　') + (o.reading ? `<br><span class="note">读法：${o.reading}</span>` : '') : '点选一个操作，查看证据。';
+}
+panel.innerHTML = live.map(o => `<button data-id="${o.id}">${o.id}　${OPZ[o.type]}<br><span class="note">${nameOf(o.from)} → ${nameOf(o.to)}</span></button>`).join('');
+[...panel.children].forEach(b => b.onclick = () => select(b.dataset.id));
+const tLab = document.getElementById('tLab'), tOps = document.getElementById('tOps');
+// CSS2D labels do not inherit visibility from their parent group, so toggle each one
+const show = (grp, v) => { grp.visible = v; grp.traverse(x => { if (x.isCSS2DObject) { x.visible = v; x.element.style.display = v ? '' : 'none'; } }); };
+show(opLabels, false);
+tLab.onclick = () => { show(labels, !labels.visible); tLab.classList.toggle('on', labels.visible); };
+tOps.onclick = () => { show(opLabels, !opLabels.visible); tOps.classList.toggle('on', opLabels.visible); };
+document.getElementById('tReset').onclick = () => { home(); if (sel) select(sel); };
+
+(function loop() { requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera); css.render(scene, camera); })();
+</script>
+</body>
+</html>

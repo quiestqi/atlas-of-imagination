@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grammar v3</title>
+<style>
+  html, body { margin:0; background:#fff; color:#111; font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; }
+  #wrap { position:relative; width:1240px; margin:0 auto; }
+  #wrap canvas { display:block; }
+  .h1 { font-size:21px; white-space:nowrap; }
+  .sub { font-size:11.5px; color:#888; white-space:nowrap; }
+  .sec { font-size:14px; font-weight:600; white-space:nowrap; }
+  .cell { font-size:13px; white-space:nowrap; transform:translate(0,0); }
+  .cell div { font-size:11.5px; color:#333; }
+  .cell small { display:block; font-size:10.5px; color:#999; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="wrap"></div>
+<script id="data" type="application/json">{"traces":[{"cid":"C8","i":0,"box":[555,985,700,1280],"x":0.7444,"w":145,"h":295,"pts":[15,1,15,2,16,3,16,4,16,5,17,5,17,6,1,7,17,7,18,7,1,8,18,8,1,9,2,9,18,9,19,9,2,10,19,10,35,10,36,10,2,11,3,11,19,11,20,11,32,11,33,11,34,11,36,11,37,11,38,11,39,11,40,11,41,11,42,11,43,11,3,12,20,12,31,12,32,12,43,12,44,12,3,13,20,13,31,13,44,13,3,14,21,14,29,14,31,14,44,14,45,14,4,15,21,15,29,15,31,15,45,15,4,16,21,16,28,16,29,16,32,16,45,16,4,17,21,17,25,17,27,17,28,17,29,17,46,17,5,18,21,18,26,18,27,18,30,18,46,18,5,19,21,19,26,19,46,19,5,20,21,20,26,20,46,20,5,21,21,21,27,21,46,21,5,22,21,22,27,22,46,22,83,22,5,23,21,23,27,23,47,23,83,23,84,23,5,24,22,24,26,24,27,24,47,24,68,24,69,24,70,24,71,24,72,24,73,24,74,24,75,24,76,24,77,24,78,24,79,24,80,24,81,24,82,24,5,25,22,25,27,25,47,25,66,25,67,25,68,25,5,26,22,26,27,26,28,26,47,26,48,26,64,26,65,26,66,26,5,27,22,27,28,27,29,27,48,27,50,27,51,27,52,27,53,27,54,27,55,27,63,27,64,27,5,28,23,28,29,28,30,28,48,28,55,28,56,28,57,28,59,28,60,28,61,28,62,28,63,28,5,29,23,29,30,29,57,29,58,29,5,30,23,30,30,30,31,30,5,31,23,31,31,31,32,31,57,31,5,32,24,32,32,32,33,32,57,32,5,33,24,33,33,33,34,33,56,33,5,34,24,34,34,34,35,34,56,34,5,35,24,35,35,35,36,35,56,35,5,36,25,36,36,36,37,36,56,36,5,37,25,37,37,37,56,37,5,38,25,38,37,38,38,38,56,38,5,39,25,39,38,39,55,39,4,40,25,40,38,40,55,40,4,41,25,41,38,41,55,41,4,42,25,42,38,42,55,42,4,43,26,43,38,43,55,43,5,44,26,44,38,44,55,44,118,44,119,44,120,44,5,45,26,45,38,45,55,45,116,45,117,45,5,46,26,46,38,46,55,46,115,46,116,46,5,47,26,47,27,47,38,47,56,47,114,47,115,47,5,48,27,48,39,48,56,48,113,48,114,48,6,49,27,49,28,49,39,49,56,49,112,49,113,49,6,50,28,50,39,50,40,50,57,50,112,50,6,51,28,51,29,51,40,51,41,51,58,51,111,51,112,51,7,52,29,52,41,52,58,52,111,52,7,53,29,53,30,53,41,53,42,53,58,53,110,53,111,53,8,54,30,54,31,54,42,54,59,54,109,54,110,54,8,55,31,55,42,55,59,55,109,55,8,56,31,56,32,56,43,56,59,56,108,56,109,56,9,57,32,57,43,57,60,57,107,57,108,57,9,58,32,58,33,58,34,58,43,58,60,58,107,58,10,59,34,59,35,59,44,59,45,59,61,59,106,59,107,59,10,60,35,60,36,60,37,60,45,60,46,60,61,60,62,60,105,60,106,60,10,61,37,61,38,61,39,61,62,61,63,61,11,62,39,62,40,62,61,62,62,62,63,62,64,62,65,62,11,63,41,63,42,63,59,63,60,63,65,63,66,63,11,64,12,64,42,64,43,64,58,64,66,64,67,64,12,65,13,65,43,65,44,65,45,65,67,65,68,65,13,66,45,66,46,66,47,66,68,66,69,66,13,67,14,67,69,67,14,68,69,68,70,68,14,69,15,69,70,69,71,69,86,69,87,69,88,69,89,69,90,69,91,69,92,69,93,69,94,69,15,70,16,70,71,70,95,70,96,70,97,70,98,70,99,70,100,70,101,70,16,71,17,71,71,71,101,71,102,71,17,72,18,72,72,72,103,72,104,72,18,73,72,73,73,73,105,73,106,73,107,73,18,74,19,74,20,74,72,74,108,74,109,74,110,74,20,75,21,75,72,75,111,75,112,75,113,75,114,75,115,75,116,75,21,76,22,76,117,76,118,76,119,76,21,77,119,77,120,77,14,78,20,78,21,78,120,78,121,78,15,79,16,79,17,79,18,79,19,79,20,79,121,79,122,79,15,80,16,80,122,80,123,80,123,81,124,81,124,82,125,82,125,83,126,83,126,84,126,85,127,85,127,86,128,86,128,87,128,88,129,88,129,89,129,90,130,90,130,91,130,92,131,92,131,93,131,94,132,94,133,95,133,96,133,97,134,98,134,99,135,100,15,101,135,101,14,102,15,102,136,102,15,103,136,103,15,104,136,104,16,105,137,105,16,106,137,106,15,107,137,107,15,108,138,108,139,108,15,109,139,109,140,109,16,110,140,110,16,111,140,111,141,111,16,112,141,112,142,112,17,113,142,113,18,114,17,115,18,115,18,116,19,116,19,117,70,117,71,117,19,118,20,118,71,118,20,119,21,119,71,119,21,120,22,120,71,120,72,120,1,121,2,121,3,121,4,121,22,121,23,121,72,121,73,121,77,121,5,122,6,122,23,122,24,122,73,122,74,122,75,122,76,122,77,122,6,123,7,123,24,123,25,123,77,123,8,124,25,124,26,124,77,124,8,125,26,125,27,125,77,125,7,126,27,126,28,126,77,126,7,127,28,127,29,127,77,127,7,128,29,128,78,128,7,129,30,129,78,129,7,130,30,130,78,130,7,131,30,131,78,131,79,131,7,132,30,132,79,132,80,132,6,133,30,133,80,133,6,134,30,134,80,134,81,134,6,135,30,135,81,135,6,136,30,136,81,136,82,136,6,137,29,137,82,137,6,138,7,138,29,138,82,138,83,138,6,139,29,139,83,139,6,140,29,140,83,140,84,140,6,141,29,141,84,141,6,142,7,142,29,142,84,142,7,143,29,143,84,143,7,144,29,144,85,144,7,145,29,145,85,145,7,146,29,146,85,146,7,147,29,147,85,147,86,147,7,148,29,148,86,148,8,149,29,149,86,149,87,149,8,150,29,150,87,150,88,150,8,151,29,151,88,151,8,152,30,152,88,152,89,152,8,153,30,153,89,153,9,154,30,154,89,154,90,154,9,155,30,155,90,155,9,156,30,156,90,156,91,156,9,157,30,157,91,157,10,158,30,158,91,158,92,158,10,159,31,159,92,159,10,160,31,160,92,160,10,161,31,161,92,161,10,162,32,162,92,162,32,163,92,163,32,164,92,164,32,165,93,165,32,166,93,166,32,167,93,167,33,168,93,168,33,169,93,169,33,170,93,170,33,171,93,171,33,172,93,172,33,173,92,173,33,174,92,174,33,175,92,175,33,176,92,176,93,176,33,177,92,177,93,177,33,178,92,178,33,179,92,179,33,180,92,180,33,181,92,181,33,182,92,182,33,183,92,183,93,183,33,184,93,184,34,185,93,185,34,186,93,186,94,186,34,187,94,187,34,188,94,188,34,189,94,189,34,190,95,190,34,191,95,191,34,192,95,192,35,193,95,193,35,194,95,194,35,195,96,195,35,196,67,196,96,196,35,197,67,197,96,197,36,198,67,198,97,198,36,199,67,199,97,199,36,200,67,200,97,200,36,201,67,201,97,201,37,202,67,202,97,202,37,203,67,203,98,203,37,204,67,204,98,204,37,205,66,205,98,205,37,206,66,206,98,206,38,207,66,207,99,207,38,208,66,208,99,208,38,209,67,209,99,209,39,210,67,210,100,210,39,211,68,211,100,211,39,212,68,212,100,212,39,213,68,213,100,213,40,214,68,214,101,214,40,215,68,215,101,215,40,216,68,216,101,216,41,217,68,217,101,217,41,218,69,218,102,218,42,219,69,219,102,219,42,220,69,220,103,220,42,221,69,221,103,221,41,222,42,222,69,222,103,222,104,222,40,223,41,223,70,223,94,223,95,223,96,223,97,223,98,223,104,223,38,224,39,224,40,224,70,224,93,224,94,224,98,224,104,224,105,224,38,225,70,225,92,225,93,225,98,225,99,225,105,225,106,225,36,226,37,226,38,226,70,226,91,226,92,226,99,226,105,226,106,226,107,226,35,227,36,227,70,227,92,227,99,227,107,227,108,227,34,228,35,228,70,228,91,228,98,228,108,228,34,229,71,229,92,229,97,229,98,229,108,229,109,229,17,230,18,230,19,230,20,230,21,230,22,230,23,230,24,230,30,230,31,230,32,230,33,230,71,230,92,230,93,230,94,230,95,230,96,230,97,230,109,230,110,230,17,231,25,231,26,231,27,231,28,231,29,231,71,231,72,231,110,231,16,232,17,232,34,232,72,232,110,232,16,233,34,233,35,233,72,233,73,233,110,233,111,233,16,234,35,234,73,234,111,234,15,235,36,235,73,235,74,235,112,235,15,236,36,236,74,236,112,236,15,237,36,237,75,237,112,237,15,238,35,238,75,238,111,238,14,239,36,239,75,239,109,239,110,239,111,239,14,240,36,240,76,240,108,240,109,240,14,241,35,241,76,241,108,241,14,242,35,242,76,242,108,242,14,243,35,243,76,243,108,243,109,243,110,243,112,243,113,243,13,244,14,244,35,244,36,244,37,244,76,244,110,244,111,244,113,244,114,244,115,244,13,245,35,245,36,245,39,245,40,245,41,245,42,245,76,245,115,245,116,245,12,246,13,246,35,246,43,246,44,246,45,246,46,246,76,246,116,246,117,246,11,247,12,247,35,247,46,247,47,247,77,247,117,247,118,247,11,248,35,248,47,248,48,248,49,248,77,248,118,248,10,249,11,249,35,249,49,249,50,249,77,249,97,249,98,249,99,249,100,249,118,249,9,250,10,250,34,250,50,250,51,250,52,250,53,250,77,250,95,250,97,250,101,250,102,250,118,250,8,251,9,251,34,251,53,251,54,251,55,251,77,251,96,251,97,251,102,251,103,251,117,251,8,252,34,252,55,252,56,252,77,252,102,252,7,253,8,253,34,253,56,253,57,253,77,253,102,253,112,253,113,253,114,253,115,253,116,253,117,253,6,254,7,254,34,254,57,254,77,254,102,254,109,254,110,254,111,254,117,254,5,255,6,255,34,255,57,255,77,255,100,255,101,255,102,255,107,255,108,255,118,255,4,256,5,256,33,256,58,256,77,256,118,256,3,257,4,257,33,257,58,257,77,257,101,257,119,257,2,258,3,258,33,258,59,258,60,258,77,258,99,258,100,258,119,258,2,259,33,259,60,259,77,259,100,259,101,259,102,259,119,259,1,260,2,260,33,260,60,260,61,260,77,260,102,260,103,260,119,260,120,260,1,261,33,261,61,261,77,261,103,261,104,261,120,261,121,261,2,262,33,262,61,262,77,262,104,262,121,262,122,262,123,262,2,263,33,263,62,263,78,263,104,263,105,263,123,263,124,263,33,264,62,264,78,264,105,264,106,264,124,264,125,264,126,264,33,265,63,265,78,265,106,265,126,265,127,265,128,265,2,266,33,266,63,266,78,266,106,266,107,266,128,266,129,266,139,266,140,266,141,266,1,267,33,267,63,267,64,267,78,267,107,267,108,267,129,267,130,267,138,267,141,267,142,267,143,267,1,268,32,268,33,268,64,268,78,268,108,268,130,268,136,268,137,268,1,269,2,269,32,269,64,269,65,269,78,269,108,269,109,269,130,269,131,269,132,269,133,269,134,269,135,269,2,270,3,270,32,270,64,270,79,270,109,270,140,270,141,270,3,271,4,271,31,271,32,271,64,271,79,271,109,271,139,271,140,271,141,271,4,272,5,272,30,272,31,272,64,272,79,272,109,272,110,272,138,272,139,272,5,273,6,273,29,273,30,273,63,273,64,273,79,273,110,273,111,273,137,273,138,273,6,274,7,274,8,274,27,274,28,274,29,274,62,274,63,274,79,274,111,274,134,274,135,274,136,274,137,274,8,275,9,275,10,275,26,275,27,275,60,275,61,275,62,275,80,275,111,275,112,275,131,275,132,275,133,275,134,275,10,276,11,276,12,276,25,276,26,276,59,276,60,276,80,276,112,276,113,276,130,276,131,276,12,277,13,277,16,277,17,277,18,277,19,277,20,277,21,277,22,277,23,277,24,277,25,277,58,277,59,277,80,277,113,277,128,277,129,277,130,277,14,278,15,278,56,278,57,278,58,278,80,278,81,278,113,278,114,278,127,278,128,278,53,279,54,279,55,279,56,279,81,279,114,279,126,279,127,279,51,280,52,280,53,280,81,280,114,280,115,280,125,280,126,280,51,281,81,281,82,281,115,281,116,281,124,281,125,281,51,282,81,282,116,282,117,282,118,282,119,282,122,282,123,282,124,282,51,283,52,283,53,283,81,283,120,283,121,283,53,284,54,284,55,284,56,284,57,284,82,284,57,285,58,285,59,285,60,285,82,285,61,286,62,286,63,286,82,286,64,287,65,287,81,287,66,288,67,288,68,288,81,288,68,289,69,289,70,289,80,289,81,289,70,290,71,290,72,290,73,290,74,290,75,290,76,290,77,290,78,290,79,290,80,290],"canny":{"sigma":1.8,"hi_percentile":90,"lo_ratio":0.5}}]}</script>
+<script type="module">
+import * as THREE from 'three';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { Line2 } from 'three/addons/lines/Line2.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+// Imagination Score · sign vocabulary v3 (after Anestis Logothetis' graphic notation)
+// Thin ink connecting lines carry small dense signs: stem-and-bar heads, black blobs, open rings, coils,
+// zigzags, spirals, hatched wedges, diamonds, flags. Fields are hairline circles holding a texture.
+//
+// Mapping (each variation has one data source):
+//   R  = a small 3D constellation (after Logothetis' "globes"): a STRUCTURE of hairlines + SIGNS strung along it
+//          structure = KIND   being = solid black square (signs ringed around it, (n+1)·e of them) · experience = one closed circle
+//                             event = star (rays out of a cluster) · concept = sphere of great circles through two poles
+//          number of orbits / rays / arcs / turns = number of text operations reaching R (+1)
+//          sign strung on it = ABSENCE   inner = ⊙ · supernatural = ○ hollow circle · not_yet = forward flag
+//                             invisible = ● solid dot · unreachable = ‖ · nonexistent = ×
+//          signs per curve = number of distinct evidence spans (E) behind those operations
+//   O  = hairline + the base sign of one of four families (显现 · 指代 · 时间 · 组合) + one modifier
+//   E  = text → signs filled black · image → signs drawn open · inference → not drawn
+// Injected into pages by scripts/11_build_v3.py (no module import, so the pages also work from file://).
+
+function makeSigns({ THREE, Line2, LineMaterial, LineGeometry, RES }) {
+  const INK = 0x111111;
+  const mats = [];
+  const Z = new THREE.Vector3(0, 0, 1), Yv = new THREE.Vector3(0, 1, 0), Xv = new THREE.Vector3(1, 0, 0);
+
+  // ── ink primitives ──
+  function thick(pts, g, w = 2.4) {
+    const geo = new LineGeometry(); geo.setPositions(pts.flatMap(p => [p.x, p.y, p.z]));
+    const m = new LineMaterial({ color: INK, linewidth: w, transparent: true }); m.resolution.copy(RES); mats.push(m);
+    const l = new Line2(geo, m); l.computeLineDistances(); g.add(l); return l;
+  }
+  function hair(pts, g, color = INK, opacity = 1) {
+    const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color, transparent: true, opacity }));
+    g.add(l); return l;
+  }
+  // a local 2D frame in 3D: P(x, y) = o + u·x + v·y
+  function frame(o, u, v) { return { o, u: u.clone().normalize(), v: v.clone().normalize(), P(x, y) { return this.o.clone().addScaledVector(this.u, x).addScaledVector(this.v, y); } }; }
+  function fill(fr, pts2, g, filled = true, w = 1.2) {
+    if (!filled) { thick([...pts2, pts2[0]].map(([x, y]) => fr.P(x, y)), g, w); return; }
+    const tri = THREE.ShapeUtils.triangulateShape(pts2.map(([x, y]) => new THREE.Vector2(x, y)), []);
+    const pos = []; for (const t of tri) for (const i of t) { const p = fr.P(pts2[i][0], pts2[i][1]); pos.push(p.x, p.y, p.z); }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: INK, side: THREE.DoubleSide, transparent: true })); g.add(m); return m;
+  }
+  const circ2 = (x, y, r, n = 20, a0 = 0, a1 = Math.PI * 2) => Array.from({ length: n + 1 }, (_, i) => { const a = a0 + (a1 - a0) * i / n; return [x + Math.cos(a) * r, y + Math.sin(a) * r]; });
+  const P2 = (fr, pts2) => pts2.map(([x, y]) => fr.P(x, y));
+
+  // ── signs (frame-local units) ──
+  const S = {
+    blob(fr, x, y, r, g, filled = true) { const c = circ2(x, y, r, 18); c.pop(); return fill(fr, c, g, filled, 1.2); },
+    ring(fr, x, y, r, g, w = 1.3) { thick(P2(fr, circ2(x, y, r, 28)), g, w); },
+    burst(fr, x, y, r, g) { for (let k = 0; k < 10; k++) { const a = k * Math.PI / 5, rr = r * (k % 2 ? 0.55 : 1); thick([fr.P(x, y), fr.P(x + Math.cos(a) * rr, y + Math.sin(a) * rr)], g, 1.4); } S.blob(fr, x, y, r * 0.22, g); },
+    diamond(fr, x, y, r, g, filled = true) { return fill(fr, [[x - r, y], [x, y + r * 0.7], [x + r, y], [x, y - r * 0.7]], g, filled); },
+    flag(fr, x, y, dir, s, g, filled = true, h = 0.55) { return fill(fr, [[x, y - s * h], [x + dir * s, y], [x, y + s * h]], g, filled); },
+    stemBars(fr, x, y, n, s, g, filled = true) {          // Logothetis' stem-and-bar head
+      thick([fr.P(x, y), fr.P(x, y + s * 2.4)], g, 1.4);
+      for (let k = 0; k < n; k++) { const yy = y + s * (0.5 + k * 0.42); thick([fr.P(x, yy), fr.P(x + s * 1.1, yy)], g, 1.4); }
+      S.flag(fr, x, y + s * 2.4, 1, s * 0.8, g, filled);
+    },
+    wedge(fr, x0, x1, w0, w1, mode, g) {                  // mode: 'filled' | 'hatched' | 'open'
+      const pts = [[x0, -w0], [x1, -w1], [x1, w1], [x0, w0]];
+      if (mode === 'filled') return fill(fr, pts, g, true);
+      thick([...pts, pts[0]].map(([x, y]) => fr.P(x, y)), g, 1.1);
+      if (mode === 'hatched') { const n = Math.max(6, Math.round(Math.abs(x1 - x0) / ((w0 + w1) * 0.35 + 1e-3))); for (let k = 1; k < n; k++) { const t = k / n, x = x0 + (x1 - x0) * t, w = w0 + (w1 - w0) * t; thick([fr.P(x, -w), fr.P(x + (w1 + w0) * 0.12, w)], g, 0.9); } }
+    },
+    coil(fr, x0, x1, loops, r, g, w = 1.5) {              // spring of loops (prolate cycloid)
+      const L = x1 - x0, n = loops * 24, pts = [];
+      for (let i = 0; i <= n; i++) { const t = i / n, th = t * loops * Math.PI * 2; pts.push(fr.P(x0 + t * L - r * Math.sin(th) * 1.25, -r * Math.cos(th) + r)); }
+      thick(pts, g, w);
+    },
+    zigzag(fr, x0, x1, amp, n, g, w = 1.6) { const pts = []; for (let i = 0; i <= n; i++) pts.push(fr.P(x0 + (x1 - x0) * i / n, i === 0 || i === n ? 0 : (i % 2 ? amp : -amp))); thick(pts, g, w); },
+    spiral(fr, x, y, r, turns, g, w = 1.6) { const n = Math.round(turns * 40), pts = []; for (let i = 0; i <= n; i++) { const t = i / n, a = t * turns * Math.PI * 2; pts.push(fr.P(x + Math.cos(a) * r * t, y + Math.sin(a) * r * t)); } thick(pts, g, w); },
+  };
+
+  // ── R: a 3D constellation = STRUCTURE (kind) + SIGNS strung along it (absence) ──
+  // info = { n: text operations reaching R, e: distinct evidence spans behind them }
+  function absenceSign(ab, fr, s, g) {                     // one small sign at the frame origin
+    if (ab === 'inner') { S.ring(fr, 0, 0, s * 0.75, g, 1.2); S.blob(fr, 0, 0, s * 0.28, g); }   // ⊙ held inside
+    else if (ab === 'supernatural') S.ring(fr, 0, 0, s * 0.6, g, 1.4);                          // ○
+    else if (ab === 'not_yet') S.flag(fr, -s * 0.5, 0, 1, s * 1.2, g);
+    else if (ab === 'invisible') S.blob(fr, 0, 0, s * 0.5, g);                                   // ●
+    else if (ab === 'unreachable') { thick([fr.P(-s * 0.35, -s), fr.P(-s * 0.35, s)], g, 1.4); thick([fr.P(s * 0.35, -s), fr.P(s * 0.35, s)], g, 1.4); }
+    else if (ab === 'nonexistent') { thick([fr.P(-s, -s), fr.P(s, s)], g, 1.4); thick([fr.P(-s, s), fr.P(s, -s)], g, 1.4); }
+  }
+  // curves of the structure, in local coordinates (unit radius), as arrays of Vector3
+  function structure(kind, n) {
+    const curves = [], V3 = (x, y, z) => new THREE.Vector3(x, y, z);
+    if (kind === 'being') {                                // atom: n+1 tilted orbits
+      const m = n + 1;
+      for (let k = 0; k < m; k++) { const rot = new THREE.Euler(0.55, 0, k * Math.PI / m); const pts = [];
+        for (let i = 0; i <= 72; i++) { const a = i / 72 * Math.PI * 2; pts.push(V3(Math.cos(a), Math.sin(a) * 0.36, 0).applyEuler(rot)); } curves.push(pts); }
+    } else if (kind === 'experience') {                    // one closed circle, facing the viewer
+      const pts = []; for (let i = 0; i <= 96; i++) { const a = i / 96 * Math.PI * 2; pts.push(V3(Math.cos(a), Math.sin(a), 0)); } curves.push(pts);
+    } else if (kind === 'event') {                         // star: 4(n+1) rays from a cluster (Fibonacci directions)
+      const m = 4 * (n + 1); for (let k = 0; k < m; k++) { const y = 1 - 2 * (k + 0.5) / m, r = Math.sqrt(1 - y * y), a = k * 2.39996; const L = k % 2 ? 0.62 : 1;
+        curves.push([V3(0, 0, 0).addScaledVector(V3(Math.cos(a) * r, y, Math.sin(a) * r), 0.18), V3(Math.cos(a) * r * L, y * L, Math.sin(a) * r * L)]); }
+    } else if (kind === 'concept') {                       // meridians: n+3 full great circles through two poles → a whole sphere
+      const m = n + 3; for (let k = 0; k < m; k++) { const a = k * Math.PI / m, pts = [];
+        for (let i = 0; i <= 96; i++) { const t = i / 96 * Math.PI * 2; pts.push(V3(Math.sin(t) * Math.cos(a), Math.cos(t), Math.sin(t) * Math.sin(a))); } curves.push(pts); }
+    } else {                                               // world: tilted parallels
+      const m = n + 2; for (let k = 0; k < m; k++) { const y = -0.8 + 1.6 * k / (m - 1), r = Math.sqrt(1 - y * y), pts = [], rot = new THREE.Euler(0, 0, 0.5);
+        for (let i = 0; i <= 64; i++) { const a = i / 64 * Math.PI * 2; pts.push(V3(Math.cos(a) * r, y, Math.sin(a) * r).applyEuler(rot)); } curves.push(pts); }
+    }
+    return curves;
+  }
+  function rGlyph(r, c, rad, g, info = {}) {
+    if (r.kind === 'world') r = { ...r, kind: 'concept' };   // four kinds: "world" merged into "concept" (2026-11-11)
+    const n = Math.max(1, info.n || 1), e = Math.max(1, info.e || 1);
+    rad *= r.kind === 'event' ? 1.6 : 1.4;                // display scale: every R drawn larger; stars (half their rays short) a bit more
+    if (r.kind === 'being') {                              // being = one solid black square (a body), signs around it
+      const fr0 = frame(c, Xv, Yv), h = rad * 0.55; fill(fr0, [[-h, -h], [h, -h], [h, h], [-h, h]], g, true);
+      const m = (n + 1) * e, s0 = rad * 0.085 + 0.008, R0 = h * 1.55;
+      for (let k = 0; k < m; k++) { const a = Math.PI / 4 + k * Math.PI * 2 / m; absenceSign(r.absence, frame(c.clone().addScaledVector(Xv, Math.cos(a) * R0).addScaledVector(Yv, Math.sin(a) * R0), Xv, Yv), s0, g); }
+      return;
+    }
+    const curves = structure(r.kind, n).map(cv => cv.map(p => c.clone().addScaledVector(p, rad)));
+    curves.forEach(cv => hair(cv, g));
+    if (r.kind === 'event') for (let k = 0; k < 5; k++) S.blob(frame(c, Xv, Yv), Math.cos(k * 1.3) * rad * 0.1, Math.sin(k * 1.7) * rad * 0.1, rad * 0.045, g);
+    if (r.kind === 'concept') { for (const yy of [1, -1]) S.ring(frame(c.clone().addScaledVector(Yv, rad * yy), Xv, Yv), 0, 0, rad * 0.06, g); }
+    const s = rad * 0.085 + 0.008;
+    curves.forEach(cv => {                                 // e signs per curve; on rays the sign sits at the tip
+      const idx = r.kind === 'event' ? [cv.length - 1] : Array.from({ length: e }, (_, k) => Math.round((k + 0.5) / e * (cv.length - 1)));
+      idx.forEach(i => absenceSign(r.absence, frame(cv[i], Xv, Yv), s, g));
+    });
+  }
+
+  // ── O: phrases. a, b = endpoints (3D); unit = sign size in world units ──
+  function opFrame(a, b) {
+    const d = b.clone().sub(a); const L = d.length(); d.normalize();
+    let side = new THREE.Vector3().crossVectors(Z, d); if (side.length() < 1e-3) side = Yv.clone(); side.normalize();
+    return [frame(a, d, side), L];
+  }
+  // ── O: four families, one base sign each; one modifier carries the in-family difference ──
+  //   显现 manifest  externalize · embody                       blob(s) + n half-circle arcs drawn long line · dot · long line   n = number of figures
+  //   指代 refer     substitute · inscribe                       dashed line of bars (long at both ends, short in the middle)   bars grouped by n = inscribed words
+  //   时间 time      depth_time · foreshadow · trigger · anachr.  line of tall, spaced triangle arrows   ▷ toward the future · ◁ toward the past
+  //   组合 compose   contain · contrast                           point-cloud ring band          wraps R-in-R, or two carriers set against each other
+  const FAMILY = { externalize: 'manifest', embody: 'manifest', substitute: 'refer', inscribe: 'refer',
+                   depth_time: 'time', foreshadow: 'time', trigger: 'time', anachronism: 'time', contain: 'compose', contrast: 'compose', juxtapose: 'compose', witness: 'manifest', synecdoche: 'refer',
+                   impossible_viewpoint: 'manifest', activate: 'manifest', radiate: 'compose', layer: 'compose' };
+  function phrase(type, a, b, g, ev, unit, extra = {}) {
+    const filled = ev !== 'image';
+    const [fr, L] = opFrame(a, b), u = unit, fam = FAMILY[type];
+    if (fam === 'manifest') { semiDashDot(fr, L, u, g, filled); S.blob(fr, 0, 0, u * 1.1, g, filled); return; }
+    if (fam === 'refer') {                                 // a dashed line made of bars; bars come in groups of n (n = inscribed words), diamond at the middle
+      S.blob(fr, 0, 0, u * 0.55, g, filled);
+      const n = Math.max(1, extra.words || 1), step = u * 0.55, gap = u * 1.5;
+      let x = u * 1.4;
+      while (x < L - u * 0.6) {
+        for (let k = 0; k < n && x < L - u * 0.6; k++, x += step)
+          { const t = Math.abs(x / L - 0.5) * 2, h = u * (0.35 + 0.95 * t * t); thick([fr.P(x, -h), fr.P(x, h)], g, 2.2); }
+        x += gap - step;
+      }
+      return;
+    }
+    if (fam === 'time') {                                  // the line itself is a row of triangle arrows; ▷ future, ◁ past
+      const dir = type === 'anachronism' ? -1 : 1, s = u * 1.0, step = u * 3.4;
+      if (!extra.fromR) S.blob(fr, 0, 0, u * 0.55, g, filled);
+      for (let x = u * 1.4; x < L - s; x += step) S.flag(fr, dir > 0 ? x : x + s, 0, dir, s, g, filled, 1.05);
+      return;
+    }
+    if (fam === 'compose') {                               // point-cloud ring band wrapping both ends (R in R, or C against C)
+      const m = L / 2, ra = L / 2 + (extra.rParent || u * 3), rb = (extra.rParent || u * 3) * 1.1, w = (extra.rParent || u * 3) * 0.16;
+      const N = extra.points || 1400, pos = new Float32Array(N * 3), third = new THREE.Vector3().crossVectors(fr.u, fr.v).normalize();
+      let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      for (let i = 0; i < N; i++) {
+        const th = rnd() * Math.PI * 2, rr = 1 + (rnd() + rnd() - 1) * w / rb, h = (rnd() + rnd() - 1) * w;
+        const p = fr.P(m + Math.cos(th) * ra * rr, Math.sin(th) * rb * rr).addScaledVector(third, h);
+        pos[i * 3] = p.x; pos[i * 3 + 1] = p.y; pos[i * 3 + 2] = p.z;
+      }
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      g.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: INK, transparent: true, size: extra.ortho ? 1.4 : 0.016, sizeAttenuation: !extra.ortho })));
+      return;
+    }
+    hair([fr.P(0, 0), fr.P(L, 0)], g);
+  }
+  // a half-circle from x = 0 to x = L (bulging to +v), drawn as long line · dot · long line …
+  function semiDashDot(fr, L, u, g, filled) {
+    const r = L / 2, N = 160, pts = []; for (let i = 0; i <= N; i++) { const a = Math.PI - Math.PI * i / N; pts.push([r + Math.cos(a) * r, Math.sin(a) * r]); }
+    const seg = u * 5, gap = u * 1.6; let acc = 0, on = true, run = [pts[0]], next = seg;
+    for (let i = 1; i < pts.length; i++) {
+      acc += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+      if (on) run.push(pts[i]);
+      if (acc >= next) {
+        if (on) { thick(run.map(([x, y]) => fr.P(x, y)), g, 1.3); next = acc + gap; on = false; }
+        else { const m = pts[i - Math.max(1, Math.round(N * gap / (Math.PI * r) / 2))] || pts[i]; S.blob(fr, m[0], m[1], u * 0.32, g, filled); run = [pts[i]]; next = acc + seg; on = true; }
+      }
+    }
+    if (on && run.length > 1) thick(run.map(([x, y]) => fr.P(x, y)), g, 1.3);
+  }
+  function embody(anchors, tip, g, ev, unit) { for (const p of anchors) { const [fr, L] = opFrame(p, tip); semiDashDot(fr, L, unit, g, ev !== 'image'); S.blob(fr, 0, 0, unit * 1.1, g, ev !== 'image'); } }
+
+  return { thick, hair, frame, fill, S, rGlyph, absenceSign, phrase, embody, FAMILY, mats };
+}
+
+const D = JSON.parse(document.getElementById('data').textContent);
+// layout in pixels; world units = pixels / 100 (so sign sizes match the 3D page scale roughly ×1.8)
+const COLS = 5, CW = 232, GH = 96, CH = 150, PAD = 40, K = 100;
+const SECTIONS = [
+  ['1 · 元素', '描线 = 可见（来自像素）；分类符号 = 缺席（纯几何）；细线 = 操作', [
+    ['trace', '机器描线', 'C 可见载体', 'Canny 边缘（例：丘比特）'],
+    ['field', '立体星座', 'R 缺席的对象', '结构 = 种类；沿线符号 = 缺席'],
+    ['hair', '细墨线', '操作的路径', '符号挂在线上'],
+    ['blob', '实心团块', '操作的起点', '落在载体的锚点上'],
+  ]],
+  ['2 · R 的种类　结构', '射线 / 经线数 = 指向它的文本操作数 + 1；正方形四周的符号数 = (操作数 + 1) × 证据数', [
+    ['k_being', '存在者', '黑色正方形，符号围在四周', 'kind = being'],
+    ['k_experience', '经验', '一个闭合的圆', 'kind = experience'],
+    ['k_event', '事件', '星爆：从一团中心射出', 'kind = event'],
+    ['k_concept', '概念', '经线球：过两极的大圆', 'kind = concept'],
+  ]],
+  ['3 · 缺席方式　挂在结构上的符号', '每条线上的符号数 = 支撑它的证据片段数', [
+    ['a_inner', '内在', '⊙ 圈中一点', 'absence = inner'],
+    ['a_supernatural', '超自然', '○ 空心圆', 'absence = supernatural'],
+    ['a_not_yet', '未至', '向前的三角旗', 'absence = not_yet'],
+    ['a_invisible', '不可见', '● 实心圆', 'absence = invisible'],
+    ['a_unreachable', '不可达', '双竖线', 'absence = unreachable'],
+  ]],
+  ['4 · 证据　实心 / 空心', '', [
+    ['e_text', '文本', '符号涂黑', 'AIC 描述原文，计入签名'],
+    ['e_image', '图像', '符号只描边', '机器看图得出'],
+    ['e_infer', '推断', '不画', '只列在表里'],
+  ]],
+  ['5 · 操作　4 大类', '每类一个基本符号 + 一个修饰；起点是载体还是 R，看线的起点即可', [
+    ['m1', '显现', '团块 + 半圆弧（长线·点·长线），n = 1', '外化（沉睡的姿势 → 梦境）'],
+    ['m3', '显现', 'n 条半圆弧汇聚', 'n = 形体数（三个女像 → 三女神）'],
+    ['r0', '指代', '横杠虚线：两端长、中间短', '无文字：横杠单根排列（金苹果）'],
+    ['r2', '指代', '横杠按 n 根一组', 'n = 铭文词数（纸条 → 梦境，n = 2）'],
+    ['tf', '时间', '间隔排开的高三角箭头 ▷', '向未来：纵深=时间 · 预示 · 引发'],
+    ['tb', '时间', '间隔排开的高三角箭头 ◁', '向过去：时代错置'],
+    ['contain', '组合', '点云环带', '把 R 和它包含的 R 圈在一起（包含）'],
+    ['contrast', '组合', '点云环带', '把两个互相衬托的载体圈在一起（对照）'],
+  ]],
+];
+let H = 130; for (const [, , cells] of SECTIONS) H += 66 + Math.ceil(cells.length / COLS) * CH;
+const Wd = PAD * 2 + COLS * CW;
+const wrap = document.getElementById('wrap'); wrap.style.width = Wd + 'px';
+const RES = new THREE.Vector2(Wd, H);
+const renderer = new THREE.WebGLRenderer({ antialias: true }); renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(Wd, H); wrap.appendChild(renderer.domElement);
+const css = new CSS2DRenderer(); css.setSize(Wd, H); Object.assign(css.domElement.style, { position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }); wrap.appendChild(css.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xffffff);
+const cam = new THREE.OrthographicCamera(0, Wd / K, 0, -H / K, -10, 10);
+const SG = makeSigns({ THREE, Line2, LineMaterial, LineGeometry, RES });
+const V = (px, py) => new THREE.Vector3(px / K, -py / K, 0);
+const lab = (html, px, py, cls) => { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; d.style.transform = 'translate(0,-50%)'; const o = new CSS2DObject(d); o.position.copy(V(px, py)); o.center.set(0, 0.5); scene.add(o); };
+const U = 0.06;
+
+function draw(id, ox, oy) {      // ox, oy: top-left of the glyph box in px
+  const g = new THREE.Group(); scene.add(g);
+  const c = V(ox + CW / 2 - 6, oy + GH / 2), A = V(ox + 34, oy + GH - 18), B = V(ox + CW - 52, oy + 30);
+  const rB = 0.3;
+  const Rf = (kind, absence = 'invisible', at = c, rad = 0.36) => SG.rGlyph({ kind, absence }, at, rad, g, { n: 2, e: 2 });
+  const edgeB = from => B.clone().add(from.clone().sub(B).normalize().multiplyScalar(rB));
+  switch (id) {
+    case 'trace': {
+      const t = D.traces.find(t => t.cid === 'C8'); const h = (GH - 16) / K, k = h / t.h, x0 = c.x - t.w * k / 2, y0 = V(0, oy + 8).y;
+      const pos = new Float32Array(t.pts.length / 2 * 3); for (let j = 0; j < t.pts.length / 2; j++) { pos[j * 3] = x0 + t.pts[2 * j] * k; pos[j * 3 + 1] = y0 - t.pts[2 * j + 1] * k; }
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x111111, size: 1.2, sizeAttenuation: false }))); break; }
+    case 'field': Rf('being', 'supernatural'); break;
+    case 'hair': SG.hair([V(ox + 24, oy + GH / 2), V(ox + CW - 30, oy + GH / 2)], g); break;
+    case 'blob': { const fr = SG.frame(c, new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0)); SG.S.blob(fr, 0, 0, U, g); break; }
+    case 'k_being': Rf('being', 'supernatural'); break; case 'k_experience': Rf('experience', 'inner'); break; case 'k_event': Rf('event', 'not_yet'); break; case 'k_concept': Rf('concept', 'invisible'); break;
+    case 'a_inner': case 'a_supernatural': case 'a_not_yet': case 'a_invisible': case 'a_unreachable': SG.absenceSign(id.slice(2), SG.frame(c, new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0)), 0.12, g); break;
+    case 'e_text': SG.phrase('substitute', V(ox + 30, oy + GH / 2), V(ox + CW - 36, oy + GH / 2), g, 'text', U); break;
+    case 'e_image': SG.phrase('substitute', V(ox + 30, oy + GH / 2), V(ox + CW - 36, oy + GH / 2), g, 'image', U); break;
+    case 'e_infer': break;
+    case 'm1': Rf('experience', 'inner', B, rB); SG.phrase('externalize', A, edgeB(A), g, 'text', U); break;
+    case 'r0': Rf('concept', 'invisible', B, rB); SG.phrase('substitute', A, edgeB(A), g, 'text', U); break;
+    case 'r2': Rf('experience', 'inner', B, rB); SG.phrase('inscribe', A, edgeB(A), g, 'text', U, { words: 2 }); break;
+    case 'tf': Rf('event', 'not_yet', B, rB); SG.phrase('depth_time', A, edgeB(A), g, 'text', U); break;
+    case 'tb': Rf('concept', 'invisible', B, rB); SG.phrase('anachronism', A, edgeB(A), g, 'text', U); break;
+    case 'm3': case 'embody': { Rf('being', 'supernatural', B, rB); const anc = [V(ox + 26, oy + GH - 14), V(ox + 56, oy + GH - 10), V(ox + 86, oy + GH - 14)]; SG.embody(anc, edgeB(V(ox + 56, oy + GH - 12)), g, 'text', U); break; }
+    case 'foreshadow': case 'trigger': case 'contain': {
+      const c1 = V(ox + 50, oy + GH / 2 + (id === 'trigger' ? 0 : 14)), c2 = V(ox + CW - 50, oy + GH / 2 - (id === 'trigger' ? 0 : 14)), r1 = 0.2, r2 = 0.2;
+      Rf(id === 'trigger' ? 'event' : 'experience', id === 'trigger' ? 'not_yet' : 'inner', c1, r1);
+      Rf(id === 'contain' ? 'being' : 'event', id === 'contain' ? 'supernatural' : 'not_yet', c2, r2);
+      if (id === 'contain') SG.phrase(id, c1, c2, g, 'text', U, { rParent: r1, ortho: true, points: 900 });
+      else { const d = c2.clone().sub(c1).normalize(); SG.phrase(id, c1.clone().addScaledVector(d, r1), c2.clone().addScaledVector(d, -r2), g, 'text', U); }
+      break; }
+    case 'contrast': { const a = V(ox + 30, oy + GH / 2), b = V(ox + CW - 36, oy + GH / 2); SG.phrase(id, a, b, g, 'text', U, { ortho: true, points: 700, rParent: 0.16 }); const fr = SG.frame(a, new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0)); SG.S.blob(fr, 0, 0, U * 0.7, g); SG.S.blob(SG.frame(b, new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0)), 0, 0, U * 0.7, g); break; }
+    default: { Rf(id === 'depth_time' ? 'event' : id === 'externalize' ? 'experience' : 'concept', id === 'depth_time' ? 'not_yet' : id === 'externalize' ? 'inner' : 'invisible', B, rB); SG.phrase(id, A, edgeB(A), g, 'text', U, { words: 2 }); }
+  }
+}
+
+lab('Imagination Score · 符号对照 v3（参考 Anestis Logothetis）', PAD, 50, 'h1');
+lab('R 缺席的对象 / C 可见载体 / O 结构操作 / E 证据 · 每一种变化都对应一个数据字段 · 3D 谱与本表使用同一份符号代码（signs_v3.js）', PAD, 80, 'sub');
+let y = 120;
+for (const [title, sub, cells] of SECTIONS) {
+  y += 20; SG.hair([V(PAD, y), V(Wd - PAD, y)], scene);
+  lab(title, PAD, y + 18, 'sec'); if (sub) lab(sub, PAD + 290, y + 18, 'sub');
+  y += 40;
+  cells.forEach(([id, name, rule, data], i) => {
+    const ox = PAD + (i % COLS) * CW, oy = y + Math.floor(i / COLS) * CH;
+    const fr = [V(ox + 4, oy), V(ox + CW - 8, oy), V(ox + CW - 8, oy + GH), V(ox + 4, oy + GH), V(ox + 4, oy)]; SG.hair(fr, scene, 0xe6e6e6);
+    draw(id, ox, oy);
+    if (id === 'e_infer') lab('<small>（不画）</small>', ox + CW / 2 - 24, oy + GH / 2, 'cell');
+    lab(`${name}<div>${rule}</div><small>${data}</small>`, ox + 6, oy + GH + 26, 'cell');
+  });
+  y += Math.ceil(cells.length / COLS) * CH;
+}
+renderer.render(scene, cam); css.render(scene, cam);
+</script>
+</body>
+</html>

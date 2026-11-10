@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grammar v3</title>
+<style>
+  html, body { margin:0; background:#fff; color:#111; font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK SC",sans-serif; }
+  #wrap { position:relative; width:1240px; margin:0 auto; }
+  #wrap canvas { display:block; }
+  .h1 { font-size:21px; white-space:nowrap; }
+  .sub { font-size:11.5px; color:#888; white-space:nowrap; }
+  .sec { font-size:14px; font-weight:600; white-space:nowrap; }
+  .cell { font-size:13px; white-space:nowrap; transform:translate(0,0); }
+  .cell div { font-size:11.5px; color:#333; }
+  .cell small { display:block; font-size:10.5px; color:#999; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="wrap"></div>
+<script id="data" type="application/json">__DATA__</script>
+<script type="module">
+import * as THREE from 'three';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { Line2 } from 'three/addons/lines/Line2.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+__SIGNS__
+const D = JSON.parse(document.getElementById('data').textContent);
+// layout in pixels; world units = pixels / 100 (so sign sizes match the 3D page scale roughly ×1.8)
+const COLS = 5, CW = 232, GH = 96, CH = 150, PAD = 40, K = 100;
+const SECTIONS = [
+  ['1 · 元素', '描线 = 可见（来自像素）；分类符号 = 缺席（纯几何）；细线 = 操作', [
+    ['trace', '机器描线', 'C 可见载体', 'Canny 边缘（例：丘比特）'],
+    ['field', '立体星座', 'R 缺席的对象', '结构 = 种类；沿线符号 = 缺席'],
+    ['hair', '细墨线', '操作的路径', '符号挂在线上'],
+    ['blob', '实心团块', '操作的起点', '落在载体的锚点上'],
+  ]],
+  ['2 · R 的种类　结构', '射线 / 经线数 = 指向它的文本操作数 + 1；正方形四周的符号数 = (操作数 + 1) × 证据数', [
+    ['k_being', '存在者', '黑色正方形，符号围在四周', 'kind = being'],
+    ['k_experience', '经验', '一个闭合的圆', 'kind = experience'],
+    ['k_event', '事件', '星爆：从一团中心射出', 'kind = event'],
+    ['k_concept', '概念', '经线球：过两极的大圆', 'kind = concept'],
+  ]],
+  ['3 · 缺席方式　挂在结构上的符号', '每条线上的符号数 = 支撑它的证据片段数', [
+    ['a_inner', '内在', '⊙ 圈中一点', 'absence = inner'],
+    ['a_supernatural', '超自然', '○ 空心圆', 'absence = supernatural'],
+    ['a_not_yet', '未至', '向前的三角旗', 'absence = not_yet'],
+    ['a_invisible', '不可见', '● 实心圆', 'absence = invisible'],
+    ['a_unreachable', '不可达', '双竖线', 'absence = unreachable'],
+  ]],
+  ['4 · 证据　实心 / 空心', '', [
+    ['e_text', '文本', '符号涂黑', 'AIC 描述原文，计入签名'],
+    ['e_image', '图像', '符号只描边', '机器看图得出'],
+    ['e_infer', '推断', '不画', '只列在表里'],
+  ]],
+  ['5 · 操作　4 大类', '每类一个基本符号 + 一个修饰；起点是载体还是 R，看线的起点即可', [
+    ['m1', '显现', '团块 + 半圆弧（长线·点·长线），n = 1', '外化（沉睡的姿势 → 梦境）'],
+    ['m3', '显现', 'n 条半圆弧汇聚', 'n = 形体数（三个女像 → 三女神）'],
+    ['r0', '指代', '横杠虚线：两端长、中间短', '无文字：横杠单根排列（金苹果）'],
+    ['r2', '指代', '横杠按 n 根一组', 'n = 铭文词数（纸条 → 梦境，n = 2）'],
+    ['tf', '时间', '间隔排开的高三角箭头 ▷', '向未来：纵深=时间 · 预示 · 引发'],
+    ['tb', '时间', '间隔排开的高三角箭头 ◁', '向过去：时代错置'],
+    ['contain', '组合', '点云环带', '把 R 和它包含的 R 圈在一起（包含）'],
+    ['contrast', '组合', '点云环带', '把两个互相衬托的载体圈在一起（对照）'],
+  ]],
+];
+let H = 130; for (const [, , cells] of SECTIONS) H += 66 + Math.ceil(cells.length / COLS) * CH;
+const Wd = PAD * 2 + COLS * CW;
+const wrap = document.getElementById('wrap'); wrap.style.width = Wd + 'px';
+const RES = new THREE.Vector2(Wd, H);
+const renderer = new THREE.WebGLRenderer({ antialias: true }); renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(Wd, H); wrap.appendChild(renderer.domElement);
+const css = new CSS2DRenderer(); css.setSize(Wd, H); Object.assign(css.domElement.style, { position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }); wrap.appendChild(css.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xffffff);
+const cam = new THREE.OrthographicCamera(0, Wd / K, 0, -H / K, -10, 10);
+const SG = makeSigns({ THREE, Line2, LineMaterial, LineGeometry, RES });
+const V = (px, py) => new THREE.Vector3(px / K, -py / K, 0);
+const lab = (html, px, py, cls) => { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; d.style.transform = 'translate(0,-50%)'; const o = new CSS2DObject(d); o.position.copy(V(px, py)); o.center.set(0, 0.5); scene.add(o); };
+const U = 0.06;
+
+function draw(id, ox, oy) {      // ox, oy: top-left of the glyph box in px
+  const g = new THREE.Group(); scene.add(g);
+  const c = V(ox + CW / 2 - 6, oy + GH / 2), A = V(ox + 34, oy + GH - 18), B = V(ox + CW - 52, oy + 30);
+  const rB = 0.3;
+  const Rf = (kind, absence = 'invisible', at = c, rad = 0.36) => SG.rGlyph({ kind, absence }, at, rad, g, { n: 2, e: 2 });
+  const edgeB = from => B.clone().add(from.clone().sub(B).normalize().multiplyScalar(rB));
+  switch (id) {
+    case 'trace': {
+      const t = D.traces.find(t => t.cid === 'C8'); const h = (GH - 16) / K, k = h / t.h, x0 = c.x - t.w * k / 2, y0 = V(0, oy + 8).y;
+      const pos = new Float32Array(t.pts.length / 2 * 3); for (let j = 0; j < t.pts.length / 2; j++) { pos[j * 3] = x0 + t.pts[2 * j] * k; pos[j * 3 + 1] = y0 - t.pts[2 * j + 1] * k; }
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x111111, size: 1.2, sizeAttenuation: false }))); break; }
+    case 'field': Rf('being', 'supernatural'); break;
+    case 'hair': SG.hair([V(ox + 24, oy + GH / 2), V(ox + CW - 30, oy + GH / 2)], g); break;
+    case 'blob': { const fr = SG.frame(c, new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0)); SG.S.blob(fr, 0, 0, U, g); break; }
+    case 'k_being': Rf('being', 'supernatural'); break; case 'k_experience': Rf('experience', 'inner'); break; case 'k_event': Rf('event', 'not_yet'); break; case 'k_concept': Rf('concept', 'invisible'); break;
+    case 'a_inner': case 'a_supernatural': case 'a_not_yet': case 'a_invisible': case 'a_unreachable': SG.absenceSign(id.slice(2), SG.frame(c, new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0)), 0.12, g); break;
+    case 'e_text': SG.phrase('substitute', V(ox + 30, oy + GH / 2), V(ox + CW - 36, oy + GH / 2), g, 'text', U); break;
+    case 'e_image': SG.phrase('substitute', V(ox + 30, oy + GH / 2), V(ox + CW - 36, oy + GH / 2), g, 'image', U); break;
+    case 'e_infer': break;
+    case 'm1': Rf('experience', 'inner', B, rB); SG.phrase('externalize', A, edgeB(A), g, 'text', U); break;
+    case 'r0': Rf('concept', 'invisible', B, rB); SG.phrase('substitute', A, edgeB(A), g, 'text', U); break;
+    case 'r2': Rf('experience', 'inner', B, rB); SG.phrase('inscribe', A, edgeB(A), g, 'text', U, { words: 2 }); break;
+    case 'tf': Rf('event', 'not_yet', B, rB); SG.phrase('depth_time', A, edgeB(A), g, 'text', U); break;
+    case 'tb': Rf('concept', 'invisible', B, rB); SG.phrase('anachronism', A, edgeB(A), g, 'text', U); break;
+    case 'm3': case 'embody': { Rf('being', 'supernatural', B, rB); const anc = [V(ox + 26, oy + GH - 14), V(ox + 56, oy + GH - 10), V(ox + 86, oy + GH - 14)]; SG.embody(anc, edgeB(V(ox + 56, oy + GH - 12)), g, 'text', U); break; }
+    case 'foreshadow': case 'trigger': case 'contain': {
+      const c1 = V(ox + 50, oy + GH / 2 + (id === 'trigger' ? 0 : 14)), c2 = V(ox + CW - 50, oy + GH / 2 - (id === 'trigger' ? 0 : 14)), r1 = 0.2, r2 = 0.2;
+      Rf(id === 'trigger' ? 'event' : 'experience', id === 'trigger' ? 'not_yet' : 'inner', c1, r1);
+      Rf(id === 'contain' ? 'being' : 'event', id === 'contain' ? 'supernatural' : 'not_yet', c2, r2);
+      if (id === 'contain') SG.phrase(id, c1, c2, g, 'text', U, { rParent: r1, ortho: true, points: 900 });
+      else { const d = c2.clone().sub(c1).normalize(); SG.phrase(id, c1.clone().addScaledVector(d, r1), c2.clone().addScaledVector(d, -r2), g, 'text', U); }
+      break; }
+    case 'contrast': { const a = V(ox + 30, oy + GH / 2), b = V(ox + CW - 36, oy + GH / 2); SG.phrase(id, a, b, g, 'text', U, { ortho: true, points: 700, rParent: 0.16 }); const fr = SG.frame(a, new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0)); SG.S.blob(fr, 0, 0, U * 0.7, g); SG.S.blob(SG.frame(b, new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0)), 0, 0, U * 0.7, g); break; }
+    default: { Rf(id === 'depth_time' ? 'event' : id === 'externalize' ? 'experience' : 'concept', id === 'depth_time' ? 'not_yet' : id === 'externalize' ? 'inner' : 'invisible', B, rB); SG.phrase(id, A, edgeB(A), g, 'text', U, { words: 2 }); }
+  }
+}
+
+lab('Imagination Score · 符号对照 v3（参考 Anestis Logothetis）', PAD, 50, 'h1');
+lab('R 缺席的对象 / C 可见载体 / O 结构操作 / E 证据 · 每一种变化都对应一个数据字段 · 3D 谱与本表使用同一份符号代码（signs_v3.js）', PAD, 80, 'sub');
+let y = 120;
+for (const [title, sub, cells] of SECTIONS) {
+  y += 20; SG.hair([V(PAD, y), V(Wd - PAD, y)], scene);
+  lab(title, PAD, y + 18, 'sec'); if (sub) lab(sub, PAD + 290, y + 18, 'sub');
+  y += 40;
+  cells.forEach(([id, name, rule, data], i) => {
+    const ox = PAD + (i % COLS) * CW, oy = y + Math.floor(i / COLS) * CH;
+    const fr = [V(ox + 4, oy), V(ox + CW - 8, oy), V(ox + CW - 8, oy + GH), V(ox + 4, oy + GH), V(ox + 4, oy)]; SG.hair(fr, scene, 0xe6e6e6);
+    draw(id, ox, oy);
+    if (id === 'e_infer') lab('<small>（不画）</small>', ox + CW / 2 - 24, oy + GH / 2, 'cell');
+    lab(`${name}<div>${rule}</div><small>${data}</small>`, ox + 6, oy + GH + 26, 'cell');
+  });
+  y += Math.ceil(cells.length / COLS) * CH;
+}
+renderer.render(scene, cam); css.render(scene, cam);
+</script>
+</body>
+</html>

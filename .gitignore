@@ -1,0 +1,8 @@
+# environments / build output
+.venv/
+__pycache__/
+*.pyc
+
+# not public domain — never publish (AIC 181742, Dance Staff (Oshe Sango))
+images/181742.jpg
+*181742*

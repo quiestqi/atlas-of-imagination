@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imagination Score</title>
+<style>
+  :root { --ink: #000; --mute: #777; --faint: #bbb; --bg: #fff; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); overflow: hidden;
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+  #head { position: fixed; left: 28px; top: 22px; z-index: 5; pointer-events: none; }
+  #head h1 { font-size: 16px; font-weight: 500; margin: 0 0 4px; }
+  #head p { font-size: 11px; color: var(--mute); margin: 0; }
+  #ctrl { position: fixed; right: 24px; top: 22px; z-index: 5; display: flex; gap: 6px; }
+  #ctrl button { font: inherit; font-size: 12px; background: #fff; border: 1px solid #000; padding: 4px 10px; cursor: pointer; }
+  #ctrl button.on { background: #000; color: #fff; }
+  #ctrl button:disabled { border-color: #ccc; color: #bbb; cursor: default; }
+  #key { position: fixed; left: 28px; bottom: 18px; font-size: 11px; color: var(--mute); z-index: 5; max-width: calc(100% - 56px); line-height: 1.7; }
+  #note { position: fixed; left: 28px; top: 70px; font-size: 12px; z-index: 5; }
+  .lb { font-size: 12px; color: #000; white-space: nowrap; background: rgba(255,255,255,.82); padding: 0 3px; transform: translate(14px, -50%); }
+  .lb small { display: block; font-size: 9.5px; color: #888; }
+  .lb.inf { color: #999; }
+  .lc { font-size: 11px; color: #222; white-space: nowrap; background: rgba(255,255,255,.82); padding: 0 3px; }
+  .lo { font-size: 10px; color: #555; white-space: nowrap; }
+  .ax { font-size: 11px; color: #888; white-space: nowrap; }
+  .axt { font-size: 12px; color: #000; white-space: nowrap; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="head"><h1 id="title"></h1><p id="meta"></p></div>
+<div id="ctrl">
+  <button id="bA" class="on">方案 A：链的步数</button>
+  <button id="bC">方案 C：步数 + 向量</button>
+  <button id="bL">中 / EN</button>
+</div>
+<div id="note"></div>
+<div id="key">
+  x = 画面位置（左→右） · y = 时间（过去 −1 / 此刻 0 / 未来 +1 / 超时间 +2） · z = 离可见世界的距离<br>
+  ● 可见载体（都在“此刻 × 画面”这条线上） · ◯ 缺席的对象 R · 黑梭 = 操作（文本证据） · 线框梭 = 仅图像 · 灰虚线 = 推断，不计分 · 点线 = 坐标投影 · 拖动旋转，滚轮缩放
+</div>
+<script id="data" type="application/json">{"_axes": {"x": "position in picture 0-1", "y": "time: -1 past, 0 now, 1 future, 2 beyond time", "zA": "chain steps from the visible", "zC": "zA + 0.9 * f, f = 1 - (s_R - s_null)/(s_lit - s_null), CLIP ViT-B/32 openai, mean over carrier crops"}, "works": [{"aic_id": 58702, "title": "The Dream of Paris", "artist": "Monogrammist PG", "date": "1536", "public_domain": true, "image": "images/58702.jpg", "size": [843, 1323], "figure_literal": "a nude woman", "carriers": [{"id": "C1", "zh": "沉睡的骑士", "en": "sleeping knight", "boxes": [[300, 640, 530, 1300]], "x": 0.492, "y": 0, "zA": 0, "zC": 0}, {"id": "C2", "zh": "纸条 PARIS/TRAUM", "en": "slip PARIS/TRAUM", "boxes": [[398, 395, 465, 450]], "x": 0.512, "y": 0, "zA": 0, "zC": 0}, {"id": "C3", "zh": "中景小船", "en": "boat, middle distance", "boxes": [[290, 618, 378, 655]], "x": 0.396, "y": 0, "zA": 0, "zC": 0}, {"id": "C4", "zh": "金苹果", "en": "golden apple", "boxes": [[645, 965, 690, 1010]], "x": 0.792, "y": 0, "zA": 0, "zC": 0}, {"id": "C5", "zh": "当代盔甲", "en": "contemporary armour", "boxes": [[335, 700, 520, 1300]], "x": 0.507, "y": 0, "zA": 0, "zC": 0}, {"id": "C6", "zh": "维纳斯手中的心", "en": "heart held by Venus", "boxes": [[655, 828, 702, 872]], "x": 0.805, "y": 0, "zA": 0, "zC": 0}], "referents": [{"id": "R1", "zh": "巴黎斯的梦", "en": "Paris's dream", "absence": "inner", "kind": "experience", "reached_by": ["C1", "C2"], "x": 0.502, "x_rule": "mean x of carriers C1,C2", "time": 0, "time_ev": ["text", "he is in the midst of a dream vision"], "zA": 1, "zC": 1.583, "clip": {"model": "ViT-B-32/openai", "f": 0.647, "crops": [{"crop": "C1", "s_lit": 0.2548, "s_R": 0.187, "s_null": 0.1884, "margin": 0.0664, "f": 1}, {"crop": "C2", "s_lit": 0.2358, "s_R": 0.232, "s_null": 0.2227, "margin": 0.0131, "f": 0.295}]}}, {"id": "R2", "zh": "三女神", "en": "three goddesses", "absence": "supernatural", "kind": "being", "parent": "R1", "embodied": true, "reached_by": [], "figures": [[0, 690, 200, 1300], [170, 650, 340, 1270], [655, 655, 843, 1300]], "x": 0.437, "x_rule": "mean x of its own figures", "time": 0, "time_ev": ["text", "appear to him in the midst of a dream vision (inside R1, same moment)"], "zA": 2, "zC": 2.649, "clip": {"model": "ViT-B-32/openai", "f": 0.721, "crops": [{"crop": "fig1", "s_lit": 0.3023, "s_R": 0.2244, "s_null": 0.1935, "margin": 0.1089, "f": 0.716}, {"crop": "fig2", "s_lit": 0.3041, "s_R": 0.2251, "s_null": 0.195, "margin": 0.1091, "f": 0.724}, {"crop": "fig3", "s_lit": 0.3068, "s_R": 0.2239, "s_null": 0.192, "margin": 0.1148, "f": 0.722}]}}, {"id": "R3", "zh": "私奔→特洛伊战争", "en": "elopement → Trojan War", "absence": "not_yet", "kind": "event", "parent": "R1", "reached_by": ["C3"], "x": 0.396, "x_rule": "mean x of carriers C3", "time": 1, "time_ev": ["text", "used to foreshadow future events"], "zA": 2, "zC": 2.074, "clip": {"model": "ViT-B-32/openai", "f": 0.082, "crops": [{"crop": "C3", "s_lit": 0.2613, "s_R": 0.2565, "s_null": 0.2027, "margin": 0.0586, "f": 0.082}]}}, {"id": "R4", "zh": "道德抉择", "en": "moral crossroads", "absence": "invisible", "kind": "concept", "viewer": true, "reached_by": ["C4", "C5"], "x": 0.649, "x_rule": "mean x of carriers C4,C5", "time": 2, "time_ev": ["text", "the enduring relevance of his moral crossroads"], "zA": 1, "zC": 1.54, "clip": {"model": "ViT-B-32/openai", "f": 0.601, "crops": [{"crop": "C4", "s_lit": 0.2741, "s_R": 0.2227, "s_null": 0.207, "margin": 0.0671, "f": 0.766}, {"crop": "C5", "s_lit": 0.2715, "s_R": 0.2364, "s_null": 0.1908, "margin": 0.0806, "f": 0.435}]}}, {"id": "R5", "zh": "爱", "en": "love", "absence": "invisible", "kind": "concept", "inferred": true, "reached_by": ["C6"], "x": 0.805, "x_rule": "mean x of carriers C6", "time": 2, "time_ev": ["default", "concept → beyond time"], "zA": 1, "zC": 1.365, "clip": {"model": "ViT-B-32/openai", "f": 0.405, "crops": [{"crop": "C6", "s_lit": 0.2918, "s_R": 0.2549, "s_null": 0.2009, "margin": 0.0908, "f": 0.405}]}}], "ops": [{"type": "externalize", "from": "C1", "to": "R1", "evidence": "text", "quote": "His sleeping pose ... indicate that he is in the midst of a dream vision"}, {"type": "inscribe", "from": "C2", "to": "R1", "evidence": "text", "quote": "PARIS / TRA(U)M (“dream of Paris,” on the slip of paper attached to the tree)"}, {"type": "depth_time", "from": "C3", "to": "R3", "evidence": "text", "quote": "used to foreshadow future events ... by boat in the middle distance"}, {"type": "substitute", "from": "C4", "to": "R4", "evidence": "text", "quote": "the golden apple given as a prize in the contest"}, {"type": "anachronism", "from": "C5", "to": "R4", "evidence": "text", "quote": "garb of a contemporary knight rather than classical dress ... enduring relevance of his moral crossroads"}, {"type": "substitute", "from": "C6", "to": "R5", "evidence": "inference", "quote": "description only says 'holding a heart'"}]}, {"aic_id": 36492, "title": "Allegory of Charity", "artist": "Francesco de Mura", "date": "c. 1743–44", "public_domain": true, "image": "images/36492.jpg", "size": [843, 881], "figure_literal": "a figure", "carriers": [{"id": "C3", "zh": "三个孩子", "en": "three children", "count": 3, "boxes": [[0, 470, 175, 600], [90, 300, 385, 790], [445, 365, 790, 515]], "x": 0.373, "y": 0, "zA": 0, "zC": 0}, {"id": "C1", "zh": "母亲哺育", "en": "mother nursing", "boxes": [[250, 155, 690, 800]], "x": 0.558, "y": 0, "zA": 0, "zC": 0}, {"id": "C2", "zh": "鹈鹕喂血", "en": "pelican feeding blood", "boxes": [[630, 600, 843, 850]], "x": 0.874, "y": 0, "zA": 0, "zC": 0}], "referents": [{"id": "R1", "zh": "慈爱（美德）", "en": "Charity (virtue)", "absence": "invisible", "kind": "concept", "reached_by": ["C1", "C2", "C3"], "x": 0.602, "x_rule": "mean x of carriers C1,C2,C3", "time": 2, "time_ev": ["default", "concept (virtue) → beyond time"], "zA": 2, "zC": 2.056, "clip": {"model": "ViT-B-32/openai", "f": 0.062, "crops": [{"crop": "C1", "s_lit": 0.2761, "s_R": 0.2708, "s_null": 0.1836, "margin": 0.0925, "f": 0.058}, {"crop": "C2", "s_lit": 0.282, "s_R": 0.253, "s_null": 0.1669, "margin": 0.115, "f": 0.251}, {"crop": "C3.1", "s_lit": 0.2276, "s_R": 0.2681, "s_null": 0.1859, "margin": 0.0417, "f": 0}, {"crop": "C3.2", "s_lit": 0.2308, "s_R": 0.274, "s_null": 0.1861, "margin": 0.0448, "f": 0}, {"crop": "C3.3", "s_lit": 0.2375, "s_R": 0.2627, "s_null": 0.1831, "margin": 0.0544, "f": 0}]}}, {"id": "R2", "zh": "母爱", "en": "maternal love", "absence": "invisible", "kind": "concept", "reached_by": ["C1", "C3"], "x": 0.466, "x_rule": "mean x of carriers C1,C3", "time": 2, "time_ev": ["default", "concept → beyond time"], "zA": 1, "zC": 1.059, "clip": {"model": "ViT-B-32/openai", "f": 0.065, "crops": [{"crop": "C1", "s_lit": 0.2761, "s_R": 0.252, "s_null": 0.1836, "margin": 0.0925, "f": 0.261}, {"crop": "C3.1", "s_lit": 0.2276, "s_R": 0.244, "s_null": 0.1859, "margin": 0.0417, "f": 0}, {"crop": "C3.2", "s_lit": 0.2308, "s_R": 0.2414, "s_null": 0.1861, "margin": 0.0448, "f": 0}, {"crop": "C3.3", "s_lit": 0.2375, "s_R": 0.256, "s_null": 0.1831, "margin": 0.0544, "f": 0}]}}, {"id": "R3", "zh": "牺牲", "en": "sacrifice", "absence": "invisible", "kind": "concept", "reached_by": ["C2"], "x": 0.874, "x_rule": "mean x of carriers C2", "time": 2, "time_ev": ["default", "concept → beyond time"], "zA": 1, "zC": 1.464, "clip": {"model": "ViT-B-32/openai", "f": 0.516, "crops": [{"crop": "C2", "s_lit": 0.282, "s_R": 0.2226, "s_null": 0.1669, "margin": 0.115, "f": 0.516}]}}, {"id": "R4", "zh": "基督", "en": "Christ", "absence": "supernatural", "kind": "being", "inferred": true, "reached_by": ["C2"], "x": 0.874, "x_rule": "mean x of carriers C2", "time": 2, "time_ev": ["default", "supernatural being → beyond time"], "zA": 1, "zC": 1.343, "clip": {"model": "ViT-B-32/openai", "f": 0.381, "crops": [{"crop": "C2", "s_lit": 0.282, "s_R": 0.2382, "s_null": 0.1669, "margin": 0.115, "f": 0.381}]}}], "ops": [{"type": "substitute", "from": "C1", "to": "R2", "evidence": "text", "quote": "images of maternal love and sacrifice: a mother nurtures several young children"}, {"type": "substitute", "from": "R2", "to": "R1", "evidence": "text", "quote": "presents an allegory of the virtue of charity through images of maternal love"}, {"type": "substitute", "from": "C2", "to": "R3", "evidence": "text", "quote": "a pelican feeds her young by drawing blood from her own breast"}, {"type": "substitute", "from": "R3", "to": "R1", "evidence": "text", "quote": "allegory of the virtue of charity through images of ... sacrifice"}, {"type": "juxtapose", "from": "C1", "to": "C2", "evidence": "text", "quote": "a mother ... and a pelican ... (two carriers, one referent)"}, {"type": "repeat", "from": "C3", "to": "R2", "evidence": "image", "quote": "three children: sleeping, standing, nursing"}, {"type": "personify", "from": "C1", "to": "R1", "evidence": "inference", "quote": "text calls her 'a mother', not Charity personified"}, {"type": "substitute", "from": "C2", "to": "R4", "evidence": "inference", "quote": "pelican = Christ is iconographic convention, not in text"}]}, {"aic_id": 97884, "title": "A Glimpse into Hell, or Fear", "artist": "Elihu Vedder", "date": "1888–98", "public_domain": true, "image": "images/97884.jpg", "size": [843, 636], "figure_literal": "a figure", "carriers": [{"id": "C2", "zh": "一角火焰", "en": "sliver of flames", "boxes": [[20, 500, 200, 620]], "x": 0.13, "y": 0, "zA": 0, "zC": 0}, {"id": "C1", "zh": "五位女性", "en": "five women", "count": 5, "boxes": [[20, 130, 260, 520], [230, 60, 520, 560], [400, 20, 620, 200], [470, 190, 730, 560], [690, 280, 830, 510]], "x": 0.566, "y": 0, "zA": 0, "zC": 0}], "referents": [{"id": "R2", "zh": "恐惧", "en": "fear", "absence": "inner", "kind": "experience", "reached_by": ["C1"], "x": 0.566, "x_rule": "mean x of carriers C1", "time": 0, "time_ev": ["default", "experience → the depicted moment (their fear, now)"], "zA": 1, "zC": 1.141, "clip": {"model": "ViT-B-32/openai", "f": 0.157, "crops": [{"crop": "C1.1", "s_lit": 0.2415, "s_R": 0.234, "s_null": 0.1901, "margin": 0.0514, "f": 0.146}, {"crop": "C1.2", "s_lit": 0.2586, "s_R": 0.235, "s_null": 0.1807, "margin": 0.0779, "f": 0.303}, {"crop": "C1.3", "s_lit": 0.2438, "s_R": 0.2623, "s_null": 0.2003, "margin": 0.0435, "f": 0}, {"crop": "C1.4", "s_lit": 0.24, "s_R": 0.2325, "s_null": 0.1837, "margin": 0.0563, "f": 0.134}, {"crop": "C1.5", "s_lit": 0.2638, "s_R": 0.2506, "s_null": 0.1984, "margin": 0.0654, "f": 0.201}]}}, {"id": "R1", "zh": "地狱", "en": "Hell", "absence": "unreachable", "kind": "world", "reached_by": ["C1", "C2"], "x": 0.348, "x_rule": "mean x of carriers C1,C2", "time": 2, "time_ev": ["default", "world → beyond time"], "zA": 1, "zC": 1.487, "clip": {"model": "ViT-B-32/openai", "f": 0.541, "crops": [{"crop": "C1.1", "s_lit": 0.2415, "s_R": 0.2078, "s_null": 0.1901, "margin": 0.0514, "f": 0.656}, {"crop": "C1.2", "s_lit": 0.2586, "s_R": 0.2251, "s_null": 0.1807, "margin": 0.0779, "f": 0.43}, {"crop": "C1.3", "s_lit": 0.2438, "s_R": 0.2253, "s_null": 0.2003, "margin": 0.0435, "f": 0.424}, {"crop": "C1.4", "s_lit": 0.24, "s_R": 0.2173, "s_null": 0.1837, "margin": 0.0563, "f": 0.404}, {"crop": "C1.5", "s_lit": 0.2638, "s_R": 0.2138, "s_null": 0.1984, "margin": 0.0654, "f": 0.765}, {"crop": "C2", "s_lit": 0.2632, "s_R": 0.2301, "s_null": 0.2049, "margin": 0.0583, "f": 0.568}]}}], "ops": [{"type": "externalize", "from": "C1", "to": "R2", "evidence": "text", "quote": "fear, accentuated by the swirling forms of their draperies and hair"}, {"type": "witness", "from": "C1", "to": "R1", "evidence": "text", "quote": "focused on the figures’ psychological tension, rather than the spectacle of the environs itself"}, {"type": "synecdoche", "from": "C2", "to": "R1", "evidence": "text", "quote": "depicting only a sliver of fiery flames at bottom left"}]}, {"aic_id": 106549, "title": "Celestial Map of the Southern Sky", "artist": "Albrecht Dürer", "date": "1515", "public_domain": true, "image": "images/106549.jpg", "size": [843, 1062], "figure_literal": "a figure", "carriers": [{"id": "C1", "zh": "平面星图", "en": "flat star map", "shape": "disk", "boxes": [[100, 160, 760, 810]], "x": 0.51, "y": 0, "zA": 0, "zC": 0}], "referents": [{"id": "R1", "zh": "从宇宙外看的天穹", "en": "the heavens seen from outside", "absence": "unreachable", "kind": "world", "reached_by": ["C1"], "x": 0.51, "x_rule": "mean x of carriers C1", "time": 2, "time_ev": ["default", "world → beyond time"], "zA": 1, "zC": 1.499, "clip": {"model": "ViT-B-32/openai", "f": 0.554, "crops": [{"crop": "C1", "s_lit": 0.234, "s_R": 0.2046, "s_null": 0.181, "margin": 0.053, "f": 0.554}]}}, {"id": "R2", "zh": "星座生物", "en": "constellation creatures", "absence": "nonexistent", "kind": "being", "parent": "R1", "embodied": true, "reached_by": ["C1"], "x": 0.51, "x_rule": "mean x of carriers C1", "time": 2, "time_ev": ["default", "being → beyond time"], "zA": 2, "zC": 2.36, "clip": {"model": "ViT-B-32/openai", "f": 0.4, "crops": [{"crop": "C1", "s_lit": 0.234, "s_R": 0.2128, "s_null": 0.181, "margin": 0.053, "f": 0.4}]}}], "ops": [{"type": "impossible_viewpoint", "from": "C1", "to": "R1", "evidence": "text", "quote": "depicts the heavens as if the viewer were observing them from space"}, {"type": "radiate", "from": "C1", "to": "R1", "evidence": "image", "quote": "disk divided by 12 radial lines, graduated rim"}, {"type": "embody", "from": "C1", "to": "R2", "evidence": "image", "quote": "stars drawn as whale, hydra, ship, centaur"}, {"type": "inscribe", "from": "C1", "to": "R2", "evidence": "image", "quote": "Latin constellation labels"}]}, {"aic_id": 181742, "title": "Dance Staff (Oshe Sango)", "artist": "Yoruba", "date": "early 20th century", "public_domain": false, "image": "images/181742.jpg", "size": [843, 1354], "figure_literal": "a figure", "carriers": [{"id": "C2", "zh": "女性与双胞胎", "en": "woman with twins", "boxes": [[225, 375, 630, 960]], "x": 0.507, "y": 0, "zA": 0, "zC": 0}, {"id": "C1", "zh": "双斧刃", "en": "double ax blades", "boxes": [[115, 110, 705, 400]], "x": 0.486, "y": 0, "zA": 0, "zC": 0}, {"id": "C3", "zh": "祭品结痂", "en": "sacrificial encrustation", "boxes": [[480, 180, 690, 330]], "x": 0.694, "y": 0, "zA": 0, "zC": 0}], "referents": [{"id": "R2", "zh": "雷暴中掷下的石斧", "en": "stone axes hurled in storms", "absence": "supernatural", "kind": "event", "reached_by": ["C1"], "x": 0.486, "x_rule": "mean x of carriers C1", "time": -1, "time_ev": ["text", "the Neolithic stone ax heads that the god is said to hurl to Earth (debatable: myth vs. artefact age)"], "zA": 1, "zC": 1.08, "clip": {"model": "ViT-B-32/openai", "f": 0.089, "crops": [{"crop": "C1", "s_lit": 0.2654, "s_R": 0.2588, "s_null": 0.1918, "margin": 0.0736, "f": 0.089}]}}, {"id": "R3", "zh": "与双胞胎的关系", "en": "bond with twins", "absence": "invisible", "kind": "concept", "reached_by": ["C2"], "x": 0.507, "x_rule": "mean x of carriers C2", "time": 2, "time_ev": ["default", "concept → beyond time"], "zA": 1, "zC": 1.577, "clip": {"model": "ViT-B-32/openai", "f": 0.641, "crops": [{"crop": "C2", "s_lit": 0.2618, "s_R": 0.2061, "s_null": 0.1748, "margin": 0.087, "f": 0.641}]}}, {"id": "R1", "zh": "Sango", "en": "Sango", "absence": "supernatural", "kind": "being", "reached_by": ["C1", "C2", "C3"], "x": 0.562, "x_rule": "mean x of carriers C1,C2,C3", "time": 2, "time_ev": ["default", "supernatural being → beyond time"], "zA": 2, "zC": 2.699, "clip": {"model": "ViT-B-32/openai", "f": 0.777, "crops": [{"crop": "C1", "s_lit": 0.2654, "s_R": 0.2025, "s_null": 0.1918, "margin": 0.0736, "f": 0.854}, {"crop": "C2", "s_lit": 0.2618, "s_R": 0.2204, "s_null": 0.1748, "margin": 0.087, "f": 0.476}, {"crop": "C3", "s_lit": 0.2305, "s_R": 0.2103, "s_null": 0.2128, "margin": 0.0177, "f": 1}]}}], "ops": [{"type": "substitute", "from": "C1", "to": "R2", "evidence": "text", "quote": "double ax blades ... representing the Neolithic stone ax heads that the god is said to hurl to Earth"}, {"type": "substitute", "from": "R2", "to": "R1", "evidence": "text", "quote": "the double ax blades of Sango—the god of warfare and thunder"}, {"type": "substitute", "from": "C2", "to": "R3", "evidence": "text", "quote": "a woman with twins evokes Sango’s special relationship to twins"}, {"type": "substitute", "from": "R3", "to": "R1", "evidence": "text", "quote": "Sango’s special relationship to twins"}, {"type": "layer", "from": "C1", "to": "C2", "evidence": "text", "quote": "Below the ax blades, a woman with twins"}, {"type": "activate", "from": "C3", "to": "R1", "evidence": "text", "quote": "encrustation of sacrificial offerings ... to honor and invigorate the deity"}]}]}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+const ALL = JSON.parse(document.getElementById('data').textContent).works;
+let D = ALL[0], cur = 0, cReady = false;
+const OPZ = {externalize:'外化',personify:'拟人化',embody:'赋形',inscribe:'铭写',substitute:'象征替代',synecdoche:'提喻',depth_time:'纵深=时间',anachronism:'时代错置',layer:'分层',radiate:'中心辐射',repeat:'重复',juxtapose:'并置',witness:'见证',impossible_viewpoint:'不可能视点',activate:'仪式激活'};
+const ABZ = {inner:'内在',invisible:'不可见',unreachable:'不可达',nonexistent:'不存在',not_yet:'未至',supernatural:'超自然'};
+const SX = 10, SY = 2.4, SZ = 3.0;               // world units per axis unit
+const ZMAX = 3.0;
+let plan = 'A', zh = true;
+
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xffffff);
+const camera = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 200);
+const fitCam = () => { const k = Math.max(1, 1.5 / camera.aspect); camera.position.set(9 * k, 6.5 * k, 16 * k - 3); };
+fitCam();
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
+const css = new CSS2DRenderer(); css.setSize(innerWidth, innerHeight);
+Object.assign(css.domElement.style, { position: 'absolute', top: '0', pointerEvents: 'none' });
+document.body.appendChild(css.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.2, -3); controls.enableDamping = true; controls.update();
+
+const P = (x, y, z) => new THREE.Vector3((x - 0.5) * SX, y * SY, -z * SZ);
+const M = { ink: new THREE.LineBasicMaterial({ color: 0x000000 }),
+            box: new THREE.LineBasicMaterial({ color: 0xcfcfcf }),
+            grid: new THREE.LineBasicMaterial({ color: 0xececec }),
+            now: new THREE.LineBasicMaterial({ color: 0x000000 }),
+            drop: new THREE.LineDashedMaterial({ color: 0xaaaaaa, dashSize: 0.06, gapSize: 0.1 }),
+            inf: new THREE.LineDashedMaterial({ color: 0xaaaaaa, dashSize: 0.12, gapSize: 0.12 }),
+            nest: new THREE.LineDashedMaterial({ color: 0x555555, dashSize: 0.14, gapSize: 0.1 }) };
+const seg = (a, b, m, parent) => { const g = new THREE.BufferGeometry().setFromPoints([a, b]); const l = new THREE.Line(g, m); if (m.isLineDashedMaterial) l.computeLineDistances(); parent.add(l); return l; };
+const label = (html, pos, cls, parent) => { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; const o = new CSS2DObject(d); o.position.copy(pos); parent.add(o); return o; };
+
+// ── static frame: axes, time levels, grid ──
+const frame = new THREE.Group(); scene.add(frame);
+const TL = [['过去','past'],['此刻','now'],['未来','future'],['超时间','beyond time']];
+for (let y = -1; y <= 2; y++) {
+  const m = y === 0 ? M.now : M.box;
+  const c = [P(0,y,0), P(1,y,0), P(1,y,ZMAX), P(0,y,ZMAX)];
+  for (let i = 0; i < 4; i++) { if (y === 0 && i === 0) continue; seg(c[i], c[(i+1)%4], y === 0 ? M.box : m, frame); }
+}
+seg(P(0,0,0), P(1,0,0), M.now, frame);                                   // the picture line: now × visible
+for (const [x0,z0] of [[0,0],[1,0],[0,ZMAX],[1,ZMAX]]) seg(P(x0,-1,z0), P(x0,2,z0), M.box, frame);
+for (let x = 0.25; x < 1; x += 0.25) seg(P(x,0,0), P(x,0,ZMAX), M.grid, frame);
+for (let z = 1; z <= 2; z++) seg(P(0,0,z), P(1,0,z), M.grid, frame);
+const axLabels = [];
+for (let y = -1; y <= 2; y++) axLabels.push([label('', P(-0.04, y, 0), 'ax', frame), () => `${zh ? TL[y+1][0] : TL[y+1][1]} ${y > 0 ? '+' : ''}${y}`]);
+for (let i = 0; i <= 4; i++) label((i/4).toFixed(2), P(i/4, -1.12, 0), 'ax', frame);
+for (let z = 0; z <= 2; z++) axLabels.push([label('', P(1.04, -1, z), 'ax', frame), () => z === 0 ? (zh ? '0 可见' : '0 visible') : `${z} ${zh ? '步' : 'step'}`]);
+axLabels.push([label('', P(0.5, -1.3, 0), 'axt', frame), () => zh ? 'x　画面位置：左 → 右' : 'x  position in picture'],
+              [label('', P(-0.04, 2.35, 0), 'axt', frame), () => zh ? 'y　时间' : 'y  time'],
+              [label('', P(1.05, -1, ZMAX + 0.2), 'axt', frame), () => (zh ? 'z　离可见世界的距离' : 'z  distance from the visible') + (plan === 'A' ? (zh ? '（A：链的步数）' : ' (A: steps)') : (zh ? '（C：步数 + 向量）' : ' (C: steps + embedding)'))]);
+
+// ── content (rebuilt on plan / language switch) ──
+let content = null;
+const nodes = {};
+const pos = n => n.isRef ? P(n.x, n.time, plan === 'A' ? n.zA : n.zC) : P(n.x, 0, 0);
+const nm = n => zh ? n.zh : n.en;
+
+function spindle(a, b, filled) {
+  const pts = []; for (let i = 0; i <= 16; i++) { const t = i / 16; pts.push(new THREE.Vector2(Math.sin(Math.PI * t) * 0.07 * (1 - 0.35 * t), t * 0.75 - 0.375)); }
+  const g = new THREE.LatheGeometry(pts, 10);
+  const m = filled ? new THREE.MeshBasicMaterial({ color: 0x000000 }) : new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+  const s = new THREE.Mesh(g, m);
+  const dir = b.clone().sub(a); const L = dir.length(); dir.normalize();
+  s.position.copy(a.clone().addScaledVector(dir, L * 0.55));
+  s.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+  const k = Math.min(1, L / 2); s.scale.set(1, k, 1);
+  return s;
+}
+function refMarker(r) {
+  const g = new THREE.Group(); const ink = r.inferred ? 0xaaaaaa : 0x000000;
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.15, 0.175, 48), new THREE.MeshBasicMaterial({ color: ink, side: THREE.DoubleSide }));
+  const disc = new THREE.Mesh(new THREE.CircleGeometry(0.15, 48), new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }));
+  g.add(disc, ring);
+  const fill = (a0, a1) => g.add(new THREE.Mesh(new THREE.CircleGeometry(0.15, 32, a0, a1 - a0), new THREE.MeshBasicMaterial({ color: ink, side: THREE.DoubleSide })));
+  if (r.kind === 'being') fill(Math.PI / 2, Math.PI * 1.5);
+  else if (r.kind === 'experience') g.add(new THREE.Mesh(new THREE.CircleGeometry(0.07, 32), new THREE.MeshBasicMaterial({ color: ink })));
+  else if (r.kind === 'event') fill(0, Math.PI / 2);
+  else if (r.kind === 'concept') { fill(0, Math.PI / 2); fill(Math.PI, Math.PI * 1.5); }
+  if (r.embodied) for (let j = 1; j <= 3; j++) g.add(new THREE.Mesh(new THREE.RingGeometry(0.175 + j * 0.06, 0.185 + j * 0.06, 48), new THREE.MeshBasicMaterial({ color: ink, side: THREE.DoubleSide })));
+  disc.position.z = -0.001; g.userData.billboard = true;
+  return g;
+}
+
+function build() {
+  if (content) { content.traverse(o => { if (o.isCSS2DObject) o.element.remove(); }); scene.remove(content); }
+  content = new THREE.Group(); scene.add(content);
+  // carriers
+  const sorted = [...D.carriers].sort((a, b) => a.x - b.x); let last = -9, row = 0;
+  for (const c of sorted) {
+    const p = pos(nodes[c.id]);
+    const s = new THREE.Mesh(new THREE.SphereGeometry(0.09, 20, 14), new THREE.MeshBasicMaterial({ color: 0 })); s.position.copy(p); content.add(s);
+    row = c.x - last < 0.06 ? row + 1 : 0; last = c.x;
+    const lp = p.clone().add(new THREE.Vector3(0, -0.28 - row * 0.3, 0.02));
+    seg(p, lp, M.box, content);
+    label(nm(c), lp, 'lc', content);
+  }
+  // referents + coordinate projections
+  for (const r of D.referents) {
+    const n = nodes[r.id], p = pos(n), z = plan === 'A' ? r.zA : r.zC;
+    seg(p, P(r.x, 0, z), M.drop, content); seg(P(r.x, 0, z), P(r.x, 0, 0), M.drop, content);
+    const mk = refMarker(r); mk.position.copy(p); content.add(mk);
+    const zs = plan === 'A' ? String(z) : Number(z).toFixed(2);
+    label(`${nm(r)}<small>${r.id} · ${zh ? ABZ[r.absence] : r.absence} · (${r.x.toFixed(2)}, ${r.time}, ${zs})</small>`, p, 'lb' + (r.inferred ? ' inf' : ''), content);
+    if (r.parent) { const pp = pos(nodes[r.parent]); seg(p, pp, M.nest, content); label(zh ? '∈ 在其中' : '∈ inside', p.clone().lerp(pp, 0.5), 'lo', content); }
+  }
+  // operations
+  for (const o of D.ops) {
+    const a = pos(nodes[o.from]), b = pos(nodes[o.to]);
+    const dir = b.clone().sub(a).normalize(); const a2 = a.clone().addScaledVector(dir, 0.1), b2 = b.clone().addScaledVector(dir, -0.2);
+    if (o.evidence === 'inference') seg(a2, b2, M.inf, content);
+    else { seg(a2, b2, M.ink, content); content.add(spindle(a2, b2, o.evidence === 'text')); }
+    label((zh ? OPZ[o.type] : o.type.replace('_', ' ')) + (o.evidence === 'inference' ? ' ?' : ''), a2.clone().lerp(b2, 0.3), 'lo', content);
+  }
+  for (const [el, f] of axLabels) el.element.textContent = f();
+}
+const bA = document.getElementById('bA'), bC = document.getElementById('bC');
+const setPlan = p => { plan = p; bA.classList.toggle('on', p === 'A'); bC.classList.toggle('on', p === 'C'); };
+bA.onclick = () => { setPlan('A'); build(); };
+bC.onclick = () => { if (!cReady) return; setPlan('C'); build(); };
+
+// work switcher
+const wbar = document.createElement('div'); wbar.id = 'works';
+Object.assign(wbar.style, { position: 'fixed', right: '24px', top: '56px', zIndex: 5, display: 'flex', gap: '4px' });
+document.body.appendChild(wbar);
+ALL.forEach((w, i) => { const b = document.createElement('button'); b.textContent = i + 1; b.title = w.title;
+  Object.assign(b.style, { font: 'inherit', fontSize: '12px', width: '26px', background: '#fff', border: '1px solid #000', cursor: 'pointer' });
+  b.onclick = () => loadWork(i); wbar.appendChild(b); });
+function loadWork(i) {
+  cur = i; D = ALL[i];
+  for (const k in nodes) delete nodes[k];
+  D.carriers.forEach(c => nodes[c.id] = { ...c, isRef: false });
+  D.referents.forEach(r => nodes[r.id] = { ...r, isRef: true });
+  cReady = D.referents.every(r => r.zC !== null && r.zC !== undefined);
+  bC.disabled = !cReady; if (!cReady && plan === 'C') setPlan('A');
+  document.getElementById('note').textContent = cReady ? '' : '方案 C 尚未计算（需要 CLIP），暂时只能看方案 A';
+  document.getElementById('title').textContent = D.title;
+  document.getElementById('meta').textContent = `AIC ${D.aic_id} / ${D.artist} / ${D.date}` + (D.public_domain === false ? ' / 非 public domain' : '');
+  [...wbar.children].forEach((b, j) => { b.style.background = j === i ? '#000' : '#fff'; b.style.color = j === i ? '#fff' : '#000'; });
+  build();
+}
+loadWork(0);
+document.getElementById('bL').onclick = () => { zh = !zh; build(); };
+
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); fitCam(); controls.update(); renderer.setSize(innerWidth, innerHeight); css.setSize(innerWidth, innerHeight); });
+(function loop() {
+  requestAnimationFrame(loop); controls.update();
+  content.traverse(o => { if (o.userData.billboard) o.quaternion.copy(camera.quaternion); });
+  renderer.render(scene, camera); css.render(scene, camera);
+})();
+</script>
+</body>
+</html>

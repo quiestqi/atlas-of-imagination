@@ -1,0 +1,209 @@
+{
+ "artwork": {
+  "aic_id": 106549,
+  "title": "Celestial Map of the Southern Sky (Imagines coeli meridionales)",
+  "artist": "Albrecht Dürer\nGerman, 1471-1528",
+  "date": "1515",
+  "medium": "Woodcut in black on ivory laid paper",
+  "public_domain": true,
+  "url": "https://www.artic.edu/artworks/106549",
+  "image_id": "981a34ff-c78a-95b1-e4b0-aea7d42b0140",
+  "description": "Maps of the heavens and earth were one of the first printed instruments to be turned into three-dimensional objects—as globes. These began with functional two-dimensional diagrams that were cut out in elongated globe-gore strips and pasted onto spheres. While Dürer’s maps of the  northern and southern skies were not meant to be mounted in this way, they were copied hundreds of times for this purpose. Produced as a presentation gift along with a view of the terrestrial globe for a humanist advisor to Emperor Maximilian, the dual view depicts the heavens as if the viewer were observing them from space."
+ },
+ "image": "images/106549.jpg",
+ "E": {
+  "E1": "the dual view depicts the heavens as if the viewer were observing them from space"
+ },
+ "C": [
+  {
+   "id": "C1",
+   "zh": "平面星图（圆盘）",
+   "en": "flat star map (disk)",
+   "boxes": [
+    [
+     100,
+     160,
+     760,
+     810
+    ]
+   ],
+   "ev": [
+    "E1"
+   ],
+   "n": 1,
+   "x": 0.51
+  },
+  {
+   "id": "C2",
+   "zh": "星座形象（鲸、九头蛇、船、半人马）",
+   "en": "constellation figures",
+   "boxes": [
+    [
+     235,
+     195,
+     385,
+     385
+    ],
+    [
+     600,
+     420,
+     760,
+     700
+    ],
+    [
+     450,
+     430,
+     620,
+     560
+    ],
+    [
+     380,
+     600,
+     560,
+     760
+    ]
+   ],
+   "ev": [],
+   "n": 4,
+   "x": 0.592
+  },
+  {
+   "id": "C3",
+   "zh": "拉丁文星座名",
+   "en": "Latin constellation labels",
+   "boxes": [
+    [
+     425,
+     270,
+     505,
+     300
+    ],
+    [
+     640,
+     320,
+     700,
+     380
+    ],
+    [
+     205,
+     515,
+     330,
+     640
+    ]
+   ],
+   "ev": [],
+   "n": 3,
+   "x": 0.555
+  }
+ ],
+ "R": [
+  {
+   "id": "R1",
+   "zh": "从宇宙外看到的天穹",
+   "en": "the heavens seen from outside",
+   "kind": "concept",
+   "absence": "unreachable",
+   "time": 2,
+   "time_ev": [
+    null,
+    "default: concept → beyond time"
+   ],
+   "reached_by": [
+    "C1"
+   ],
+   "x": 0.51,
+   "z": 1,
+   "in_text_ops": 2
+  },
+  {
+   "id": "R2",
+   "zh": "星座生物",
+   "en": "constellation creatures",
+   "kind": "being",
+   "absence": "nonexistent",
+   "time": 2,
+   "time_ev": [
+    null,
+    "default: being → beyond time"
+   ],
+   "reached_by": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "x": 0.552,
+   "z": 2,
+   "in_text_ops": 3
+  }
+ ],
+ "O": [
+  {
+   "id": "O1",
+   "type": "impossible_viewpoint",
+   "from": "C1",
+   "to": "R1",
+   "evidence": "text",
+   "E": [
+    "E1"
+   ]
+  },
+  {
+   "id": "O2",
+   "type": "radiate",
+   "from": "C1",
+   "to": "R1",
+   "evidence": "image",
+   "E": [],
+   "reading": "image: the disk is divided by 12 radial lines with a graduated rim"
+  },
+  {
+   "id": "O3",
+   "type": "embody",
+   "from": "C2",
+   "to": "R2",
+   "evidence": "image",
+   "E": [],
+   "reading": "image: groups of stars are drawn as whale, hydra, ship, centaur (n = 4 figures measured)"
+  },
+  {
+   "id": "O4",
+   "type": "inscribe",
+   "from": "C3",
+   "to": "R2",
+   "evidence": "image",
+   "E": [],
+   "reading": "image: Latin names written beside the figures"
+  },
+  {
+   "id": "O5",
+   "type": "contain",
+   "from": "R1",
+   "to": "R2",
+   "evidence": "image",
+   "E": [],
+   "reading": "image: the creatures are drawn inside the disk of the heavens"
+  }
+ ],
+ "category": {
+  "externalize": "显现",
+  "embody": "显现",
+  "witness": "显现",
+  "impossible_viewpoint": "显现",
+  "activate": "显现",
+  "substitute": "指代",
+  "inscribe": "指代",
+  "synecdoche": "指代",
+  "depth_time": "时间",
+  "foreshadow": "时间",
+  "trigger": "时间",
+  "anachronism": "时间",
+  "contain": "组合",
+  "contrast": "组合",
+  "juxtapose": "组合",
+  "radiate": "组合",
+  "layer": "组合"
+ },
+ "signature": {
+  "显现": 1
+ }
+}

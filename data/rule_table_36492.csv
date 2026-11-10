@@ -1,0 +1,9 @@
+﻿aic_id,大类,操作,C 可见载体,R 不在场对象,缺席方式,对象种类,想象层级,E 证据类型,E 证据内容,可信度,进入谱
+36492,指代,象征替代（链 1）,母亲哺育孩子,R2 母爱 → R1 慈爱,不可见,概念,文化共享,文本,This painting presents an allegory of the virtue of charity through images of maternal love and sacrifice: a mother nurtures several young children,高,是
+36492,指代,象征替代（链 1）,母亲哺育孩子,R2 母爱 → R1 慈爱,不可见,概念,文化共享,图像,中央女性哺乳，左手掀开布帘看护熟睡的孩子,高,是
+36492,指代,象征替代（链 2）,鹈鹕啄胸以血喂雏,R3 牺牲 → R1 慈爱,不可见,概念,文化共享,文本,a pelican feeds her young by drawing blood from her own breast,高,是
+36492,指代,象征替代（链 2）,鹈鹕啄胸以血喂雏,R3 牺牲 → R1 慈爱,不可见,概念,文化共享,图像,右下角鹈鹕低头啄胸，地上两只雏鸟，可见血迹,高,是
+36492,未命名,并置（同一 R 的双重载体）,人类母亲 + 鹈鹕母亲,R1 慈爱,不可见,概念,文化共享,文本,images of maternal love and sacrifice: a mother ... and a pelican ...（两个载体并列）,中,是
+36492,布局,重复,三个孩子,R2 母爱,不可见,概念,—,图像,三个孩子：左侧熟睡、中间站立、右侧吃奶（文本仅写 several young children）,中,待定
+36492,赋形,拟人化,女性形象,R1 慈爱,不可见,概念,文化共享,推断,文本称她为 a mother，未说她是慈爱的拟人化（Caritas 是艺术史惯例，原文未写）,低,否
+36492,指代,象征替代,鹈鹕,基督,不可见,存在者,文化共享,推断,鹈鹕象征基督是常见图像学解读，原文未写,低,否

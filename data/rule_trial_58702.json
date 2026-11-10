@@ -1,0 +1,44 @@
+{
+  "_note": "Manual rule trial (v0). Human/AI-applied rules, NOT executed screening code. evidence.type: aic_text = verbatim AIC description; visual_obs = machine observation of the image (not AIC fact); inference = interpretation without direct evidence.",
+  "aic_id": 58702,
+  "title": "The Dream of Paris",
+  "artist_display": "Monogrammist PG (Germany, active c. 1525–50)",
+  "date_display": "1536",
+  "artwork_url": "https://www.artic.edu/artworks/58702",
+  "iiif_image_url": "https://www.artic.edu/iiif/2/550d7d97-e4ae-e023-21ad-066559632a12/full/843,/0/default.jpg",
+  "is_public_domain": true,
+  "referents": [
+    {"id": "R1", "label": "Paris's dream vision", "absence": "inner", "contains": ["R2", "R3"],
+     "evidence": [{"type": "aic_text", "quote": "His sleeping pose and the painting’s inscription ... indicate that he is in the midst of a dream vision"}]},
+    {"id": "R2", "label": "Goddesses Minerva, Juno, Venus (and Cupid)", "absence": "nonexistent/divine", "parent": "R1",
+     "evidence": [{"type": "aic_text", "quote": "choosing the fairest goddess among Minerva, Juno, and Venus"}]},
+    {"id": "R3", "label": "Future events: departure of Paris and Helen, Trojan War", "absence": "not_yet", "parent": "R1",
+     "evidence": [{"type": "aic_text", "quote": "used to foreshadow future events ... the departure of Paris and Helen by boat in the middle distance, the catalyst for the Trojan War"}]},
+    {"id": "R4", "label": "Moral crossroads (choice)", "absence": "invisible",
+     "evidence": [{"type": "aic_text", "quote": "emphasizes the enduring relevance of his moral crossroads"}]}
+  ],
+  "operations": [
+    {"op": "EXTERNALIZE", "zh": "外化", "carrier": "sleeping knight (eyes closed, head on hand) surrounded by goddesses", "referent": "R1", "confidence": "high",
+     "evidence": [{"type": "aic_text", "quote": "His sleeping pose ... dream vision"}, {"type": "visual_obs", "note": "central standing figure with closed eyes, cheek resting on hand; nude figures arranged on both sides"}]},
+    {"op": "INSCRIBE", "zh": "铭写", "carrier": "paper slip on tree: PARIS / TRA(U)M", "referent": "R1", "confidence": "high",
+     "evidence": [{"type": "aic_text", "quote": "the painting’s inscription, PARIS / TRA(U)M (“dream of Paris,” on the slip of paper attached to the tree)"}, {"type": "visual_obs", "note": "white slip on central trunk, on the vertical axis directly above the sleeper's head"}]},
+    {"op": "SUBSTITUTE", "zh": "象征替代", "carrier": "golden apple", "referent": "the prize / the choice (R4)", "confidence": "high",
+     "evidence": [{"type": "aic_text", "quote": "the golden apple given as a prize in the contest"}]},
+    {"op": "SUBSTITUTE", "zh": "象征替代", "carrier": "heart held by Venus", "referent": "love (inferred)", "confidence": "low",
+     "evidence": [{"type": "aic_text", "quote": "holding a heart"}, {"type": "inference", "note": "heart = love is conventional; description does not state it"}]},
+    {"op": "UNNAMED:DEPTH_AS_TIME", "zh": "未命名：纵深=时间（预示）", "carrier": "small boat with figures in middle distance", "referent": "R3", "confidence": "high",
+     "evidence": [{"type": "aic_text", "quote": "foreshadow future events ... by boat in the middle distance"}, {"type": "visual_obs", "note": "boat with figures on the lake behind the central tree; foreground = dream present, background = future"}]},
+    {"op": "UNNAMED:ANACHRONISM", "zh": "未命名：时代错置", "carrier": "Paris in contemporary knight's armour", "referent": "R4 (enduring relevance)", "confidence": "high",
+     "evidence": [{"type": "aic_text", "quote": "wears the garb of a contemporary knight rather than classical dress, a choice that emphasizes the enduring relevance of his moral crossroads"}]}
+  ],
+  "unexplained_visual_observations": [
+    {"type": "visual_obs", "note": "Second male figure in helmet and red cloak holding a staff beside Paris. Not identified in the AIC description; NOT assigned an identity."},
+    {"type": "visual_obs", "note": "Cupid aims a bow/arrow upward toward the central figures. Description only says 'frolicking'."},
+    {"type": "visual_obs", "note": "Central tree trunk splits the panel vertically; inscription, sleeper and dropped helmets align on it."}
+  ],
+  "rule_revisions_suggested": [
+    "Referents need nesting (R1 dream contains R2 goddesses and R3 future), not a flat list.",
+    "Vocabulary lacks a TIME dimension: add DEPTH_AS_TIME (foreshadowing) and ANACHRONISM as candidate operations.",
+    "Evidence must carry a type (aic_text / visual_obs / inference) and confidence; low-confidence inferences should not enter the score by default."
+  ]
+}
